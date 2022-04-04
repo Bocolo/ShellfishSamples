@@ -1,9 +1,0 @@
-VisualElement {}
-button{
-	color:blue;
-	background:blue;
-
-}
-.ProjectBrowserGridLabel {
-font-size: 13px;
-}

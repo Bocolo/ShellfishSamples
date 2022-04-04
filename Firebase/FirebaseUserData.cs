@@ -5,14 +5,14 @@ using Firebase.Firestore;
 
 public class FirebaseUserData : MonoBehaviour
 {
-    public void AddUser(UserData userDetails)
+    public void AddUser(User user)
     {
         var firestore = FirebaseFirestore.DefaultInstance;
-        firestore.Collection("Users").Document(userDetails.Email).SetAsync(userDetails);
+        firestore.Collection("Users").Document(user.Email).SetAsync(user);
         Debug.Log("Successfully added user details to database");
 
     }
-    public void UpdateUser(UserData userDetails)
+    public void UpdateUser(User user)
     {
 
     }

@@ -24,7 +24,7 @@ public class GetSampleData : MonoBehaviour
     [SerializeField] private String searchFieldSelection = "";
     [SerializeField] private String searchNameSelection = "";
     private int searchLimitSelection = 0;
-    private List<SampleData> collectionSamples = new List<SampleData>();
+    private List<Sample> collectionSamples = new List<Sample>();
     private SampleDAO sampleDAO;
 
 
@@ -95,7 +95,7 @@ public class GetSampleData : MonoBehaviour
 
 
     }
-    private void AddTextAndPrefab(SampleData sample)
+    private void AddTextAndPrefab(Sample sample)
     {
         //maybe add isBluee bool
         GameObject panel;
@@ -114,7 +114,7 @@ public class GetSampleData : MonoBehaviour
 
         panelText.text = SampleDataToString(sample, false);
     }
-    private void AddTextAndPrefab(List<SampleData> sampleList)
+    private void AddTextAndPrefab(List<Sample> sampleList)
     {
         foreach (Transform child in _contentParent)
         {
@@ -140,7 +140,7 @@ public class GetSampleData : MonoBehaviour
             panelText.text = SampleDataToString(sampleList[i], false);
         }
     }
-    private String SampleDataToString(SampleData sample, bool isRestricted)
+    private String SampleDataToString(Sample sample, bool isRestricted)
     {
         if (isRestricted)
         {
@@ -199,13 +199,13 @@ public class GetSampleData : MonoBehaviour
     //Return sample data with ONLY the location thats filled
 
 
-    public void CollectionToText(List<SampleData> sampleDataList)
+    public void CollectionToText(List<Sample> sampleList)
     {
         foreach (Transform t in _contentParent)
         {
             Destroy(t.gameObject);
         }
-        AddTextAndPrefab(sampleDataList);
+        AddTextAndPrefab(sampleList);
     }
  *   
  *   public void CollectionToText()
@@ -214,7 +214,7 @@ public class GetSampleData : MonoBehaviour
        {
            Destroy(t.gameObject);
        }
-       //  firestore.Collection("Samples").Document().SetAsync(sampleData);
+       //  firestore.Collection("Samples").Document().SetAsync(sample);
        var firestore = FirebaseFirestore.DefaultInstance;
        firestore.Collection("Samples").GetSnapshotAsync().ContinueWithOnMainThread(task =>
        {
@@ -235,7 +235,7 @@ public class GetSampleData : MonoBehaviour
                //prob dont need tryu block here
                try
                {
-                   SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+                   Sample sample = documentSnapshot.ConvertTo<Sample>();
                    counter++;
                    collectionSamples.Add(sample);
                    //  samplesString += (SampleDataToStringRestricted(sample) + "\n\n");
@@ -259,7 +259,7 @@ public class GetSampleData : MonoBehaviour
        {
            Destroy(t.gameObject);
        }
-       //  firestore.Collection("Samples").Document().SetAsync(sampleData);
+       //  firestore.Collection("Samples").Document().SetAsync(sample);
        var firestore = FirebaseFirestore.DefaultInstance;
 
        firestore.Collection(collectionName).GetSnapshotAsync().ContinueWithOnMainThread(task =>
@@ -278,7 +278,7 @@ public class GetSampleData : MonoBehaviour
                //prob dont need tryu block here
                try
                {
-                   SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+                   Sample sample = documentSnapshot.ConvertTo<Sample>();
 
                    counter++;
                    collectionSamples.Add(sample);
@@ -298,19 +298,19 @@ public class GetSampleData : MonoBehaviour
 
    }
    //not needed
-   public SampleData GetData(String _path)
+   public Sample GetData(String _path)
    {
        var firestore = FirebaseFirestore.DefaultInstance;
        firestore.Document(_path).GetSnapshotAsync().ContinueWithOnMainThread(task =>
        {
            Assert.IsNull(task.Exception);
-           var sampleData = task.Result.ConvertTo<SampleData>();
+           var sample = task.Result.ConvertTo<Sample>();
            //  var limitedSampleData = task.Result.ConvertTo<LimitedSampleData>();
-           // SetDataText(sampleData);
-           return sampleData;
+           // SetDataText(sample);
+           return sample;
        });
        //FIX FALLOUT FROM THIS __ DONT WANT RETURN empty__ CANT RETURN NULL
-       return new SampleData();
+       return new Sample();
    }*/
 
 /*
@@ -327,7 +327,7 @@ public class GetSampleData : MonoBehaviour
                 {
                     try
                     {
-                        SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+                        Sample sample = documentSnapshot.ConvertTo<Sample>();
                         counter++;
                         collectionSamples.Add(sample);
                     }
@@ -375,7 +375,7 @@ public class GetSampleData : MonoBehaviour
                {
                    try
                    {
-                       SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+                       Sample sample = documentSnapshot.ConvertTo<Sample>();
                        counter++;
                        collectionSamples.Add(sample);
                    }
@@ -401,7 +401,7 @@ public class GetSampleData : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
-        //  firestore.Collection("Samples").Document().SetAsync(sampleData);
+        //  firestore.Collection("Samples").Document().SetAsync(sample);
         var firestore = FirebaseFirestore.DefaultInstance;
 
         collectionSamples.Clear();
@@ -429,7 +429,7 @@ foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
     //prob dont need tryu block here
     try
     {
-        SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+        Sample sample = documentSnapshot.ConvertTo<Sample>();
 
 
 
@@ -499,7 +499,7 @@ public void getAndOrderLimitData()
             //prob dont need tryu block here
             try
             {
-                SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+                Sample sample = documentSnapshot.ConvertTo<Sample>();
 
                 counter++;
                 collectionSamples.Add(sample);
@@ -528,7 +528,7 @@ public void getAndOrderLimitData()
     private Dictionary<string, object> collection;
  
  */
-/*    public void AddTextAndPrefab(SampleData sample, int counter)
+/*    public void AddTextAndPrefab(Sample sample, int counter)
     {
 
         GameObject panel;
@@ -556,7 +556,7 @@ public void getAndOrderLimitData()
 
 /*      public void RetrieveCollectionData()
     {
-        //  firestore.Collection("Samples").Document().SetAsync(sampleData);
+        //  firestore.Collection("Samples").Document().SetAsync(sample);
         var firestore = FirebaseFirestore.DefaultInstance;
 
         firestore.Collection("Samples").GetSnapshotAsync().ContinueWithOnMainThread(task =>
@@ -589,7 +589,7 @@ foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
     }
  *  
  *  
-    public String SampleDataToString(SampleData sample)
+    public String SampleDataToString(Sample sample)
     {
         if (sample.SampleLocationName == null)
         {
@@ -636,9 +636,9 @@ foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
         SetDataText(GetData(_path));
     }
     
-    public void SetDataText(SampleData sampleData)
+    public void SetDataText(Sample sample)
     {
-    //    _text.text = SampleDataToStringRestricted(sampleData);
+    //    _text.text = SampleDataToStringRestricted(sample);
     }
  
  *  
@@ -656,7 +656,7 @@ foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
  *  
  *    Debug.Log("in Get data - loop prepare");
         int counter = 0;
-        foreach (SampleData sample in sampleList)
+        foreach (Sample sample in sampleList)
         {
             counter++;
             Debug.Log("in Get data - BEFORE " + counter);
@@ -703,7 +703,7 @@ foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
 
 
 
-/*    public List<SampleData> GetDataList()
+/*    public List<Sample> GetDataList()
     {
         return null;
     }*/
@@ -720,7 +720,7 @@ foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
      public void CollectionToText(String name)
     {
 
-        //  firestore.Collection("Samples").Document().SetAsync(sampleData);
+        //  firestore.Collection("Samples").Document().SetAsync(sample);
         var firestore = FirebaseFirestore.DefaultInstance;
         collectionSamples.Clear();
         firestore.Collection("Samples").GetSnapshotAsync().ContinueWithOnMainThread(task =>
@@ -742,7 +742,7 @@ foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
     try
     {
 
-        SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+        Sample sample = documentSnapshot.ConvertTo<Sample>();
         if (sample.Name == name)
         {
             Debug.Log("Name match");
@@ -770,20 +770,20 @@ Debug.Log("Try : " + counter + ".  Caught : " + counter2);
 
 
 //FROM GET DATA
-// _text.text = SampleDataToStringRestricted(sampleData);
-/*   if (sampleData.SampleLocationName==null)
+// _text.text = SampleDataToStringRestricted(sample);
+/*   if (sample.SampleLocationName==null)
    {
        Debug.Log("Location is null");
 
-       _text.text = "\nSpecies: " + sampleData.Species
-  + $"\nICEs Rectangle: {sampleData.IcesRectangleNo}"
-  + "\nWeek: " + sampleData.ProductionWeekNo + "\nDate: " + sampleData.Date;
+       _text.text = "\nSpecies: " + sample.Species
+  + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
+  + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date;
    }
    else
    {
        Debug.Log("ICES rectangle is null");
-       _text.text = "\nSpecies: " + sampleData.Species
-       + "\nLocation: " + sampleData.SampleLocationName + "\nWeek: " + sampleData.ProductionWeekNo  + "\nDate: " + sampleData.Date;
+       _text.text = "\nSpecies: " + sample.Species
+       + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo  + "\nDate: " + sample.Date;
    }*/
 
 
@@ -880,41 +880,41 @@ _text.text = total;*/
 
 
 
-/*  _text.text = $"Name: {sampleData.Name}" + $"\nICEs:{sampleData.IcesRectangleNo}"
-         + "\nWeek:" +sampleData.ProductionWeekNo +"\nSpecies:"+sampleData.Species 
-         +"\nLocation:"+ sampleData.SampleLocationName +"\nDate: "+sampleData.Date
+/*  _text.text = $"Name: {sample.Name}" + $"\nICEs:{sample.IcesRectangleNo}"
+         + "\nWeek:" +sample.ProductionWeekNo +"\nSpecies:"+sample.Species 
+         +"\nLocation:"+ sample.SampleLocationName +"\nDate: "+sample.Date
          +  $"\n\n\n\n\nICEs:{limitedSampleData.IcesRectangleNo}"
          + "\nWeek:" + limitedSampleData.ProductionWeekNo + "\nSpecies:" + limitedSampleData.Species
          + "\nLocation:" + limitedSampleData.SampleLocationName + "\nDate: " + limitedSampleData.Date;*/
 /*      firestore.Document(_samplePath).GetSnapshotAsync().ContinueWithOnMainThread(task =>
       {
           Assert.IsNull(task.Exception);
-          var sampleData = task.Result.ConvertTo<SampleData>();
+          var sample = task.Result.ConvertTo<Sample>();
           var limitedSampleData = task.Result.ConvertTo<LimitedSampleData>();
-          if (sampleData.SampleLocationName == null)
+          if (sample.SampleLocationName == null)
           {
               Debug.Log("Location is null");
 
-              _text.text = "\nSpecies: " + sampleData.Species
-         + $"\nICEs: {sampleData.IcesRectangleNo}"
-         + "\nWeek: " + sampleData.ProductionWeekNo + "\nDate: " + sampleData.Date;
+              _text.text = "\nSpecies: " + sample.Species
+         + $"\nICEs: {sample.IcesRectangleNo}"
+         + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date;
 
 
           }
           else
           {
-              _text.text = "\nSpecies: " + sampleData.Species
-         + "\nWeek: " + sampleData.ProductionWeekNo + "\nLocation: " + sampleData.SampleLocationName + "\nDate: " + sampleData.Date;
+              _text.text = "\nSpecies: " + sample.Species
+         + "\nWeek: " + sample.ProductionWeekNo + "\nLocation: " + sample.SampleLocationName + "\nDate: " + sample.Date;
           }
 
-            _text.text = $"Name: {sampleData.Name}" + $"\nICEs:{sampleData.IcesRectangleNo}"
-            + "\nWeek:" +sampleData.ProductionWeekNo +"\nSpecies:"+sampleData.Species 
-            +"\nLocation:"+ sampleData.SampleLocationName +"\nDate: "+sampleData.Date
+            _text.text = $"Name: {sample.Name}" + $"\nICEs:{sample.IcesRectangleNo}"
+            + "\nWeek:" +sample.ProductionWeekNo +"\nSpecies:"+sample.Species 
+            +"\nLocation:"+ sample.SampleLocationName +"\nDate: "+sample.Date
             +  $"\n\n\n\n\nICEs:{limitedSampleData.IcesRectangleNo}"
             + "\nWeek:" + limitedSampleData.ProductionWeekNo + "\nSpecies:" + limitedSampleData.Species
             + "\nLocation:" + limitedSampleData.SampleLocationName + "\nDate: " + limitedSampleData.Date;
       });*/
-/*  else if(sampleData.SampleLocationName =="")
+/*  else if(sample.SampleLocationName =="")
             {
                 Debug.Log("Location is empty string");
             }*/

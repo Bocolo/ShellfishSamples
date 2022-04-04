@@ -28,7 +28,7 @@ public class PopulateDatabase : MonoBehaviour
      /*   for (int i = 0; i < temp.Count; i++)
         {
             // Debug.Log(count + " COUNT!");
-            var sampleData = new SampleData
+            var sample = new Sample
             {
                 Species = temp[i].Species,
                 IcesRectangleNo = temp[i].IcesRectangleNo,
@@ -40,10 +40,10 @@ public class PopulateDatabase : MonoBehaviour
                 SampleLocationName = temp[i].SampleLocationName
             };
             var firestore = FirebaseFirestore.DefaultInstance;
-            //   firestore.Document(_samplePath).SetAsync(sampleData); //,SetOptions.MergeAll);
-            firestore.Collection("SamplesFull").Document().SetAsync(sampleData);//you work for random ID generartion
+            //   firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
+            firestore.Collection("SamplesFull").Document().SetAsync(sample);//you work for random ID generartion
         }
-            //firestore.Document(_samplePath).SetAsync(sampleData); overrides document
+            //firestore.Document(_samplePath).SetAsync(sample); overrides document
         */
     }
 

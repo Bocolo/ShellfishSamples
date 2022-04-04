@@ -41,7 +41,7 @@ public class FirebaseAuthentication : MonoBehaviour
         {
             popUpObject.GetComponent<PopUp>().SuccessfulSignUp();
 
-            UserData user = new UserData
+            User user = new User
             {
                 Name = _userNameInput.text,
                 Company = _companyInput.text,
@@ -73,7 +73,7 @@ public class FirebaseAuthentication : MonoBehaviour
             Debug.LogFormat("return found");
             popUpObject.GetComponent<PopUp>().SuccessfulLogin();//SetPopUpText("You Must Be Signed in to Access the Retrieval Page");
             //Debug.LogFormat("poporeprsdf");
-            //UserData user = new UserData
+            //User user = new User
             //{
             //    Name = _userNameInput.text,
             //    Company = _companyInput.text,
@@ -101,13 +101,13 @@ public class FirebaseAuthentication : MonoBehaviour
             Debug.Log(task.Result + " --- > " + task.Result.GetValue<int>("SubmittedSamplesCount"));
             try
             {
-                UserData userData = task.Result.ConvertTo<UserData>();
-                SaveData.Instance.SaveUserProfile(userData);
+                User user = task.Result.ConvertTo<User>();
+                SaveData.Instance.SaveUserProfile(user);
                 Debug.Log(SaveData.Instance.LoadUserProfile().Email + "new usre data");
             }
             catch (Exception e)
             {
-                Debug.Log(e + " __ error converting to userData");
+                Debug.Log(e + " __ error converting to user");
             }
 
         });

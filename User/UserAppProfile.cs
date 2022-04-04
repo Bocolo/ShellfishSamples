@@ -12,7 +12,7 @@ public class UserAppProfile : MonoBehaviour
 
     [SerializeField] private GameObject _updateProfileButton;
     [SerializeField] private GameObject _saveProfileButton;
-    private UserData userProfileData;
+    private User user;
     public void Start()
     {
         LoadProfile();
@@ -20,10 +20,10 @@ public class UserAppProfile : MonoBehaviour
     }
     private void LoadProfile()
     {
-        userProfileData = SaveData.Instance.LoadUserProfile();
+        user = SaveData.Instance.LoadUserProfile();
         //neeed to laod the user submitted sample stored
-        string profileText = "<b>Name : </b>" + userProfileData.Name 
-             + "\n\n<b>Company: </b>" + userProfileData.Company
+        string profileText = "<b>Name : </b>" + user.Name 
+             + "\n\n<b>Company: </b>" + user.Company
              + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.GetUserStoredSamples().Count
              + "\n\n<b>No of Submitted Samples from this Device: </b>" + SaveData.Instance.GetUserSubmittedSamples().Count;
 
@@ -31,16 +31,16 @@ public class UserAppProfile : MonoBehaviour
         //then no need for if else
         if (FirebaseAuth.DefaultInstance.CurrentUser != null)
         {
-            profileText += "\n\n<b>No of Submitted Samples from logged in user: </b>" + userProfileData.SubmittedSamplesCount;
+            profileText += "\n\n<b>No of Submitted Samples from logged in user: </b>" + user.SubmittedSamplesCount;
         }
      
         _profileText.text = profileText;
-            Debug.Log(userProfileData.Name + "___LOADED___" + userProfileData.Company);
+            Debug.Log(user.Name + "___LOADED___" + user.Company);
     }
 
     public void CreateProfile()
     {
-        UserData user = new UserData
+        User user = new User
         {
             Name = _userNameInput.text,
             Company = _companyInput.text,
@@ -54,29 +54,29 @@ public class UserAppProfile : MonoBehaviour
     //https://www.youtube.com/watch?v=52yUcKLMKX0
     public void UpdateProfile()
     {
-        userProfileData = SaveData.Instance.LoadUserProfile();
-        userProfileData.Name = _userNameInput.text;
-        userProfileData.Company = _companyInput.text;
+        user = SaveData.Instance.LoadUserProfile();
+        user.Name = _userNameInput.text;
+        user.Company = _companyInput.text;
         //FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
         //if (user)
         if(FirebaseAuth.DefaultInstance.CurrentUser!= null){
-          SaveData.Instance.SaveUserProfile(userProfileData, FirebaseAuth.DefaultInstance.CurrentUser);
+          SaveData.Instance.SaveUserProfile(user, FirebaseAuth.DefaultInstance.CurrentUser);
 
         }
         else
         {
-            SaveData.Instance.SaveUserProfile(userProfileData);
+            SaveData.Instance.SaveUserProfile(user);
         }
         //else
         //{
-        //    SaveData.Instance.SaveUserProfile(userProfileData);
+        //    SaveData.Instance.SaveUserProfile(user);
 
         //}
-        Debug.Log(userProfileData.Name + "__Updating user____" + userProfileData.Company);
+        Debug.Log(user.Name + "__Updating user____" + user.Company);
     }
     public void SaveProfile()
     {
-        string filepath = Application.persistentDataPath + "/userProfileSave.dat";
+        string filepath = Application.persistentDataPath + "/userSave.dat";
 
         if (System.IO.File.Exists(filepath))
         {

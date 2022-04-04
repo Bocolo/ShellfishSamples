@@ -5,7 +5,7 @@ using Firebase.Firestore;
 
 [FirestoreData]
 [System.Serializable]
-public struct UserData
+public struct User
 {
     [FirestoreProperty]
     public string Name { get; set; }
@@ -20,7 +20,7 @@ public struct UserData
     //[FirestoreProperty]
     //public string storedSampleCount { get; set; }
 }
-//public class UserData : MonoBehaviour
+//public class User : MonoBehaviour
 //{
 //    private string name;
 //    private string company;

@@ -97,9 +97,9 @@ namespace Submit.UI {
         }
         public void SetNameAndCompanyFromProfile()
         {
-            UserData userData = SaveData.Instance.LoadUserProfile();
-            _name.text = userData.Name;
-            _company.text = userData.Company;
+            User user = SaveData.Instance.LoadUserProfile();
+            _name.text = user.Name;
+            _company.text = user.Company;
         }
         public void SwitchCanvas()
         {

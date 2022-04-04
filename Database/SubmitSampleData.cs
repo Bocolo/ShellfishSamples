@@ -37,16 +37,16 @@ public class SubmitSampleData : MonoBehaviour
         {
             userDAO = new UserDAO();
             sampleDAO = new SampleDAO();
-            var sampleData = NewSample();
-            sampleDAO.AddSample(sampleData);
-            SaveData.Instance.AddToSubmittedSamples(sampleData);
+            var sample = NewSample();
+            sampleDAO.AddSample(sample);
+            SaveData.Instance.AddToSubmittedSamples(sample);
             SaveData.Instance.SaveSubmittedSamples();
             canvasManager.OnSubmitClearFields();
 
             FirebaseAuth auth = FirebaseAuth.DefaultInstance;
             if (auth.CurrentUser != null)
             {
-                sampleDAO.AddSampleToUserCollection(auth.CurrentUser, sampleData);
+                sampleDAO.AddSampleToUserCollection(auth.CurrentUser, sample);
                 userDAO.UpdateUserSampleCount(auth.CurrentUser); //has to be a better way to do this
             }
             canvasManager.DisplayPopUP("\n\nSuccessfully Submitted Sample");// this is wrinfg -- can onlt reeally be successful is only
@@ -63,7 +63,7 @@ public class SubmitSampleData : MonoBehaviour
             sampleDAO = new SampleDAO();
             userDAO = new UserDAO();
             var firestore = FirebaseFirestore.DefaultInstance;
-            List<SampleData> storedSamples = SaveData.Instance.GetUserStoredSamples();
+            List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
             FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
             int counter = 0;
             for (int i = 0; i < storedSamples.Count; i++)
@@ -91,8 +91,8 @@ public class SubmitSampleData : MonoBehaviour
         SetValues();
         if (!IsValuesMissing() && IsDateValid())
         {
-            var sampleData = NewSample();
-            SaveData.Instance.AddToStoredSamples(sampleData);
+            var sample = NewSample();
+            SaveData.Instance.AddToStoredSamples(sample);
             canvasManager.OnSubmitClearFields();
             canvasManager.DisplayPopUP("\n\nSuccessfully Stored Sample");
 
@@ -101,9 +101,9 @@ public class SubmitSampleData : MonoBehaviour
 
     }
 
-    private SampleData NewSample()
+    private Sample NewSample()
     {
-        SampleData sample = new SampleData
+        Sample sample = new Sample
         {
             Species = _speciesString,
             IcesRectangleNo = _icesString,
@@ -238,9 +238,9 @@ public class SubmitSampleData : MonoBehaviour
             previouslyStoredSampleCount = documentSnapshot.GetValue<int>("SubmittedSamplesCount");
             previouslyStoredSampleCount += numberOfSamples;
             docRef.SetAsync(new Dictionary<string, int> { { "SubmittedSamplesCount", previouslyStoredSampleCount } }, SetOptions.MergeAll);
-            UserData userData = SaveData.Instance.LoadUserProfile();
-            userData.SubmittedSamplesCount = previouslyStoredSampleCount;
-            SaveData.Instance.SaveUserProfile(userData);
+            User user = SaveData.Instance.LoadUserProfile();
+            user.SubmittedSamplesCount = previouslyStoredSampleCount;
+            SaveData.Instance.SaveUserProfile(user);
             Debug.Log("_TESTING--- Fs DB Count update-number samples");
         });
 
@@ -258,9 +258,9 @@ public class SubmitSampleData : MonoBehaviour
             previouslyStoredSampleCount = documentSnapshot.GetValue<int>("SubmittedSamplesCount");
             previouslyStoredSampleCount += 1;
             docRef.SetAsync(new Dictionary<string, int> { { "SubmittedSamplesCount", previouslyStoredSampleCount } }, SetOptions.MergeAll);
-            UserData userData = SaveData.Instance.LoadUserProfile();
-            userData.SubmittedSamplesCount = previouslyStoredSampleCount;
-            SaveData.Instance.SaveUserProfile(userData);
+            User user = SaveData.Instance.LoadUserProfile();
+            user.SubmittedSamplesCount = previouslyStoredSampleCount;
+            SaveData.Instance.SaveUserProfile(user);
             Debug.Log("_TESTING--- Fs DB Count update");
         });
 
@@ -293,9 +293,9 @@ service cloud.firestore {
 //    previouslyStoredSampleCount += 1;
 //    docRef.SetAsync(new Dictionary<string, int> { { "SubmittedSamplesCount", previouslyStoredSampleCount } }, SetOptions.MergeAll);
 //    // docRef.UpdateAsync("SubmittedSamplesCount", (firestore.Collection("Users").Document(auth.CurrentUser.Email)).);
-//    UserData userData = SaveData.Instance.LoadUserProfile();
-//    userData.SubmittedSamplesCount = previouslyStoredSampleCount;
-//    SaveData.Instance.SaveUserProfile(userData);
+//    User user = SaveData.Instance.LoadUserProfile();
+//    user.SubmittedSamplesCount = previouslyStoredSampleCount;
+//    SaveData.Instance.SaveUserProfile(user);
 //    //__NEED TO BE STOREING THE NEWLY UPDATED STORED HERE
 //    Debug.Log("____ SS count ___ after");
 //});
@@ -312,9 +312,9 @@ service cloud.firestore {
 
 //private void SetNameAndCompanyFromProfile()
 //{
-//    UserData userData = SaveData.Instance.LoadUserProfile();
-//    _name.text = userData.Name;
-//    _company.text = userData.Company;
+//    User user = SaveData.Instance.LoadUserProfile();
+//    _name.text = user.Name;
+//    _company.text = user.Company;
 //}
 //public void SwitchCanvas()
 //{
@@ -471,23 +471,23 @@ service cloud.firestore {
 //}
 
 //var firestore = FirebaseFirestore.DefaultInstance;
-//firestore.Document(_samplePath).SetAsync(sampleData); //,SetOptions.MergeAll);
-//firestore.Collection("Samples").Document().SetAsync(sampleData);//you work for random ID generartion
+//firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
+//firestore.Collection("Samples").Document().SetAsync(sample);//you work for random ID generartion
 
-//firestore.Document(_samplePath).SetAsync(sampleData); overrides document
+//firestore.Document(_samplePath).SetAsync(sample); overrides document
 
 
 
 //private void SetNameAndCompanyFromProfile()
 //{
-//    UserData userData = SaveData.Instance.LoadUserProfile();
-//    _name.text =userData.Name;
-//    _company.text = userData.Company;
+//    User user = SaveData.Instance.LoadUserProfile();
+//    _name.text =user.Name;
+//    _company.text = user.Company;
 //}
 
 
 
-/* var sampleData = new SampleData
+/* var sample = new Sample
            {
                Species = _speciesString,
                IcesRectangleNo = _icesString,
@@ -501,7 +501,7 @@ service cloud.firestore {
 
            };*/
 
-/*new SampleData
+/*new Sample
 {
 Species = _speciesString,
 IcesRectangleNo = _icesString,
@@ -635,11 +635,11 @@ public class SubmitSampleData : MonoBehaviour
     private string day;
     private string month;
     private string year;
-    public static List<SampleData> savedSamples = new List<SampleData>();
+    public static List<Sample> savedSamples = new List<Sample>();
 
     void Start()
     {
-        //savedSamples = new List<SampleData>();
+        //savedSamples = new List<Sample>();
 
         _submitButton.onClick.AddListener(() =>
         {
@@ -649,7 +649,7 @@ public class SubmitSampleData : MonoBehaviour
             SetValues();
             if (!IsValuesMissing() && IsDateValid())
             {
-                var sampleData = new SampleData
+                var sample = new Sample
                 {
                     Species = _speciesString,
                     IcesRectangleNo = _icesString,
@@ -663,11 +663,11 @@ public class SubmitSampleData : MonoBehaviour
 
                 };
                 var firestore = FirebaseFirestore.DefaultInstance;
-                firestore.Document(_samplePath).SetAsync(sampleData); //,SetOptions.MergeAll);
-                firestore.Collection("Samples").Document().SetAsync(sampleData);//you work for random ID generartion
+                firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
+                firestore.Collection("Samples").Document().SetAsync(sample);//you work for random ID generartion
                 Debug.Log("Success");
 
-                //firestore.Document(_samplePath).SetAsync(sampleData); overrides document
+                //firestore.Document(_samplePath).SetAsync(sample); overrides document
             }
 
 
@@ -707,7 +707,7 @@ public class SubmitSampleData : MonoBehaviour
         if (!IsValuesMissing() && IsDateValid())
         {
             Debug.Log("Creating the storeable sample");
-            var sampleData = new SampleData
+            var sample = new Sample
             {
                 Species = _speciesString,
                 IcesRectangleNo = _icesString,
@@ -721,14 +721,14 @@ public class SubmitSampleData : MonoBehaviour
 
             };
             Debug.Log("about to add it");
-            savedSamples.Add(sampleData);
+            savedSamples.Add(sample);
             Debug.Log("added to thge list");
 
             //var firestore = FirebaseFirestore.DefaultInstance;
-            //firestore.Document(_samplePath).SetAsync(sampleData); //,SetOptions.MergeAll);
-            //firestore.Collection("Samples").Document().SetAsync(sampleData);//you work for random ID generartion
+            //firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
+            //firestore.Collection("Samples").Document().SetAsync(sample);//you work for random ID generartion
 
-            //firestore.Document(_samplePath).SetAsync(sampleData); overrides document
+            //firestore.Document(_samplePath).SetAsync(sample); overrides document
         }
      SaveData.Instance.Save();
 
@@ -976,7 +976,7 @@ public class SetSampleData : MonoBehaviour
             {
                 _locationString = _sampleLocationName.options[_sampleLocationName.value].text;
             }
-            var sampleData = new SampleData
+            var sample = new Sample
             {
                 Species = _species.options[_species.value].text,
                 IcesRectangleNo = _icesString,
@@ -988,10 +988,10 @@ public class SetSampleData : MonoBehaviour
                 SampleLocationName = _locationString
             };
             var firestore = FirebaseFirestore.DefaultInstance;
-            firestore.Document(_samplePath).SetAsync(sampleData); //,SetOptions.MergeAll);
-            firestore.Collection("Samples").Document().SetAsync(sampleData);//you work for random ID generartion
+            firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
+            firestore.Collection("Samples").Document().SetAsync(sample);//you work for random ID generartion
 
-            //firestore.Document(_samplePath).SetAsync(sampleData); overrides document
+            //firestore.Document(_samplePath).SetAsync(sample); overrides document
 
 
 
@@ -1086,7 +1086,7 @@ public class SetSampleData : MonoBehaviour
 
 //void Start()
 //{
-//savedSamples = new List<SampleData>();
+//savedSamples = new List<Sample>();
 
 //_submitButton.onClick.AddListener(() =>
 //{
@@ -1096,7 +1096,7 @@ public class SetSampleData : MonoBehaviour
 //    SetValues();
 //    if (!IsValuesMissing() && IsDateValid())
 //    {
-//        var sampleData = new SampleData
+//        var sample = new Sample
 //        {
 //            Species = _speciesString,
 //            IcesRectangleNo = _icesString,
@@ -1110,11 +1110,11 @@ public class SetSampleData : MonoBehaviour
 
 //        };
 //        var firestore = FirebaseFirestore.DefaultInstance;
-//        firestore.Document(_samplePath).SetAsync(sampleData); //,SetOptions.MergeAll);
-//        firestore.Collection("Samples").Document().SetAsync(sampleData);//you work for random ID generartion
+//        firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
+//        firestore.Collection("Samples").Document().SetAsync(sample);//you work for random ID generartion
 //        Debug.Log("Success");
 
-//        //firestore.Document(_samplePath).SetAsync(sampleData); overrides document
+//        //firestore.Document(_samplePath).SetAsync(sample); overrides document
 //    }
 
 

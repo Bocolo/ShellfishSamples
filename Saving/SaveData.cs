@@ -12,10 +12,10 @@ public class SaveData: MonoBehaviour
      */
     //private static SaveData _instance;
     public static SaveData Instance { get; private set; }
-    private List<SampleData> usersSubmittedSamples = new List<SampleData>();
-    private List<SampleData> usersStoredSamples = new List<SampleData>();
+    private List<Sample> usersSubmittedSamples = new List<Sample>();
+    private List<Sample> usersStoredSamples = new List<Sample>();
 
-  //  private List<SampleData> usersStoredSamples = new List<SampleData>();
+  //  private List<Sample> usersStoredSamples = new List<Sample>();
     private void Awake()
     {
         Debug.Log("Save Data Awake");
@@ -47,19 +47,19 @@ public class SaveData: MonoBehaviour
         }
    
     }
-    public void AddToSubmittedSamples(SampleData sample)
+    public void AddToSubmittedSamples(Sample sample)
     {
         usersSubmittedSamples.Add(sample);
     }
-    public List<SampleData> GetUserSubmittedSamples()
+    public List<Sample> GetUserSubmittedSamples()
     {
         return this.usersSubmittedSamples;
     }
-    public void AddToStoredSamples(SampleData sample)
+    public void AddToStoredSamples(Sample sample)
     {
         usersStoredSamples.Add(sample);
     }
-    public List<SampleData> GetUserStoredSamples()
+    public List<Sample> GetUserStoredSamples()
     {
         return this.usersStoredSamples;
     }
@@ -82,7 +82,7 @@ public class SaveData: MonoBehaviour
 
             object loadedData = new BinaryFormatter().Deserialize(file);
             Debug.Log(loadedData +" obj");
-            List<SampleData> saveData = (List<SampleData>)loadedData;
+            List<Sample> saveData = (List<Sample>)loadedData;
             Debug.Log(saveData +" --->save submitted data");
             for(int i=0; i < saveData.Count; i++)
             {
@@ -119,7 +119,7 @@ public class SaveData: MonoBehaviour
             object loadedData = new BinaryFormatter().Deserialize(file);
 
             Debug.Log(loadedData + " obj");
-            List<SampleData> saveData = (List<SampleData>)loadedData;
+            List<Sample> saveData = (List<Sample>)loadedData;
             Debug.Log(saveData + " --->s avedata");
             for (int i = 0; i < saveData.Count; i++)
             {
@@ -144,35 +144,35 @@ public class SaveData: MonoBehaviour
         }
     }
 
-    public void SaveUserProfile(UserData userProfile)
+    public void SaveUserProfile(User user)
     {
         Debug.Log("user Profile saved");
 
-        string filepath = Application.persistentDataPath + "/userProfileSave.dat";
+        string filepath = Application.persistentDataPath + "/userSave.dat";
         using (FileStream file = File.Create(filepath))
         {
             Debug.Log("user savinge");
-            new BinaryFormatter().Serialize(file, userProfile);
+            new BinaryFormatter().Serialize(file, user);
             Debug.Log("user saved");
 
         }
     }
-    public void SaveUserProfile(UserData userProfile, FirebaseUser firebaseUser)
+    public void SaveUserProfile(User user, FirebaseUser firebaseUser)
     {
         Debug.Log("user Profile FIREBASE saved");
 
-        string filepath = Application.persistentDataPath + "/userProfileSave.dat";
+        string filepath = Application.persistentDataPath + "/userSave.dat";
         using (FileStream file = File.Create(filepath))
         {
             Debug.Log("user savinge");
-            new BinaryFormatter().Serialize(file, userProfile);
+            new BinaryFormatter().Serialize(file, user);
             Debug.Log("user saved");
 
         }
         if (firebaseUser != null)
         {
             var firestore = FirebaseFirestore.DefaultInstance;
-            firestore.Collection("Users").Document(userProfile.Email).SetAsync(userProfile);
+            firestore.Collection("Users").Document(user.Email).SetAsync(user);
             Debug.Log("Successfully added user details to database");
         }
         else
@@ -180,10 +180,10 @@ public class SaveData: MonoBehaviour
             Debug.Log("User not signed in - databsase users not updated");
         }
     }
-    public UserData LoadUserProfile()
+    public User LoadUserProfile()
     {
         Debug.Log("Load user has been called");
-        string filepath = Application.persistentDataPath + "/userProfileSave.dat";
+        string filepath = Application.persistentDataPath + "/userSave.dat";
 
         //string filepath = Application.persistentDataPath + "/save.dat";
 
@@ -193,7 +193,7 @@ public class SaveData: MonoBehaviour
 
             object loadedData = new BinaryFormatter().Deserialize(file);
             Debug.Log(loadedData + " obj");
-            UserData saveData = (UserData)loadedData;
+            User saveData = (User)loadedData;
             Debug.Log(saveData + " --->s ave user data");
 
             return saveData;
@@ -213,17 +213,17 @@ public class UserProfile : MonoBehaviour
     [SerializeField] private TMP_Text _dateJoined;
     [SerializeField] private TMP_InputField _userNameInput;
     [SerializeField] private TMP_InputField _companyInput;
-    private UserData userProfileData;
+    private User user;
     public void LoadProfile()
     {
-        userProfileData = SaveData.Instance.LoadUserProfile();
-        _userName.text = userProfileData.Name;
-        _company.text = userProfileData.Company;
+        user = SaveData.Instance.LoadUserProfile();
+        _userName.text = user.Name;
+        _company.text = user.Company;
     }
 
     public void CreateProfile()
     {
-        UserData user = new UserData
+        User user = new User
         {
             Name = _userNameInput.text,
             Company = _companyInput.text,

@@ -31,7 +31,7 @@ public class Menu : MonoBehaviour
     public void LogOut()
     {
         FirebaseAuth.DefaultInstance.SignOut();
-        SaveData.Instance.SaveUserProfile(new UserData { });
+        SaveData.Instance.SaveUserProfile(new User { });
     }
   
     public void SubmitPage()

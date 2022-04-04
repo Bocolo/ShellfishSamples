@@ -6,7 +6,7 @@ using Firebase.Firestore;
 
 [FirestoreData]//StackOVerflow solution -works:)
 [System.Serializable]//needed?
-public struct SampleData 
+public struct Sample 
 {
 
    [FirestoreProperty]

@@ -20,38 +20,38 @@ public class SampleDAO
         firestore = FirebaseFirestore.DefaultInstance;
     }
 
-    public void AddSample(SampleData sampleData)
+    public void AddSample(Sample sample)
     {
-      //  firestore.Document(_samplePath).SetAsync(sampleData); //,SetOptions.MergeAll);
-        firestore.Collection(_collectionPath).Document().SetAsync(sampleData);//you work for random ID generartion
+      //  firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
+        firestore.Collection(_collectionPath).Document().SetAsync(sample);//you work for random ID generartion
     }
-    public void AddStoredSamples(List<SampleData> storedSamples)
+    public void AddStoredSamples(List<Sample> storedSamples)
     {
 
     }
-    public void AddSampleToUserCollection(FirebaseUser currentUser, SampleData sampleData)
+    public void AddSampleToUserCollection(FirebaseUser currentUser, Sample sample)
     {
-        firestore.Collection("Users").Document(currentUser.Email).Collection("UserSamples").Document().SetAsync(sampleData);
+        firestore.Collection("Users").Document(currentUser.Email).Collection("UserSamples").Document().SetAsync(sample);
     }
-    public async Task<SampleData> GetSample(string _path)
+    public async Task<Sample> GetSample(string _path)
     {
-        SampleData sampleData= new SampleData();
+        Sample sample= new Sample();
         var firestore = FirebaseFirestore.DefaultInstance;
         await  firestore.Document(_path).GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             Assert.IsNull(task.Exception);
-             sampleData = task.Result.ConvertTo<SampleData>();
+             sample = task.Result.ConvertTo<Sample>();
         });
-        return sampleData;
+        return sample;
     }
 
     public void GetAllSamples()
     {
 
     }
-    public async Task<List<SampleData>> GetAllUserSubmittedSamples(FirebaseUser currentuser)
+    public async Task<List<Sample>> GetAllUserSubmittedSamples(FirebaseUser currentuser)
     {
-        List<SampleData> collectionSamples = new List<SampleData>();
+        List<Sample> collectionSamples = new List<Sample>();
         CollectionReference userSampleCollection = firestore.Collection("Users").Document(currentuser.Email).Collection("UserSamples");
        await userSampleCollection.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
@@ -63,7 +63,7 @@ public class SampleDAO
             {
                 try
                 {
-                    SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+                    Sample sample = documentSnapshot.ConvertTo<Sample>();
                     counter++;
                     collectionSamples.Add(sample);
                 }
@@ -78,9 +78,9 @@ public class SampleDAO
         });
         return collectionSamples;
     }
-    public async Task< List<SampleData>> GetSamplesBySearch(string searchField, string searchName, int searchLimit)
+    public async Task< List<Sample>> GetSamplesBySearch(string searchField, string searchName, int searchLimit)
     {
-        List<SampleData> collectionSamples = new List<SampleData>();
+        List<Sample> collectionSamples = new List<Sample>();
         CollectionReference samplesReference = firestore.Collection("Samples");
         Query testQuery= samplesReference;
         if (searchField.Equals("ProductionWeekNo"))
@@ -114,7 +114,7 @@ public class SampleDAO
                 {
                     counter++;
                     Debug.Log("trying doc snapshot - " + counter);
-                    SampleData sample = documentSnapshot.ConvertTo<SampleData>();
+                    Sample sample = documentSnapshot.ConvertTo<Sample>();
                  //   counter++;
                     collectionSamples.Add(sample);
                 }

@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
@@ -34,7 +34,7 @@ public class RealtimeDatabase : MonoBehaviour
     /// 
     /// </summary>
     /// 
-    /*
+    *//*
     public void SaveData()
     {
         Sample sample = new Sample();
@@ -56,7 +56,7 @@ public class RealtimeDatabase : MonoBehaviour
             }
         });
 
-    }*/
+    }*//*
     public void SaveData()
     {
         Sample sample = new Sample();
@@ -138,14 +138,14 @@ public class RealtimeDatabase : MonoBehaviour
 
     }
     //  reference.Child("Sample").Child(sample.species).SetRawJsonValueAsync(json).ContinueWith(task =>{ 
-    //  reference.Child("Sample").Child(nametoRead.text).GetValueAsync().ContinueWith(task =>
+    //  reference.Child("Sample").Child(nametoRead.text).GetValueAsync().ContinueWith(task 
     
-   /**
+   
     this read is for the realtime database, not firestore
    accesses whatever child string is passed
    //if snapshot.child(eg. ices) not a recognised field name, the rest 
    of the if block will not execute.
-    */
+    *//*
     public void ReadData()
     {
            reference.Child("Sample0").GetValueAsync().ContinueWith(task =>
@@ -178,3 +178,4 @@ public class RealtimeDatabase : MonoBehaviour
     }
 
 }
+*/
