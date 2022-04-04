@@ -20,10 +20,11 @@ public class UserDAO
             auth = FirebaseAuth.DefaultInstance;
     }
 
-    public void addUser()
+    public void addUser(UserData userDetails)
     {
-   ///////////
-   ///NEW COLLECTION DATA IN USERS 
+        firestore.Collection("Users").Document(userDetails.Email).SetAsync(userDetails);
+        ///////////
+        ///NEW COLLECTION DATA IN USERS 
     }
     public void UpdateUser(FirebaseUser user)
     {
@@ -61,7 +62,10 @@ public class UserDAO
     {
         ///much better
         DocumentReference docRef = firestore.Collection("Users").Document(user.Email);
-        docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(1));
+      //  docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(1))
+        docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(1)).ContinueWithOnMainThread(task => {
+
+        });
         UserData userData = SaveData.Instance.LoadUserProfile();
         userData.SubmittedSamplesCount++;
         SaveData.Instance.SaveUserProfile(userData);
@@ -72,9 +76,11 @@ public class UserDAO
     public void UpdateUserSampleCount(FirebaseUser user, int numberOfSamples)
     {
 
-
+        //adding the await ---
         DocumentReference docRef = firestore.Collection("Users").Document(user.Email);
-        docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(numberOfSamples));
+        docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(numberOfSamples)).ContinueWithOnMainThread(task => {
+     
+        });
         UserData userData = SaveData.Instance.LoadUserProfile();
         userData.SubmittedSamplesCount += numberOfSamples;
         SaveData.Instance.SaveUserProfile(userData);
