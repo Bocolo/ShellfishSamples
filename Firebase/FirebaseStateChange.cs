@@ -6,7 +6,7 @@ public class FirebaseStateChange : MonoBehaviour
 {
     Firebase.Auth.FirebaseAuth auth;
     Firebase.Auth.FirebaseUser user;
-
+    //check this vs init
     // Handle initialization of the necessary firebase modules:
     void InitializeFirebase()
     {

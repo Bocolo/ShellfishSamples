@@ -57,8 +57,6 @@ public class UserAppProfile : MonoBehaviour
         user = SaveData.Instance.LoadUserProfile();
         user.Name = _userNameInput.text;
         user.Company = _companyInput.text;
-        //FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-        //if (user)
         if(FirebaseAuth.DefaultInstance.CurrentUser!= null){
           SaveData.Instance.SaveUserProfile(user, FirebaseAuth.DefaultInstance.CurrentUser);
 
@@ -67,11 +65,6 @@ public class UserAppProfile : MonoBehaviour
         {
             SaveData.Instance.SaveUserProfile(user);
         }
-        //else
-        //{
-        //    SaveData.Instance.SaveUserProfile(user);
-
-        //}
         Debug.Log(user.Name + "__Updating user____" + user.Company);
     }
     public void SaveProfile()
@@ -80,19 +73,12 @@ public class UserAppProfile : MonoBehaviour
 
         if (System.IO.File.Exists(filepath))
         {
-            ///
-            ///FIC THIS -- to messy simpler solution excists
-            ///
-            ///
             UpdateProfile();
-
         }
         else
         {
             CreateProfile();
-
         }
-        //UpdateProfile();
         _profileText.gameObject.SetActive(true);
         _updateProfileButton.SetActive(true);
 

@@ -6,16 +6,7 @@ using System.IO;
 using Firebase.Firestore;
 public class PopulateDatabase : MonoBehaviour
 {
-    /*
-     -------WHAT IS NEEDED-----
-
-    1. Read dataset
-    2. For each Json sample data creat struct
-    3. population collection with each struct 
-     
-     
-     
-     */
+   
     [SerializeField] private string FileLocation;
     List<Data> temp;
     int count = 0;
@@ -23,28 +14,7 @@ public class PopulateDatabase : MonoBehaviour
     {
         temp = SaveToList();
         Debug.Log(temp[0].Species);
-        //method to write to the databasae all the data
-        //add a debug counter next time, slow to upload them all
-     /*   for (int i = 0; i < temp.Count; i++)
-        {
-            // Debug.Log(count + " COUNT!");
-            var sample = new Sample
-            {
-                Species = temp[i].Species,
-                IcesRectangleNo = temp[i].IcesRectangleNo,
-                //_iceRectangle.options[_iceRectangle.value].text,
-                Company = temp[i].Company,
-                Date = temp[i].Date,
-                Name = temp[i].Name,
-                ProductionWeekNo = temp[i].ProductionWeekNo,
-                SampleLocationName = temp[i].SampleLocationName
-            };
-            var firestore = FirebaseFirestore.DefaultInstance;
-            //   firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
-            firestore.Collection("SamplesFull").Document().SetAsync(sample);//you work for random ID generartion
-        }
-            //firestore.Document(_samplePath).SetAsync(sample); overrides document
-        */
+ 
     }
 
     List<Data> SaveToList()
@@ -58,13 +28,13 @@ public class PopulateDatabase : MonoBehaviour
     class Data
     {
 
-        public string Species;//{ get; set; }
-        public int ProductionWeekNo;//{ get; set; }
-        public string IcesRectangleNo;//{ get; set; }
-        public string Company;//{ get; set; }
-        public string Date;// { get; set; }
-        public string Name;//{ get; set; }
-        public string SampleLocationName;// { get; set; }
+        public string Species;
+        public int ProductionWeekNo;
+        public string IcesRectangleNo;
+        public string Company;
+        public string Date;
+        public string Name;
+        public string SampleLocationName;
         
         public static Data FromFile(string line)
         {
@@ -73,7 +43,7 @@ public class PopulateDatabase : MonoBehaviour
             data.Species = values[1];
             data.SampleLocationName =values[2];
             data.IcesRectangleNo = values[3];
-            data.ProductionWeekNo = int.Parse(values[4]);//Convert.ToInt;
+            data.ProductionWeekNo = int.Parse(values[4]);
             data.Company = values[5];
             data.Name = values[6];
             data.Date = values[7];

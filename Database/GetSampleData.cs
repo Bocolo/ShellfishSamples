@@ -1,15 +1,10 @@
-using System.Collections;
+using Firebase.Auth;
+using Firebase.Firestore;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase.Firestore;
-using Firebase.Extensions;
-using UnityEngine.Assertions;
-using System;
-using TMPro;
-using Firebase.Firestore;
-using Firebase.Auth;
-using Firebase.Extensions;
 public class GetSampleData : MonoBehaviour
 {
     //https://www.youtube.com/watch?v=b5h1bVGhuRk&t=276s
@@ -97,21 +92,12 @@ public class GetSampleData : MonoBehaviour
     }
     private void AddTextAndPrefab(Sample sample)
     {
-        //maybe add isBluee bool
         GameObject panel;
-        panel = Instantiate(_bluePanelPrefab);
-
         panel = Instantiate(_redPanelPrefab);
         panel.transform.SetParent(_contentParent.transform);
-        //      blue.transform.parent = _contentParent.transform;
         GameObject panelChild = panel.transform.GetChild(0).gameObject;
-        //   Text panelText = panelChild.GetComponent<Text>();
-
         Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
-
-        //_contenParent.AddComponent
         panel.transform.localScale = new Vector3(1, 1, 1);
-
         panelText.text = SampleDataToString(sample, false);
     }
     private void AddTextAndPrefab(List<Sample> sampleList)

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class OrientationLock : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         Screen.orientation = ScreenOrientation.Portrait;
@@ -13,9 +12,7 @@ public class OrientationLock : MonoBehaviour
     {
         if (Screen.orientation == ScreenOrientation.Landscape)
         {
-            Debug.Log("---------- land");
             Screen.orientation = ScreenOrientation.Portrait;
-            Debug.Log("---------- land");
         }
     }
 }

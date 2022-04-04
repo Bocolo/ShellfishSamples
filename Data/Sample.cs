@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Firebase.Firestore;
-//using System
 
-[FirestoreData]//StackOVerflow solution -works:)
-[System.Serializable]//needed?
+[FirestoreData]
+[System.Serializable]
 public struct Sample 
 {
 

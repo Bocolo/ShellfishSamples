@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using Firebase.Firestore;
-using Firebase.Extensions;
-using UnityEngine.Assertions;
-using System;
-using TMPro;
-using Firebase.Firestore;
 using Firebase.Auth;
+using Firebase.Extensions;
+using Firebase.Firestore;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Assertions;
 public class SampleDAO
 {
     private FirebaseFirestore firestore;
@@ -23,7 +19,7 @@ public class SampleDAO
     public void AddSample(Sample sample)
     {
       //  firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
-        firestore.Collection(_collectionPath).Document().SetAsync(sample);//you work for random ID generartion
+        firestore.Collection(_collectionPath).Document().SetAsync(sample);
     }
     public void AddStoredSamples(List<Sample> storedSamples)
     {
@@ -35,7 +31,7 @@ public class SampleDAO
     }
     public async Task<Sample> GetSample(string _path)
     {
-        Sample sample= new Sample();
+        Sample sample= new();
         var firestore = FirebaseFirestore.DefaultInstance;
         await  firestore.Document(_path).GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
@@ -57,24 +53,18 @@ public class SampleDAO
         {
             Assert.IsNull(task.Exception);
             QuerySnapshot collectionSnapshot = task.Result;
-            int counter = 0;
-            int counter2 = 0;
             foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
             {
                 try
                 {
                     Sample sample = documentSnapshot.ConvertTo<Sample>();
-                    counter++;
                     collectionSamples.Add(sample);
                 }
                 catch (Exception e)
                 {
-                    Debug.Log(e + " CAUGHT ttt");
-                    counter2++;
+                    Debug.Log(e + " CAUGHT");
                 }
             }
-          //  AddTextAndPrefab(collectionSamples);
-            Debug.Log("Try : " + counter + ".  Caught ttt: " + counter2);
         });
         return collectionSamples;
     }
@@ -90,14 +80,10 @@ public class SampleDAO
         }
         else if ((!searchName.Equals("")) && (!searchField.Equals("")))
         {
-            testQuery = samplesReference.WhereEqualTo(searchField, searchName);//.Limit(0);
+            testQuery = samplesReference.WhereEqualTo(searchField, searchName);
 
         }
-/*        else
-        {
-            testQuery = samplesReference;
 
-        }*/
         if (searchLimit > 0)
         {
             testQuery = testQuery.Limit(searchLimit);
@@ -106,24 +92,16 @@ public class SampleDAO
         {
             Assert.IsNull(task.Exception);
             QuerySnapshot collectionSnapshot = task.Result;
-            int counter = 0;
-            int counter2 = 0;
             foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
             {
                 try
                 {
-                    counter++;
-                    Debug.Log("trying doc snapshot - " + counter);
                     Sample sample = documentSnapshot.ConvertTo<Sample>();
-                 //   counter++;
                     collectionSamples.Add(sample);
                 }
                 catch (Exception e)
                 {
                     Debug.Log(e.StackTrace);
-                    Debug.Log(e + " CAUGHT");
-                    counter2++;
-                    Debug.Log("---------------caught doc snapshot - " + counter2);
                 }
             }
         });

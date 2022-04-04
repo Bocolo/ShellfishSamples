@@ -17,8 +17,6 @@ public class FirebaseInit : MonoBehaviour
     private FirebaseApp app;
     private Firebase.Auth.FirebaseAuth auth;
     private Firebase.Auth.FirebaseUser user;
-   //[SerializeField] private Menu menu;
-
 
     // Handle initialization of the necessary firebase modules:
     void InitializeFirebase()
