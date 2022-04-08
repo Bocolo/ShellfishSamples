@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase.Auth;
-using UnityEngine.SceneManagement;
 
 public class LogInOutButtonManager : MonoBehaviour
 {

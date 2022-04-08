@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using Firebase.Auth;
+using TMPro;
+using UnityEngine;
 public class UserAppProfile : MonoBehaviour
 {
     [SerializeField] private TMP_Text _profileText;

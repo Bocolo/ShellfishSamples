@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System.IO;
-using Firebase.Firestore;
+using System.Linq;
+using UnityEngine;
 public class PopulateDatabase : MonoBehaviour
 {
    
@@ -17,7 +15,7 @@ public class PopulateDatabase : MonoBehaviour
  
     }
 
-    List<Data> SaveToList()
+    private List<Data> SaveToList()
     {
         List<Data> values = File.ReadAllLines("C:\\Users\\brona\\OneDrive\\Documents\\Bronagh_programming\\College_work\\IndustrialProject\\SQL\\FD_SQL_Test_c.csv")
             .Skip(1)

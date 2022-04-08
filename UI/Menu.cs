@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Firebase.Auth;
-using UnityEngine.UI;
-using TMPro;
 public class Menu : MonoBehaviour
 {
     [SerializeField] private GameObject popUpObject;

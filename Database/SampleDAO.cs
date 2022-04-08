@@ -31,7 +31,7 @@ public class SampleDAO
     }
     public async Task<Sample> GetSample(string _path)
     {
-        Sample sample= new();
+        Sample sample= new Sample();
         var firestore = FirebaseFirestore.DefaultInstance;
         await  firestore.Document(_path).GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
