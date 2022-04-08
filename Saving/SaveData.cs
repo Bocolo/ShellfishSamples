@@ -5,6 +5,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using Firebase.Auth;
 using Firebase.Firestore;
+using System;
+
 public class SaveData: MonoBehaviour
 {
     /*
@@ -70,12 +72,16 @@ public class SaveData: MonoBehaviour
     {
         usersStoredSamples.Clear();
     }
+    public void ClearSubmittedSamples()
+    {
+        usersSubmittedSamples.Clear();
+    }
     public void LoadSubmittedSamples()
     {
         Debug.Log("Load has been called");
         string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
         //string filepath = Application.persistentDataPath + "/save.dat";
-
+        try { 
         using (FileStream file = File.Open(filepath, FileMode.Open))
         {
             Debug.Log("Loading");
@@ -92,7 +98,14 @@ public class SaveData: MonoBehaviour
             usersSubmittedSamples = saveData;
             Debug.Log("Saved data worked " + usersSubmittedSamples.Count); 
         }
+        }catch(Exception e)
+        {
+
+        }
     }
+    /// <summary>
+    /// Consider a delete stored / submitted samples from deivce
+    /// </summary>
     public void SaveSubmittedSamples()
     {
         Debug.Log("Save has been called");
@@ -111,7 +124,7 @@ public class SaveData: MonoBehaviour
         Debug.Log("Load has been called");
         string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
         //string filepath = Application.persistentDataPath + "/save.dat";
-
+        try { 
         using (FileStream file = File.Open(filepath, FileMode.Open))
         {
             Debug.Log("Loading");
@@ -128,6 +141,10 @@ public class SaveData: MonoBehaviour
             }
             usersStoredSamples = saveData;
             Debug.Log("Saved data worked " + usersStoredSamples.Count);
+        }
+    }catch(Exception e)
+        {
+
         }
     }
     public void SaveStoredSamples()

@@ -63,8 +63,15 @@ namespace Submit.UI
         {
            
             SetCanvas(isSmallCanvas);
+            //try catch for testing
+            try { 
             SetNameAndCompanyFromProfile();
-        
+            }catch(Exception e)
+            {
+
+            }
+
+
         }
         public void SetNameAndCompanyFromProfile()
         {
