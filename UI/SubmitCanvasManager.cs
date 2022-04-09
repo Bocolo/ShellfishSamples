@@ -10,7 +10,7 @@ namespace Submit.UI
     {
         [SerializeField] private GameObject SmallCanvas;
         [SerializeField] private GameObject LargeCanvas;
-
+//i can set these private again i think
         public TMP_InputField _name;
         public TMP_InputField _company;
         public TMP_InputField _comments;
@@ -85,8 +85,8 @@ namespace Submit.UI
             {
            
                 isSmallCanvas = false;
-                SetCanvas(isSmallCanvas);
-                SetNameAndCompanyFromProfile();
+            /*    SetCanvas(isSmallCanvas);
+                SetNameAndCompanyFromProfile();*/
                ///
                /// I WANT TO BE ABLE TO STRANSFER INPUT ACROSS LARGE AND SMALL CANVASES- DO SO HERE
                ///
@@ -95,10 +95,12 @@ namespace Submit.UI
             {
             
                 isSmallCanvas = true;
-                SetCanvas(isSmallCanvas);
-                SetNameAndCompanyFromProfile();
+          /*      SetCanvas(isSmallCanvas);
+                SetNameAndCompanyFromProfile();*/
 
             }
+            SetCanvas(isSmallCanvas);
+            SetNameAndCompanyFromProfile();
         }
         private void SetCanvas(bool isSmall)
         {
@@ -163,6 +165,12 @@ namespace Submit.UI
             SetNameAndCompanyFromProfile();
 
         }
+#if UNITY_INCLUDE_TESTS
+        public void SetSmallCanvasTest()
+        {
+
+        }
+#endif
     }
-  
+
 }

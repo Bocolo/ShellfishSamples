@@ -36,52 +36,9 @@ public class UserAppProfile : MonoBehaviour
         _profileText.text = profileText;
         Debug.Log(user.Name + "___LOADED___" + user.Company);
     }
-#if UNITY_INCLUDE_TESTS
-    public void Awake()
-    {
-        SetInputTextFields();
-        Debug.Log("Mid wake");
-        SetTexts();
-    }
-    public void SetTexts()
-    {
-        _userNameInput.text = "Test Name";
-        _companyInput.text = "Test Company";
-    }
-    public void SetInputTextFields()
-    {
-        GameObject go1 = new GameObject();
-        GameObject go2 = new GameObject();
-        GameObject go3 = new GameObject();
-       // _profileText = go3.AddComponent<TMP_Text>();
-        _profileText= go3.AddComponent<TextMeshPro>();
-        _userNameInput = go1.AddComponent<TMP_InputField>();
-        _companyInput = go2.AddComponent<TMP_InputField>();
-        _updateProfileButton = new GameObject();
-        _saveProfileButton = new GameObject();
-    }
-    public GameObject GetProfileTextGO()
-    {
-        return _profileText.gameObject;
-    }
-    public GameObject GetUserNameInputGO()
-    {
-        return _userNameInput.gameObject;
-    }
-    public GameObject GetUserCompanyInputGO()
-    {
-        return _userNameInput.gameObject;
-    }
-    public GameObject GetSaveProfileButtonGO()
-    {
-        return _saveProfileButton;
-    }
-    public GameObject GetUpdateProfileButtonGO()
-    {
-        return _updateProfileButton;
-    }
-#endif
+
     //is this used?
+    //these should be private used in save profile
     public void CreateProfile()
     {
         User user = new User
@@ -143,4 +100,52 @@ public class UserAppProfile : MonoBehaviour
         _companyInput.gameObject.SetActive(true);
         _saveProfileButton.SetActive(true);
     }
+#if UNITY_INCLUDE_TESTS
+    //need to solve this without awake-- possibly use the internal testing for unity
+    // review in morning
+    //using awake in unity testing is still calling awake in actiual play mode
+ /*   public void Awake()
+    {
+        SetInputTextFields();
+        Debug.Log("Mid wake");
+        SetTexts();
+    }*/
+    public void SetTexts()
+    {
+        _userNameInput.text = "Test Name";
+        _companyInput.text = "Test Company";
+    }
+    public void SetInputTextFields()
+    {
+        GameObject go1 = new GameObject();
+        GameObject go2 = new GameObject();
+        GameObject go3 = new GameObject();
+        // _profileText = go3.AddComponent<TMP_Text>();
+        _profileText = go3.AddComponent<TextMeshPro>();
+        _userNameInput = go1.AddComponent<TMP_InputField>();
+        _companyInput = go2.AddComponent<TMP_InputField>();
+        _updateProfileButton = new GameObject();
+        _saveProfileButton = new GameObject();
+    }
+    public GameObject GetProfileTextGO()
+    {
+        return _profileText.gameObject;
+    }
+    public GameObject GetUserNameInputGO()
+    {
+        return _userNameInput.gameObject;
+    }
+    public GameObject GetUserCompanyInputGO()
+    {
+        return _userNameInput.gameObject;
+    }
+    public GameObject GetSaveProfileButtonGO()
+    {
+        return _saveProfileButton;
+    }
+    public GameObject GetUpdateProfileButtonGO()
+    {
+        return _updateProfileButton;
+    }
+#endif
 }
