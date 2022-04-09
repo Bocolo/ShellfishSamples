@@ -68,11 +68,11 @@ public class SaveData: MonoBehaviour
 
 
 
-    public void ClearStoredSamples()
+    public void ClearStoredSamplesList()
     {
         usersStoredSamples.Clear();
     }
-    public void ClearSubmittedSamples()
+    public void ClearSubmittedSamplesList()
     {
         usersSubmittedSamples.Clear();
     }
@@ -89,14 +89,14 @@ public class SaveData: MonoBehaviour
             object loadedData = new BinaryFormatter().Deserialize(file);
             Debug.Log(loadedData +" obj");
             List<Sample> saveData = (List<Sample>)loadedData;
-            Debug.Log(saveData +" --->save submitted data");
+            Debug.Log(saveData + " --->save submitted data.--LoadSubmittedSamples-- .Count" + saveData.Count);
             for(int i=0; i < saveData.Count; i++)
             {
                 Debug.Log(saveData[i].Species + " ___ " +i );
                // saveData[i].Species = "I changed you";
             }
             usersSubmittedSamples = saveData;
-            Debug.Log("Saved data worked " + usersSubmittedSamples.Count); 
+            Debug.Log(".--LoadSubmittedSamples-- .Saved data worked " + usersSubmittedSamples.Count+"\n\n"); 
         }
         }catch(Exception e)
         {
@@ -133,7 +133,7 @@ public class SaveData: MonoBehaviour
 
             Debug.Log(loadedData + " obj");
             List<Sample> saveData = (List<Sample>)loadedData;
-            Debug.Log(saveData + " --->s avedata");
+            Debug.Log(saveData + " --->savedata is loaded.  count is "+saveData.Count);
             for (int i = 0; i < saveData.Count; i++)
             {
                 Debug.Log(saveData[i].Species + " ___ " + i);
@@ -206,14 +206,14 @@ public class SaveData: MonoBehaviour
 
         using (FileStream file = File.Open(filepath, FileMode.Open))
         {
-            Debug.Log("Loading");
+            Debug.Log("Loading User");
 
             object loadedData = new BinaryFormatter().Deserialize(file);
-            Debug.Log(loadedData + " obj");
-            User saveData = (User)loadedData;
-            Debug.Log(saveData + " --->s ave user data");
+            Debug.Log(loadedData + " User");
+            User userData = (User)loadedData;
+            Debug.Log(userData + " ---> user data");
 
-            return saveData;
+            return userData;
         }
     }
 }

@@ -74,7 +74,6 @@ public class GetSampleData : MonoBehaviour
     public async void RetrieveAllUserSubmittedSamples(GameObject popUp)
     {
         sampleDAO = new SampleDAO();
-        var firestore = FirebaseFirestore.DefaultInstance;
         FirebaseAuth auth = FirebaseAuth.DefaultInstance;
         collectionSamples.Clear();// dont think i gptta do this anymore
         if (auth.CurrentUser != null)
@@ -95,7 +94,7 @@ public class GetSampleData : MonoBehaviour
         GameObject panel;
         panel = Instantiate(_redPanelPrefab);
         panel.transform.SetParent(_contentParent.transform);
-        GameObject panelChild = panel.transform.GetChild(0).gameObject;
+       // GameObject panelChild = panel.transform.GetChild(0).gameObject;
         Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
         panel.transform.localScale = new Vector3(1, 1, 1);
         panelText.text = SampleDataToString(sample, false);
@@ -120,7 +119,7 @@ public class GetSampleData : MonoBehaviour
                 panel = Instantiate(_redPanelPrefab);
             }
             panel.transform.SetParent(_contentParent.transform);
-            GameObject panelChild = panel.transform.GetChild(0).gameObject;
+        //    GameObject panelChild = panel.transform.GetChild(0).gameObject;
             Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
             panel.transform.localScale = new Vector3(1, 1, 1);
             panelText.text = SampleDataToString(sampleList[i], false);

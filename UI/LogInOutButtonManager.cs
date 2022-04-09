@@ -36,4 +36,40 @@ public class LogInOutButtonManager : MonoBehaviour
 
         }
     }
+    #if UNITY_INCLUDE_TESTS
+    public bool GetLoggedIn()
+    {
+        return this.isLoggedIn;
+    }
+    public void SetButtons()
+    {
+        GameObject go1 = new GameObject();
+        GameObject go2 = new GameObject();
+        SetLoginButton(go1);
+        SetSignoutButton(go2);
+
+    }
+    //bacse adding to this, doesnt work --- mroe than one btn component
+    public void SetLoginButton(GameObject go)
+    {
+        logInButton= go.AddComponent<Button>();
+    }
+    public void SetSignoutButton(GameObject go)
+    {
+        signoutButton = go.AddComponent<Button>();
+    }
+    public Button GetLoginButton()
+    {
+        return this.logInButton;
+    }
+    public Button GetSignoutButton()
+    {
+        return this.signoutButton;
+    }
+    public void TestButtonInteractable()
+    {
+        //prob not needed
+        SetLogInOutButtonInteractable();
+    }
+#endif
 }

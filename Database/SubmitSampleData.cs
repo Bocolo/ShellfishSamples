@@ -72,7 +72,7 @@ public class SubmitSampleData : MonoBehaviour
                 }
             }
             userDAO.UpdateUserSampleCount(user, counter);
-            SaveData.Instance.ClearStoredSamples();
+            SaveData.Instance.ClearStoredSamplesList();
             SaveData.Instance.SaveStoredSamples();
             SaveData.Instance.SaveSubmittedSamples();
         }
@@ -93,7 +93,7 @@ public class SubmitSampleData : MonoBehaviour
 
         }
         SaveData.Instance.SaveStoredSamples();
-
+        // tidy this up??
     }
 
     private Sample NewSample()
@@ -218,5 +218,28 @@ public class SubmitSampleData : MonoBehaviour
 
 
     }
+    private bool IsDateValid(String date)
+    {
+   
+        try
+        {
+            var datetime = DateTime.Parse(date);
+            DateTime local = DateTime.Now;
+            int result = DateTime.Compare(datetime, local);
+            if (result > 0)
+            {
+                return false;
+            }
 
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            Debug.Log("Date Check failed");
+            return false;
+        }
+
+
+    }
 }

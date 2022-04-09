@@ -123,8 +123,10 @@ public class FirebaseAuthentication : MonoBehaviour
     private async Task SetUpAuthentication(string email, string password, string name, string company)
     {
         auth = FirebaseAuth.DefaultInstance;//?
+        Debug.Log("RAWR"+auth);
         await auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
+            Debug.Log("RAWR");
             if (task.IsCanceled)
             {
                 isSuccessfulSignUp = false;
@@ -147,5 +149,11 @@ public class FirebaseAuthentication : MonoBehaviour
             return;
         });
     }
-
+#if UNITY_INCLUDE_TESTS
+    public async Task AuthenticationTest(string email, string password, string name, string company)
+    {
+         await SetUpAuthentication( email,  password,  name,  company);
+       
+    }
+#endif
 }
