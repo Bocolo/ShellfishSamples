@@ -81,6 +81,19 @@ public class UserAppProfile : MonoBehaviour
         {
             CreateProfile();
         }
+        /*      _profileText.gameObject.SetActive(true);
+              _updateProfileButton.SetActive(true);
+              //remove addintioal save prod button here?
+              _saveProfileButton.SetActive(false);
+              _userNameInput.gameObject.SetActive(false);
+              _companyInput.gameObject.SetActive(false);
+              _saveProfileButton.SetActive(false);
+      */
+        GoToViewProfile();
+        LoadProfile();
+    }
+    public void GoToViewProfile()
+    {
         _profileText.gameObject.SetActive(true);
         _updateProfileButton.SetActive(true);
         //remove addintioal save prod button here?
@@ -89,7 +102,6 @@ public class UserAppProfile : MonoBehaviour
         _companyInput.gameObject.SetActive(false);
         _saveProfileButton.SetActive(false);
 
-        LoadProfile();
     }
     public void GoToUpdateProfile()
     {
@@ -118,7 +130,9 @@ public class UserAppProfile : MonoBehaviour
     }
     public void SetInputTextFields()
     {
+        Debug.Log("GP1TG");
         GameObject go1 = new GameObject();
+        Debug.Log("GP2TG");
         GameObject go2 = new GameObject();
         GameObject go3 = new GameObject();
         // _profileText = go3.AddComponent<TMP_Text>();
@@ -130,6 +144,7 @@ public class UserAppProfile : MonoBehaviour
     }
     public GameObject GetProfileTextGO()
     {
+        Debug.Log("GP3TG");
         return _profileText.gameObject;
     }
     public GameObject GetUserNameInputGO()

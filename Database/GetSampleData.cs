@@ -9,11 +9,11 @@ using UnityEngine.UI;
 public class GetSampleData : MonoBehaviour
 {
     //https://www.youtube.com/watch?v=b5h1bVGhuRk&t=276s
-    [SerializeField] private string _samplePath = "sample_test/one_sample";
+/*    [SerializeField] private string _samplePath = "sample_test/one_sample";
     [SerializeField] private GameObject _bluePanelPrefab;
     [SerializeField] private GameObject _redPanelPrefab;
     [SerializeField] private Transform _contentParent;
-
+*/
     [SerializeField] private TMP_Dropdown searchDropdown;
     [SerializeField] private TMP_InputField searchInput;
     [SerializeField] private TMP_InputField searchLimit;
@@ -23,58 +23,56 @@ public class GetSampleData : MonoBehaviour
     private List<Sample> collectionSamples = new List<Sample>();
     private SampleDAO sampleDAO;
 
-#if UNITY_INCLUDE_TESTS
+    private SampleUI sampleUI;
+    private void Awake()
+    {
+        sampleUI = GetComponent<SampleUI>();
+    }
 
-    public void SetUpVariablesTest()
+ 
+    public void ShowStoredSamples()
     {
-        GameObject go1 = new GameObject();
-        GameObject go2 = new GameObject();
-        searchDropdown = go1.AddComponent<TMP_Dropdown>();
-        searchInput = go1.AddComponent<TMP_InputField>();
-        searchLimit = go1.AddComponent<TMP_InputField>();
-        _contentParent = go2.GetComponent<Transform>();
-        GameObject blueChild = new GameObject();
-        blueChild.AddComponent<Text>();
-        GameObject redChild = new GameObject();
-        redChild.AddComponent<Text>();
-        _bluePanelPrefab = new GameObject();
-    
+        SaveData.Instance.LoadStoredSamples();//MAYBE???
+        sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserStoredSamples());
+    }
+    public void ShowAllDeviceSubmittedSamples()
+    {
+        SaveData.Instance.LoadSubmittedSamples();//MAYBE???
+        sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserSubmittedSamples());
+    }
+    public async void RetrieveAllUserSubmittedSamples(GameObject popUp)
+    {
+        sampleDAO = new SampleDAO();
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        collectionSamples.Clear();// dont think i gptta do this anymore
+        if (auth.CurrentUser != null)
+        {
+            collectionSamples = await sampleDAO.GetAllUserSubmittedSamples(auth.CurrentUser);
+            sampleUI.AddTextAndPrefab(collectionSamples);
 
-        _redPanelPrefab = new GameObject();
-        blueChild.transform.parent = _bluePanelPrefab.transform;
-        redChild.transform.parent = _redPanelPrefab.transform;
+        }
+        else
+        {
+            popUp.SetActive(true);
+        }
+
+
     }
-    public void SetSearchFieldSelection(String field) {
-        searchFieldSelection = field;
-    }
-    public void SetSearchNameSelection(String name) {
-        searchNameSelection = name;
-        searchInput.text = name;
-    }
-    public void SetSearchLimitSelection(int num)
+
+    public async void RetrieveCollectionBySearch()
     {
-        searchLimitSelection = num;
+        SetSearchFieldValue(searchDropdown.value);
+        sampleDAO = new SampleDAO();
+        searchNameSelection = searchInput.text;
+        if (!searchLimit.text.Equals(""))
+        {
+            searchLimitSelection = int.Parse(searchLimit.text);
+        }
+        collectionSamples = await sampleDAO.GetSamplesBySearch(searchFieldSelection, searchNameSelection, searchLimitSelection);
+        sampleUI.AddTextAndPrefab(collectionSamples);
+
     }
-   
-    public void SetSeachFieldTest(int dropdownValue)
-    {
-     
-        Debug.Log("DDV: " + dropdownValue);
-        SetSearchFieldValue(dropdownValue);
-    }
-    public string GetSearchFieldSelection()
-    {
-        return this.searchFieldSelection;
-    }
-    public Transform GetContentParent()
-    {
-        return this._contentParent;
-    }
-    public void TextAndPrefabTest(List<Sample> samples)
-    {
-        AddTextAndPrefab(samples);
-    }
-#endif
+
     private void SetSearchFieldValue(int dropdownValue)
     {
         /*   Debug.Log("Search Drop value : " + searchDropdown.value);
@@ -102,123 +100,191 @@ public class GetSampleData : MonoBehaviour
                 break;
         }
     }
-    public async void RetrieveCollectionBySearch()
-    {
-        SetSearchFieldValue(searchDropdown.value);
-        sampleDAO = new SampleDAO();
-        searchNameSelection = searchInput.text;
-        if (!searchLimit.text.Equals(""))
+
+
+
+
+
+
+    /*
+        private void AddTextAndPrefab(Sample sample)
         {
-            searchLimitSelection = int.Parse(searchLimit.text);
-        }
-        collectionSamples = await sampleDAO.GetSamplesBySearch(searchFieldSelection, searchNameSelection, searchLimitSelection);
-        AddTextAndPrefab(collectionSamples);
-
-    }
-    public void ShowStoredSamples()
-    {
-        SaveData.Instance.LoadStoredSamples();//MAYBE???
-        AddTextAndPrefab(SaveData.Instance.GetUserStoredSamples());
-    }
-    public void ShowAllDeviceSubmittedSamples()
-    {
-        SaveData.Instance.LoadSubmittedSamples();//MAYBE???
-        AddTextAndPrefab(SaveData.Instance.GetUserSubmittedSamples());
-    }
-    public async void RetrieveAllUserSubmittedSamples(GameObject popUp)
-    {
-        sampleDAO = new SampleDAO();
-        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-        collectionSamples.Clear();// dont think i gptta do this anymore
-        if (auth.CurrentUser != null)
-        {
-            collectionSamples = await sampleDAO.GetAllUserSubmittedSamples(auth.CurrentUser);
-            AddTextAndPrefab(collectionSamples);
-
-        }
-        else
-        {
-            popUp.SetActive(true);
-        }
-
-
-    }
-    private void AddTextAndPrefab(Sample sample)
-    {
-        GameObject panel;
-        panel = Instantiate(_redPanelPrefab);
-        panel.transform.SetParent(_contentParent.transform);
-       // GameObject panelChild = panel.transform.GetChild(0).gameObject;
-        Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
-        panel.transform.localScale = new Vector3(1, 1, 1);
-        panelText.text = SampleDataToString(sample, false);
-    }
-    private void AddTextAndPrefab(List<Sample> sampleList)
-    {
-            foreach (Transform child in _contentParent)
-             {
-                 Destroy(child.gameObject);
-             }
-
-        for (int i = 0; i < sampleList.Count; i++)
-        {
-            Debug.Log("in for");
             GameObject panel;
-            if (i % 2 == 0)
-            {
-                panel = Instantiate(_bluePanelPrefab);
-
-            }
-            else
-            {
-                panel = Instantiate(_redPanelPrefab);
-            }
+            panel = Instantiate(_redPanelPrefab);
             panel.transform.SetParent(_contentParent.transform);
-        //    GameObject panelChild = panel.transform.GetChild(0).gameObject;
+           // GameObject panelChild = panel.transform.GetChild(0).gameObject;
             Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
             panel.transform.localScale = new Vector3(1, 1, 1);
-            panelText.text = SampleDataToString(sampleList[i], false);
+            panelText.text = SampleDataToString(sample, false);
         }
-    }
-    private String SampleDataToString(Sample sample, bool isRestricted)
+        private void AddTextAndPrefab(List<Sample> sampleList)
+        {
+                foreach (Transform child in _contentParent)
+                 {
+                     Destroy(child.gameObject);
+                 }
+
+            for (int i = 0; i < sampleList.Count; i++)
+            {
+                Debug.Log("in for");
+                GameObject panel;
+                if (i % 2 == 0)
+                {
+                    panel = Instantiate(_bluePanelPrefab);
+
+                }
+                else
+                {
+                    panel = Instantiate(_redPanelPrefab);
+                }
+                panel.transform.SetParent(_contentParent.transform);
+            //    GameObject panelChild = panel.transform.GetChild(0).gameObject;
+                Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
+                panel.transform.localScale = new Vector3(1, 1, 1);
+                panelText.text = SampleDataToString(sampleList[i], false);
+            }
+        }
+        private String SampleDataToString(Sample sample, bool isRestricted)
+        {
+            if (isRestricted)
+            {
+                if (sample.SampleLocationName == null)
+                {
+                    Debug.Log("Location is null restricted");
+
+                    return ("\nSpecies: " + sample.Species
+                   + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
+                   + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
+                }
+                else
+                {
+                    Debug.Log("ICES rectangle is null restriced");
+                    return ("\nSpecies: " + sample.Species
+                    + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
+                }
+            }
+            else
+            {
+                if (sample.SampleLocationName == null)
+                {
+                    Debug.Log("Location is null");
+
+                    return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
+                   + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
+                   + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date + "\nComment: " + sample.Comment);
+                }
+                else
+                {
+                    Debug.Log("ICES rectangle is null");
+                    return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
+                    + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date
+                    + "\nComment: " + sample.Comment);
+                }
+            }
+        }
+    */
+
+#if UNITY_INCLUDE_TESTS
+    public void SetUpVariablesTest()
     {
-        if (isRestricted)
-        {
-            if (sample.SampleLocationName == null)
-            {
-                Debug.Log("Location is null restricted");
+        Debug.Log(1);
 
-                return ("\nSpecies: " + sample.Species
-               + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
-               + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
-            }
-            else
-            {
-                Debug.Log("ICES rectangle is null restriced");
-                return ("\nSpecies: " + sample.Species
-                + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
-            }
-        }
-        else
-        {
-            if (sample.SampleLocationName == null)
-            {
-                Debug.Log("Location is null");
+        GameObject go1 = new GameObject();
+        GameObject go2 = new GameObject();
+        GameObject go3 = new GameObject();
+        GameObject go4 = new GameObject();
+        Debug.Log(12);
 
-                return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
-               + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
-               + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date + "\nComment: " + sample.Comment);
-            }
-            else
-            {
-                Debug.Log("ICES rectangle is null");
-                return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
-                + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date
-                + "\nComment: " + sample.Comment);
-            }
-        }
+        searchDropdown = go1.AddComponent<TMP_Dropdown>();
+        Debug.Log(13);
+
+        searchInput = go3.AddComponent<TMP_InputField>();
+        Debug.Log(123);
+
+        searchLimit = go4.AddComponent<TMP_InputField>();
+        Debug.Log(14);
+
+        sampleUI = this.gameObject.AddComponent<SampleUI>();
+       /* _contentParent = go2.GetComponent<Transform>();
+        GameObject blueChild = new GameObject();
+        blueChild.AddComponent<Text>();
+        Debug.Log(15);
+
+        GameObject redChild = new GameObject();
+        redChild.AddComponent<Text>();
+        _bluePanelPrefab = new GameObject();
+        Debug.Log(16);
+
+        _redPanelPrefab = new GameObject();
+        blueChild.transform.SetParent(_bluePanelPrefab.transform);
+        redChild.transform.SetParent(_redPanelPrefab.transform);
+        Debug.Log(17);*/
+
+    }
+    /*public void SetUpVariablesTest2()
+    {
+        Debug.Log(1);
+
+        GameObject go1 = new GameObject();
+        GameObject go2 = new GameObject();
+        Debug.Log(12);
+
+        searchDropdown = go1.AddComponent<TMP_Dropdown>();
+        Debug.Log(13);
+
+        searchInput = go1.AddComponent<TMP_InputField>();
+        searchLimit = go1.AddComponent<TMP_InputField>();
+        Debug.Log(14);
+
+        _contentParent = go2.GetComponent<Transform>();
+        GameObject blueChild = new GameObject();
+        blueChild.AddComponent<Text>();
+        Debug.Log(15);
+
+        GameObject redChild = new GameObject();
+        redChild.AddComponent<Text>();
+        _bluePanelPrefab = new GameObject();
+        Debug.Log(16);
+
+        _redPanelPrefab = new GameObject();
+        blueChild.transform.parent = _bluePanelPrefab.transform;
+        redChild.transform.parent = _redPanelPrefab.transform;
+        Debug.Log(17);
+
+    }*/
+    public void SetSearchFieldSelection(String field)
+    {
+        searchFieldSelection = field;
+    }
+    public void SetSearchNameSelection(String name)
+    {
+        searchNameSelection = name;
+        searchInput.text = name;
+    }
+    public void SetSearchLimitSelection(int num)
+    {
+        searchLimitSelection = num;
     }
 
+    public void SetSeachFieldTest(int dropdownValue)
+    {
+
+        Debug.Log("DDV: " + dropdownValue);
+        SetSearchFieldValue(dropdownValue);
+    }
+    public string GetSearchFieldSelection()
+    {
+        return this.searchFieldSelection;
+    }
+/*    public Transform GetContentParent()
+    {
+        return this._contentParent;
+    }
+    public void TextAndPrefabTest(List<Sample> samples)
+    {
+        AddTextAndPrefab(samples);
+    }*/
+#endif
 
 }
 /// <summary>
