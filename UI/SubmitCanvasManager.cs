@@ -10,7 +10,7 @@ namespace Submit.UI
     {
         [SerializeField] private GameObject SmallCanvas;
         [SerializeField] private GameObject LargeCanvas;
-//i can set these private again i think
+        //i can set these private again i think
         public TMP_InputField _name;
         public TMP_InputField _company;
         public TMP_InputField _comments;
@@ -22,7 +22,7 @@ namespace Submit.UI
         public TMP_Dropdown YearDrop;
         public TMP_Dropdown _iceRectangle;
         public TMP_Dropdown _sampleLocationName;
-   
+
         public Button _submitButton;
 
 
@@ -61,12 +61,14 @@ namespace Submit.UI
         private static bool isSmallCanvas = false;
         private void Awake()
         {
-           
+
             SetCanvas(isSmallCanvas);
             //try catch for testing
-            try { 
-            SetNameAndCompanyFromProfile();
-            }catch(Exception e)
+            try
+            {
+                SetNameAndCompanyFromProfile();
+            }
+            catch (Exception e)
             {
 
             }
@@ -81,22 +83,22 @@ namespace Submit.UI
         }
         public void SwitchCanvas()
         {
-            if(SmallCanvas.activeInHierarchy)
+            if (SmallCanvas.activeInHierarchy)
             {
-           
+
                 isSmallCanvas = false;
-            /*    SetCanvas(isSmallCanvas);
-                SetNameAndCompanyFromProfile();*/
-               ///
-               /// I WANT TO BE ABLE TO STRANSFER INPUT ACROSS LARGE AND SMALL CANVASES- DO SO HERE
-               ///
+                /*    SetCanvas(isSmallCanvas);
+                    SetNameAndCompanyFromProfile();*/
+                ///
+                /// I WANT TO BE ABLE TO STRANSFER INPUT ACROSS LARGE AND SMALL CANVASES- DO SO HERE
+                ///
             }
             else
             {
-            
+
                 isSmallCanvas = true;
-          /*      SetCanvas(isSmallCanvas);
-                SetNameAndCompanyFromProfile();*/
+                /*      SetCanvas(isSmallCanvas);
+                      SetNameAndCompanyFromProfile();*/
 
             }
             SetCanvas(isSmallCanvas);
@@ -108,7 +110,7 @@ namespace Submit.UI
             LargeCanvas.SetActive(!isSmall);
             if (isSmall)
             {
-             
+
                 _name = _name_sml;
                 _company = _company_sml;
                 _productionWk = _productionWk_sml;
@@ -121,11 +123,11 @@ namespace Submit.UI
                 _comments = _comments_sml;
                 _submitButton = _submitButton_sml;
                 _pop_up = _pop_up_sml;
-               
+
             }
             else
             {
-            
+
                 _name = _name_lrg;
                 _company = _company_lrg;
                 _productionWk = _productionWk_lrg;
@@ -141,8 +143,8 @@ namespace Submit.UI
 
             }
         }
-    
-      
+
+
         public void DisplayPopUP(String missingValues)
         {
             _pop_up.text = missingValues;

@@ -21,6 +21,7 @@ public class UserAppProfile : MonoBehaviour
     {
         user = SaveData.Instance.LoadUserProfile();
         //neeed to laod the user submitted sample stored
+        //maybe do if protext not nulll - in order to correctly execute testing
         string profileText = "<b>Name : </b>" + user.Name 
              + "\n\n<b>Company: </b>" + user.Company
              + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.GetUserStoredSamples().Count

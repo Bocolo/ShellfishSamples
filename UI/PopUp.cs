@@ -30,6 +30,20 @@ public class PopUp : MonoBehaviour
     {
         SetPopUpText("Sign Up NOT Successful");
     }
-
+#if UNITY_INCLUDE_TESTS
+    public void SetPopUp()
+    {
+       
+        popUpText = this.gameObject.AddComponent<TextMeshPro>();
+    }
+    public GameObject GetPopUp()
+    {
+        return popUpText.gameObject;
+    }
+    public string GetPopUpText()
+    {
+        return popUpText.text;
+    }
+#endif
 
 }

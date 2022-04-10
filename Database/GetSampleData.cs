@@ -1,6 +1,7 @@
 using Firebase.Auth;
 using Firebase.Firestore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,17 +17,70 @@ public class GetSampleData : MonoBehaviour
     [SerializeField] private TMP_Dropdown searchDropdown;
     [SerializeField] private TMP_InputField searchInput;
     [SerializeField] private TMP_InputField searchLimit;
-    [SerializeField] private String searchFieldSelection = "";
+    [SerializeField] private string searchFieldSelection = "";
     [SerializeField] private String searchNameSelection = "";
     private int searchLimitSelection = 0;
     private List<Sample> collectionSamples = new List<Sample>();
     private SampleDAO sampleDAO;
 
+#if UNITY_INCLUDE_TESTS
 
-    private void SetSearchFieldValue()
+    public void SetUpVariablesTest()
     {
-        Debug.Log("Search Drop value : " + searchDropdown.value);
-        switch (searchDropdown.value)
+        GameObject go1 = new GameObject();
+        GameObject go2 = new GameObject();
+        searchDropdown = go1.AddComponent<TMP_Dropdown>();
+        searchInput = go1.AddComponent<TMP_InputField>();
+        searchLimit = go1.AddComponent<TMP_InputField>();
+        _contentParent = go2.GetComponent<Transform>();
+        GameObject blueChild = new GameObject();
+        blueChild.AddComponent<Text>();
+        GameObject redChild = new GameObject();
+        redChild.AddComponent<Text>();
+        _bluePanelPrefab = new GameObject();
+    
+
+        _redPanelPrefab = new GameObject();
+        blueChild.transform.parent = _bluePanelPrefab.transform;
+        redChild.transform.parent = _redPanelPrefab.transform;
+    }
+    public void SetSearchFieldSelection(String field) {
+        searchFieldSelection = field;
+    }
+    public void SetSearchNameSelection(String name) {
+        searchNameSelection = name;
+        searchInput.text = name;
+    }
+    public void SetSearchLimitSelection(int num)
+    {
+        searchLimitSelection = num;
+    }
+   
+    public void SetSeachFieldTest(int dropdownValue)
+    {
+     
+        Debug.Log("DDV: " + dropdownValue);
+        SetSearchFieldValue(dropdownValue);
+    }
+    public string GetSearchFieldSelection()
+    {
+        return this.searchFieldSelection;
+    }
+    public Transform GetContentParent()
+    {
+        return this._contentParent;
+    }
+    public void TextAndPrefabTest(List<Sample> samples)
+    {
+        AddTextAndPrefab(samples);
+    }
+#endif
+    private void SetSearchFieldValue(int dropdownValue)
+    {
+        /*   Debug.Log("Search Drop value : " + searchDropdown.value);
+           switch (searchDropdown.value)*/
+        Debug.Log("Search Drop value : " + dropdownValue);
+        switch (dropdownValue)
         {
             case 0:
                 searchFieldSelection = "";
@@ -50,7 +104,7 @@ public class GetSampleData : MonoBehaviour
     }
     public async void RetrieveCollectionBySearch()
     {
-        SetSearchFieldValue();
+        SetSearchFieldValue(searchDropdown.value);
         sampleDAO = new SampleDAO();
         searchNameSelection = searchInput.text;
         if (!searchLimit.text.Equals(""))
@@ -101,13 +155,14 @@ public class GetSampleData : MonoBehaviour
     }
     private void AddTextAndPrefab(List<Sample> sampleList)
     {
-        foreach (Transform child in _contentParent)
-        {
-            Destroy(child.gameObject);
-        }
+            foreach (Transform child in _contentParent)
+             {
+                 Destroy(child.gameObject);
+             }
+
         for (int i = 0; i < sampleList.Count; i++)
         {
-
+            Debug.Log("in for");
             GameObject panel;
             if (i % 2 == 0)
             {
