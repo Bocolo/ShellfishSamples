@@ -149,28 +149,22 @@ public class SaveData: MonoBehaviour
     }
     public void SaveStoredSamples()
     {
-        Debug.Log("Save has been called");
 
         string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
         using (FileStream file = File.Create(filepath))
         {
-            Debug.Log("savinge");
             new BinaryFormatter().Serialize(file, usersStoredSamples);
-            Debug.Log("saved");
 
         }
     }
 
     public void SaveUserProfile(User user)
     {
-        Debug.Log("user Profile saved");
 
         string filepath = Application.persistentDataPath + "/userSave.dat";
         using (FileStream file = File.Create(filepath))
         {
-            Debug.Log("user savinge");
             new BinaryFormatter().Serialize(file, user);
-            Debug.Log("user saved");
 
         }
     }
@@ -218,34 +212,3 @@ public class SaveData: MonoBehaviour
     }
 }
 
-
-/*using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-public class UserProfile : MonoBehaviour
-{
-    [SerializeField] private TMP_Text _userName;
-    [SerializeField] private TMP_Text _company;
-    [SerializeField] private TMP_Text _dateJoined;
-    [SerializeField] private TMP_InputField _userNameInput;
-    [SerializeField] private TMP_InputField _companyInput;
-    private User user;
-    public void LoadProfile()
-    {
-        user = SaveData.Instance.LoadUserProfile();
-        _userName.text = user.Name;
-        _company.text = user.Company;
-    }
-
-    public void CreateProfile()
-    {
-        User user = new User
-        {
-            Name = _userNameInput.text,
-            Company = _companyInput.text,
-        };
-        SaveData.Instance.SaveUserProfile(user);
-    }
-}
-*/

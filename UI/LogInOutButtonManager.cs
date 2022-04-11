@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class LogInOutButtonManager : MonoBehaviour
 {
-    [SerializeField] private bool isLoggedIn;
+    private bool isLoggedIn;
     [SerializeField] private Button logInButton;
     [SerializeField] private Button signoutButton;
 
@@ -16,7 +16,6 @@ public class LogInOutButtonManager : MonoBehaviour
     public void SetLoggedIn(bool isLoggedIn)
     {
         this.isLoggedIn = isLoggedIn;
-        Debug.Log("Is someone logged in ?? " + this.isLoggedIn);
         SetLogInOutButtonInteractable();
 
     }
@@ -26,14 +25,11 @@ public class LogInOutButtonManager : MonoBehaviour
         {
             logInButton.interactable = false;
             signoutButton.interactable = true;
-            Debug.Log("Loggin button should be inactive");
         }
         else
         {
             logInButton.interactable = true;
             signoutButton.interactable = false;
-            Debug.Log("SIGNOUY button should be inactive");
-
         }
     }
     #if UNITY_INCLUDE_TESTS
@@ -68,7 +64,6 @@ public class LogInOutButtonManager : MonoBehaviour
     }
     public void TestButtonInteractable()
     {
-        //prob not needed
         SetLogInOutButtonInteractable();
     }
 #endif

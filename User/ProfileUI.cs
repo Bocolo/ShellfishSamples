@@ -1,7 +1,7 @@
 using Firebase.Auth;
 using TMPro;
 using UnityEngine;
-public class UserAppProfile : MonoBehaviour
+public class ProfileUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text _profileText;
 
@@ -13,13 +13,46 @@ public class UserAppProfile : MonoBehaviour
     private User user;
     public void Start()
     {
-        Debug.Log("Loading profile");
-        LoadProfile();
-        Debug.Log("Loaded profile");
+      LoadUser();
+        SetProfileText();
     }
-    private void LoadProfile()
+    public void SaveProfile()
     {
-        user = SaveData.Instance.LoadUserProfile();
+        string filepath = Application.persistentDataPath + "/userSave.dat";
+
+        if (System.IO.File.Exists(filepath))
+        {
+            UpdateProfile();
+        }
+        else
+        {
+            CreateProfile();
+        }
+
+        GoToViewProfile();
+        SetProfileText();
+    }
+    public void GoToViewProfile()
+    {
+        _profileText.gameObject.SetActive(true);
+        _updateProfileButton.SetActive(true);
+        //remove addintioal save prod button here?
+        _saveProfileButton.SetActive(false);
+        _userNameInput.gameObject.SetActive(false);
+        _companyInput.gameObject.SetActive(false);
+
+    }
+    public void GoToUpdateProfile()
+    {
+        _profileText.gameObject.SetActive(false);
+        _updateProfileButton.SetActive(false);
+
+        _saveProfileButton.SetActive(true);
+        _userNameInput.gameObject.SetActive(true);
+        _companyInput.gameObject.SetActive(true);
+    }
+    private void SetProfileText()
+    {
         //neeed to laod the user submitted sample stored
         //maybe do if protext not nulll - in order to correctly execute testing
         string profileText = "<b>Name : </b>" + user.Name 
@@ -35,28 +68,28 @@ public class UserAppProfile : MonoBehaviour
         }
      
         _profileText.text = profileText;
-        Debug.Log(user.Name + "___LOADED___" + user.Company);
+    }
+    private void LoadUser()
+    {
+        user = SaveData.Instance.LoadUserProfile();
     }
 
-    //is this used?
-    //these should be private used in save profile
-    public void CreateProfile()
+    private void CreateProfile()
     {
-        User user = new User
+        User newUser = new User
         {
             Name = _userNameInput.text,
             Company = _companyInput.text,
 
         };
-        SaveData.Instance.SaveUserProfile(user);
-        Debug.Log(user.Name + "___CREATED___" + user.Company);
-
+        SaveData.Instance.SaveUserProfile(newUser);
     }
 
     //https://www.youtube.com/watch?v=52yUcKLMKX0
-    public void UpdateProfile()
+    private void UpdateProfile()
     {
-        user = SaveData.Instance.LoadUserProfile();
+        LoadUser();
+
         user.Name = _userNameInput.text;
         user.Company = _companyInput.text;
         if(FirebaseAuth.DefaultInstance.CurrentUser!= null){
@@ -67,52 +100,8 @@ public class UserAppProfile : MonoBehaviour
         {
             SaveData.Instance.SaveUserProfile(user);
         }
-        Debug.Log(user.Name + "__Updating user____" + user.Company);
     }
-    public void SaveProfile()
-    {
-        string filepath = Application.persistentDataPath + "/userSave.dat";
 
-        if (System.IO.File.Exists(filepath))
-        {
-            UpdateProfile();
-        }
-        else
-        {
-            CreateProfile();
-        }
-        /*      _profileText.gameObject.SetActive(true);
-              _updateProfileButton.SetActive(true);
-              //remove addintioal save prod button here?
-              _saveProfileButton.SetActive(false);
-              _userNameInput.gameObject.SetActive(false);
-              _companyInput.gameObject.SetActive(false);
-              _saveProfileButton.SetActive(false);
-      */
-        GoToViewProfile();
-        LoadProfile();
-    }
-    public void GoToViewProfile()
-    {
-        _profileText.gameObject.SetActive(true);
-        _updateProfileButton.SetActive(true);
-        //remove addintioal save prod button here?
-        _saveProfileButton.SetActive(false);
-        _userNameInput.gameObject.SetActive(false);
-        _companyInput.gameObject.SetActive(false);
-        _saveProfileButton.SetActive(false);
-
-    }
-    public void GoToUpdateProfile()
-    {
-        _profileText.gameObject.SetActive(false);
-        _updateProfileButton.SetActive(false);
-
-        _saveProfileButton.SetActive(true);
-        _userNameInput.gameObject.SetActive(true);
-        _companyInput.gameObject.SetActive(true);
-        _saveProfileButton.SetActive(true);
-    }
 #if UNITY_INCLUDE_TESTS
     //need to solve this without awake-- possibly use the internal testing for unity
     // review in morning
@@ -130,9 +119,7 @@ public class UserAppProfile : MonoBehaviour
     }
     public void SetInputTextFields()
     {
-        Debug.Log("GP1TG");
         GameObject go1 = new GameObject();
-        Debug.Log("GP2TG");
         GameObject go2 = new GameObject();
         GameObject go3 = new GameObject();
         // _profileText = go3.AddComponent<TMP_Text>();

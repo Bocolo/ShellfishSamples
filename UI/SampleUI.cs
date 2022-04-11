@@ -85,7 +85,7 @@ public class SampleUI : MonoBehaviour
     }
 
 #if UNITY_INCLUDE_TESTS
-    public void SetUpVariablesTest()
+    public void SetUpTestVariables()
     {
         Debug.Log(1);
 

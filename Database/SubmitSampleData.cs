@@ -7,8 +7,7 @@ using UnityEngine;
 
 public class SubmitSampleData : MonoBehaviour
 {
-    [SerializeField] private string _samplePath = "sample_test/one_sample";
-    [SerializeField] private SubmitCanvasManager canvasManager;
+  private SubmitCanvasManager canvasManager;
     private string _nameString = null;
     private string _companyString = null;
     private string _commentsString = null;
@@ -24,7 +23,10 @@ public class SubmitSampleData : MonoBehaviour
     private UserDAO userDAO;
 
     private String missingValues = "";
-
+    private void Awake()
+    {
+        canvasManager = GetComponent<SubmitCanvasManager>();
+    }
     public void UploadData()
     {
         SetValues();
@@ -49,7 +51,11 @@ public class SubmitSampleData : MonoBehaviour
 
     }
 
-
+    public void SubmissionComplete()
+    {
+        canvasManager.OnSubmitClearFields();
+        canvasManager.DisplayPopUP("\n\nSuccessfully Submitted Sample");// this is wrinfg -- can onlt reeally be successful is only
+    }
 
     public void SubmitStoredData()
     {
@@ -96,7 +102,7 @@ public class SubmitSampleData : MonoBehaviour
         // tidy this up??
     }
 
-    private Sample NewSample()
+    public Sample NewSample()
     {
         Sample sample = new Sample
         {
@@ -113,7 +119,7 @@ public class SubmitSampleData : MonoBehaviour
         return sample;
     }
 
-    private bool IsValuesMissing()
+    public bool IsValuesMissing()
     {
         missingValues = "";
 
@@ -154,7 +160,7 @@ public class SubmitSampleData : MonoBehaviour
             return false;
         }
     }
-    private void SetValues()
+    public void SetValues()
     {
         _nameString = null;
         _companyString = null;
@@ -191,7 +197,7 @@ public class SubmitSampleData : MonoBehaviour
             _locationString = canvasManager._sampleLocationName.options[canvasManager._sampleLocationName.value].text;
         }
     }
-    private bool IsDateValid()
+    public bool IsDateValid()
     {
         day = canvasManager.DayDrop.options[canvasManager.DayDrop.value].text;
         month = canvasManager.MonthDrop.options[canvasManager.MonthDrop.value].text;
@@ -218,7 +224,7 @@ public class SubmitSampleData : MonoBehaviour
 
 
     }
-    private bool IsDateValid(String date)
+    public bool IsDateValid(String date)
     {
    
         try

@@ -21,10 +21,7 @@ public class SampleDAO
       //  firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
         firestore.Collection(_collectionPath).Document().SetAsync(sample);
     }
-    public void AddStoredSamples(List<Sample> storedSamples)
-    {
 
-    }
     public void AddSampleToUserCollection(FirebaseUser currentUser, Sample sample)
     {
         firestore.Collection("Users").Document(currentUser.Email).Collection("UserSamples").Document().SetAsync(sample);
@@ -41,10 +38,7 @@ public class SampleDAO
         return sample;
     }
 
-    public void GetAllSamples()
-    {
 
-    }
     public async Task<List<Sample>> GetAllUserSubmittedSamples(FirebaseUser currentuser)
     {
         List<Sample> collectionSamples = new List<Sample>();
@@ -113,6 +107,14 @@ public class SampleDAO
 
     }
     public void DeleteSample()
+    {
+
+    }
+    public void GetAllSamples()
+    {
+
+    }
+    public void AddStoredSamples(List<Sample> storedSamples)
     {
 
     }
