@@ -9,15 +9,16 @@ public class LogInOutButtonManager : MonoBehaviour
     private void Start()
     {
         SetLoggedIn(FirebaseAuth.DefaultInstance.CurrentUser != null);
+        SetLogInOutButtonInteractable(isLoggedIn);
     }
     public void SetLoggedIn(bool isLoggedIn)
     {
         this.isLoggedIn = isLoggedIn;
-        SetLogInOutButtonInteractable();
+     //   SetLogInOutButtonInteractable(isLoggedIn);
     }
-    private void SetLogInOutButtonInteractable()
+    private void SetLogInOutButtonInteractable(bool isLoggedIn)
     {
-        if (this.isLoggedIn)
+        if (isLoggedIn)
         {
             logInButton.interactable = false;
             signoutButton.interactable = true;
@@ -57,9 +58,9 @@ public class LogInOutButtonManager : MonoBehaviour
     {
         return this.signoutButton;
     }
-    public void TestButtonInteractable()
+    public void TestButtonInteractable(bool isLoggedIn)
     {
-        SetLogInOutButtonInteractable();
+        SetLogInOutButtonInteractable(isLoggedIn);
     }
 #endif
 }

@@ -6,7 +6,7 @@ using System.IO;
 using Firebase.Auth;
 using Firebase.Firestore;
 using System;
-public class SaveData: MonoBehaviour
+public class SaveData : MonoBehaviour
 {
     /// <summary>
     /// checkif i c an remove mono bheaciour
@@ -20,12 +20,12 @@ public class SaveData: MonoBehaviour
     public static SaveData Instance { get; private set; }
     private List<Sample> usersSubmittedSamples = new List<Sample>();
     private List<Sample> usersStoredSamples = new List<Sample>();
-  //  private List<Sample> usersStoredSamples = new List<Sample>();
+    //  private List<Sample> usersStoredSamples = new List<Sample>();
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         else
         {
@@ -40,46 +40,25 @@ public class SaveData: MonoBehaviour
             LoadStoredSamples();
         }
     }
-    //Could seperate into own scripts
-    public void AddToSubmittedSamples(Sample sample)
-    {
-        usersSubmittedSamples.Add(sample);
-    }
-    public List<Sample> GetUserSubmittedSamples()
-    {
-        return this.usersSubmittedSamples;
-    }
-    public void AddToStoredSamples(Sample sample)
-    {
-        usersStoredSamples.Add(sample);
-    }
-    public List<Sample> GetUserStoredSamples()
-    {
-        return this.usersStoredSamples;
-    }
-    public void ClearStoredSamplesList()
-    {
-        usersStoredSamples.Clear();
-    }
-    public void ClearSubmittedSamplesList()
-    {
-        usersSubmittedSamples.Clear();
-    }
+   
     public void LoadSubmittedSamples()
     {
         string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
         //string filepath = Application.persistentDataPath + "/save.dat";
-        try { 
-        using (FileStream file = File.Open(filepath, FileMode.Open))
+        try
         {
-            object loadedData = new BinaryFormatter().Deserialize(file);
-            List<Sample> saveData = (List<Sample>)loadedData;
-            usersSubmittedSamples = saveData;
+            using (FileStream file = File.Open(filepath, FileMode.Open))
+            {
+                object loadedData = new BinaryFormatter().Deserialize(file);
+                List<Sample> saveData = (List<Sample>)loadedData;
+                usersSubmittedSamples = saveData;
                 //abbove could be more direct
+            }
         }
-        }catch(Exception e)
+        catch (Exception e)
         {
         }
+    //    usersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
     }
     /// <summary>
     /// Consider a delete stored / submitted samples from deivce
@@ -91,20 +70,50 @@ public class SaveData: MonoBehaviour
         {
             new BinaryFormatter().Serialize(file, usersSubmittedSamples);
         }
+    //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
     }
     public void LoadStoredSamples()
     {
         string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
         //string filepath = Application.persistentDataPath + "/save.dat";
-        try { 
-        using (FileStream file = File.Open(filepath, FileMode.Open))
+        try
         {
-            object loadedData = new BinaryFormatter().Deserialize(file);
-            List<Sample> saveData = (List<Sample>)loadedData;
-            usersStoredSamples = saveData;
+            using (FileStream file = File.Open(filepath, FileMode.Open))
+            {
+                object loadedData = new BinaryFormatter().Deserialize(file);
+                List<Sample> saveData = (List<Sample>)loadedData;
+                usersStoredSamples = saveData;
+            }
         }
-    }catch(Exception e)
+        catch (Exception e)
         {
+        }
+     //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
+    }
+    public List<Sample> LoadSamples(String filename)//?? would this updatethisinstancesampels
+    {
+        string filepath = Application.persistentDataPath + filename;
+        //string filepath = Application.persistentDataPath + "/save.dat";
+        try
+        {
+            using (FileStream file = File.Open(filepath, FileMode.Open))
+            {
+                object loadedData = new BinaryFormatter().Deserialize(file);
+                List<Sample> saveData = (List<Sample>)loadedData;
+                return saveData;
+            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+    public void SaveSamples(String filename, List<Sample> samples)
+    {
+        string filepath = Application.persistentDataPath + filename;
+        using (FileStream file = File.Create(filepath))
+        {
+            new BinaryFormatter().Serialize(file, samples);
         }
     }
     public void SaveStoredSamples()
@@ -113,6 +122,15 @@ public class SaveData: MonoBehaviour
         using (FileStream file = File.Create(filepath))
         {
             new BinaryFormatter().Serialize(file, usersStoredSamples);
+        }
+     //   SaveSamples("/storedSamplesSave.dat", usersStoredSamples);
+    }
+    public void SaveProfile(String filename,User user)
+    {
+        string filepath = Application.persistentDataPath + filename;
+        using (FileStream file = File.Create(filepath))
+        {
+            new BinaryFormatter().Serialize(file, user);
         }
     }
     public void SaveUserProfile(User user)
@@ -149,5 +167,46 @@ public class SaveData: MonoBehaviour
             User userData = (User)loadedData;
             return userData;
         }
+    }
+    public void AddAndSaveSubmittedSample(Sample sample)
+    {
+        AddToSubmittedSamples(sample);
+        SaveSubmittedSamples();
+    }
+    public void AddAndSaveStoredSample(Sample sample)
+    {
+        AddToStoredSamples(sample);
+        SaveStoredSamples();
+    }
+    public void UpdateSubmittedStoredSamples()
+    {
+        ClearStoredSamplesList();
+        SaveStoredSamples();
+        SaveSubmittedSamples();
+    }
+    //Could seperate into own scripts
+    public void AddToSubmittedSamples(Sample sample)
+    {
+        usersSubmittedSamples.Add(sample);
+    }
+    public List<Sample> GetUserSubmittedSamples()
+    {
+        return this.usersSubmittedSamples;
+    }
+    public void AddToStoredSamples(Sample sample)
+    {
+        usersStoredSamples.Add(sample);
+    }
+    public List<Sample> GetUserStoredSamples()
+    {
+        return this.usersStoredSamples;
+    }
+    public void ClearStoredSamplesList()
+    {
+        usersStoredSamples.Clear();
+    }
+    public void ClearSubmittedSamplesList()
+    {
+        usersSubmittedSamples.Clear();
     }
 }

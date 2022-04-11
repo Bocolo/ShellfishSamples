@@ -15,7 +15,7 @@ public class UserDAO
         firestore = FirebaseFirestore.DefaultInstance;
             auth = FirebaseAuth.DefaultInstance;
     }
-    public void addUser(User user)
+    public void AddUser(User user)
     {
         firestore.Collection("Users").Document(user.Email).SetAsync(user);
         ///////////

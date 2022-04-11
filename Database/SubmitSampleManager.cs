@@ -1,8 +1,7 @@
 using Firebase.Auth;
-using Firebase.Firestore;
-using Submit.UI;
 using System;
 using System.Collections.Generic;
+using UI.Submit;
 using UnityEngine;
 public class SubmitSampleManager : MonoBehaviour
 {
@@ -15,46 +14,67 @@ public class SubmitSampleManager : MonoBehaviour
         sampleDAO = new SampleDAO();
         userDAO = new UserDAO();
     }
-    public void UploadSample()
+
+    /// <summary>
+    /// Can be removed later
+    /// </summary>
+    /// <param name="AddAndSaveSample"></param>
+    public void Sampler(Del AddAndSaveSample)
     {
-        submitSampleUI.SetValues();
-        if (!submitSampleUI.IsValuesMissing())
+        if (submitSampleUI.ValidateValues())
         {
             var sample = submitSampleUI.NewSample();
             sampleDAO.AddSample(sample);
-            SaveData.Instance.AddToSubmittedSamples(sample);
-            SaveData.Instance.SaveSubmittedSamples();
+            AddAndSaveSample(sample);
             submitSampleUI.CompleteSubmission();
-            FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-            if (auth.CurrentUser != null)
+
+            UpdateFirebaseUserSample(sample);
+        }
+    }
+    public delegate void Del(Sample sample);
+
+    //move this to the firebase class or submission classes
+    public void UpdateFirebaseUserSample(Sample sample)
+    {
+        FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+        if (auth.CurrentUser != null)
+        {
+            sampleDAO.AddSampleToUserCollection(auth.CurrentUser, sample);
+            userDAO.UpdateUserSampleCount(auth.CurrentUser);
+        }
+    }
+    public void UploadStoredSamples(FirebaseUser user, List<Sample> storedSamples)
+    {
+        for (int i = 0; i < storedSamples.Count; i++)
+        {
+            sampleDAO.AddSample(storedSamples[i]);
+            SaveData.Instance.AddToSubmittedSamples(storedSamples[i]);
+            //   counter++;
+            if (user != null)
             {
-                sampleDAO.AddSampleToUserCollection(auth.CurrentUser, sample);
-                userDAO.UpdateUserSampleCount(auth.CurrentUser);
+                sampleDAO.AddSampleToUserCollection(user, storedSamples[i]);
             }
         }
     }
     public void SubmitStoredSamples()
     {
+        FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
+
+        List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
+  
+        UploadStoredSamples(user, storedSamples);
+        if (user != null)
+        {
+            userDAO.UpdateUserSampleCount(user, storedSamples.Count);
+        }
+    }
+    public void SubmitAndSaveStoredSamples()
+    {
         try
         {
-            var firestore = FirebaseFirestore.DefaultInstance;
-            List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
-            FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-           // int counter = 0;
-            for (int i = 0; i < storedSamples.Count; i++)
-            {
-                sampleDAO.AddSample(storedSamples[i]);
-                SaveData.Instance.AddToSubmittedSamples(storedSamples[i]);
-             //   counter++;
-                if (user != null)
-                {
-                    sampleDAO.AddSampleToUserCollection(user, storedSamples[i]);
-                }
-            }
-            userDAO.UpdateUserSampleCount(user, storedSamples.Count);
-            SaveData.Instance.ClearStoredSamplesList();
-            SaveData.Instance.SaveStoredSamples();
-            SaveData.Instance.SaveSubmittedSamples();
+            SubmitStoredSamples();
+            SaveData.Instance.UpdateSubmittedStoredSamples();
+
         }
         catch (Exception e)
         {
@@ -63,13 +83,26 @@ public class SubmitSampleManager : MonoBehaviour
     }
     public void StoreSample()
     {
-        submitSampleUI.SetValues();
-        if (!submitSampleUI.IsValuesMissing())
+        if (submitSampleUI.ValidateValues())
         {
-            var sample = submitSampleUI.NewSample();
-            SaveData.Instance.AddToStoredSamples(sample);
+            SaveData.Instance.AddAndSaveStoredSample(submitSampleUI.NewSample());
             submitSampleUI.CompleteSubmission();
         }
-        SaveData.Instance.SaveStoredSamples();
+       //testing --- move to if block
+       /* SaveData.Instance.SaveStoredSamples();*/
+    }
+    public void UploadSample()
+    {
+        if (submitSampleUI.ValidateValues())
+        {
+            var sample = submitSampleUI.NewSample();
+            sampleDAO.AddSample(sample);
+
+            SaveData.Instance.AddAndSaveSubmittedSample(sample);
+            submitSampleUI.CompleteSubmission();
+
+            UpdateFirebaseUserSample(sample);
+        }
+
     }
 }

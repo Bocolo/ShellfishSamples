@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-namespace Submit.UI
+namespace UI.Submit
 {
     public class SubmitCanvasManager : MonoBehaviour
     {
@@ -47,10 +47,9 @@ namespace Submit.UI
         [SerializeField] private TMP_Dropdown _sampleLocationName_lrg;
         [SerializeField] private TMP_InputField _comments_lrg;
         [SerializeField] private Button _submitButton_lrg;
-        private static bool isSmallCanvas = false;
         private void Awake()
         {
-            SetCanvas(isSmallCanvas);
+            SetCanvasSmall(false);
             //try catch for testing
             try
             {
@@ -70,26 +69,29 @@ namespace Submit.UI
         {
             if (SmallCanvas.activeInHierarchy)
             {
-                isSmallCanvas = false;
-                /*    SetCanvas(isSmallCanvas);
-                    SetNameAndCompanyFromProfile();*/
-                ///
-                /// I WANT TO BE ABLE TO STRANSFER INPUT ACROSS LARGE AND SMALL CANVASES- DO SO HERE
-                ///
+                SetCanvasSmall(false);
+         
             }
             else
             {
-                isSmallCanvas = true;
-                /*      SetCanvas(isSmallCanvas);
-                      SetNameAndCompanyFromProfile();*/
+                SetCanvasSmall(true);
+
+         
             }
-            SetCanvas(isSmallCanvas);
             SetNameAndCompanyFromProfile();
         }
-        private void SetCanvas(bool isSmall)
+        private void ActivateSmallCanvas(bool isSmall)
         {
             SmallCanvas.SetActive(isSmall);
+
+        }
+        private void ActivateLargeCanvas(bool isSmall)
+        {
             LargeCanvas.SetActive(!isSmall);
+      
+        }
+        private void SwitchInputFields(bool isSmall)
+        {
             if (isSmall)
             {
                 _name = _name_sml;
@@ -121,6 +123,13 @@ namespace Submit.UI
                 _pop_up = _pop_up_lrg;
             }
         }
+        private void SetCanvasSmall(bool isSmall)
+        {
+            ActivateLargeCanvas(isSmall);
+            ActivateSmallCanvas(isSmall);
+            SwitchInputFields(isSmall);
+
+        }
         public void DisplayPopUP(String missingValues)
         {
             _pop_up.text = missingValues;
@@ -149,3 +158,69 @@ namespace Submit.UI
 #endif
     }
 }
+
+/* if (isSmall)
+ {
+
+     _name = _name_sml;
+     _company = _company_sml;
+     _productionWk = _productionWk_sml;
+     _species = _species_sml;
+     DayDrop = DayDrop_sml;
+     MonthDrop = MonthDrop_sml;
+     YearDrop = YearDrop_sml;
+     _iceRectangle = _iceRectangle_sml;
+     _sampleLocationName = _sampleLocationName_sml;
+     _comments = _comments_sml;
+     _submitButton = _submitButton_sml;
+     _pop_up = _pop_up_sml;
+ }*/
+/*   SmallCanvas.SetActive(isSmall);
+   LargeCanvas.SetActive(!isSmall);
+   if (isSmall)
+   {
+       _name = _name_sml;
+       _company = _company_sml;
+       _productionWk = _productionWk_sml;
+       _species = _species_sml;
+       DayDrop = DayDrop_sml;
+       MonthDrop = MonthDrop_sml;
+       YearDrop = YearDrop_sml;
+       _iceRectangle = _iceRectangle_sml;
+       _sampleLocationName = _sampleLocationName_sml;
+       _comments = _comments_sml;
+       _submitButton = _submitButton_sml;
+       _pop_up = _pop_up_sml;
+   }
+   else
+   {
+       _name = _name_lrg;
+       _company = _company_lrg;
+       _productionWk = _productionWk_lrg;
+       _species = _species_lrg;
+       DayDrop = DayDrop_lrg;
+       MonthDrop = MonthDrop_lrg;
+       YearDrop = YearDrop_lrg;
+       _iceRectangle = _iceRectangle_lrg;
+       _sampleLocationName = _sampleLocationName_lrg;
+       _comments = _comments_lrg;
+       _submitButton = _submitButton_lrg;
+       _pop_up = _pop_up_lrg;
+   }*/
+/*   if (!isSmall)
+         {
+
+
+             _name = _name_lrg;
+             _company = _company_lrg;
+             _productionWk = _productionWk_lrg;
+             _species = _species_lrg;
+             DayDrop = DayDrop_lrg;
+             MonthDrop = MonthDrop_lrg;
+             YearDrop = YearDrop_lrg;
+             _iceRectangle = _iceRectangle_lrg;
+             _sampleLocationName = _sampleLocationName_lrg;
+             _comments = _comments_lrg;
+             _submitButton = _submitButton_lrg;
+             _pop_up = _pop_up_lrg;
+         }*/

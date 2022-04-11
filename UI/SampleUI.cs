@@ -10,92 +10,96 @@ public class SampleUI : MonoBehaviour
     [SerializeField] private Transform _contentParent;
     public void AddTextAndPrefab(Sample sample)
     {
-        GameObject panel;
-        panel = Instantiate(_redPanelPrefab);
-        panel.transform.SetParent(_contentParent.transform);
-        // GameObject panelChild = panel.transform.GetChild(0).gameObject;
-        Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
-        panel.transform.localScale = new Vector3(1, 1, 1);
-        panelText.text = SampleDataToString(sample, false);
+        GameObject panel = Instantiate(_redPanelPrefab);
+        SetPanelParent(panel);
+        SetPanelText(panel, sample);
+
     }
+ 
     public void AddTextAndPrefab(List<Sample> sampleList)
+    {
+        DestroyParentChildren(_contentParent); 
+        CreatePanelChildren(sampleList);
+    }
+    private String RestrictedSampleToString(Sample sample)
+    {
+        if (sample.SampleLocationName == null)
+        {
+            return ("\nSpecies: " + sample.Species
+           + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
+           + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
+        }
+        else
+        {
+            return ("\nSpecies: " + sample.Species
+            + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
+        }
+    }
+    private String FullSampleToString(Sample sample)
+    {
+
+        if (sample.SampleLocationName == null)
+        {
+            return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
+           + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
+           + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date + "\nComment: " + sample.Comment);
+        }
+        else
+        {
+            return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
+            + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date
+            + "\nComment: " + sample.Comment);
+        }
+    }
+    private void SetPanelParent(GameObject panel)
+    {
+        panel.transform.SetParent(_contentParent.transform);
+        panel.transform.localScale = new Vector3(1, 1, 1);
+    }
+    private void SetPanelText(GameObject panel, Sample sample)
+    {
+        Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
+        panelText.text = FullSampleToString(sample);
+    }
+    private void DestroyParentChildren(Transform _contentParent)
     {
         foreach (Transform child in _contentParent)
         {
             Destroy(child.gameObject);
         }
+    }
+    private void CreatePanelChildren(List<Sample> sampleList)
+    {
         for (int i = 0; i < sampleList.Count; i++)
         {
-            Debug.Log("in for");
             GameObject panel;
             if (i % 2 == 0)
             {
-                panel = Instantiate(_bluePanelPrefab);
-            }
-            else
-            {
                 panel = Instantiate(_redPanelPrefab);
             }
-            panel.transform.SetParent(_contentParent.transform);
-            //    GameObject panelChild = panel.transform.GetChild(0).gameObject;
-            Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
-            panel.transform.localScale = new Vector3(1, 1, 1);
-            panelText.text = SampleDataToString(sampleList[i], false);
-        }
-    }
-    private String SampleDataToString(Sample sample, bool isRestricted)
-    {
-        if (isRestricted)
-        {
-            if (sample.SampleLocationName == null)
-            {
-                Debug.Log("Location is null restricted");
-                return ("\nSpecies: " + sample.Species
-               + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
-               + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
-            }
             else
             {
-                Debug.Log("ICES rectangle is null restriced");
-                return ("\nSpecies: " + sample.Species
-                + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
+                panel = Instantiate(_bluePanelPrefab);
             }
-        }
-        else
-        {
-            if (sample.SampleLocationName == null)
-            {
-                Debug.Log("Location is null");
-                return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
-               + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
-               + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date + "\nComment: " + sample.Comment);
-            }
-            else
-            {
-                Debug.Log("ICES rectangle is null");
-                return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
-                + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date
-                + "\nComment: " + sample.Comment);
-            }
+            SetPanelParent(panel);
+            SetPanelText(panel, sampleList[i]);
+
         }
     }
 #if UNITY_INCLUDE_TESTS
     public void SetUpTestVariables()
     {
-        Debug.Log(1);
         GameObject go = new GameObject();
         _contentParent = go.GetComponent<Transform>();
         GameObject blueChild = new GameObject();
         GameObject redChild = new GameObject();
+        _bluePanelPrefab = new GameObject();
+        _redPanelPrefab = new GameObject();
         redChild.AddComponent<Text>();
         blueChild.AddComponent<Text>();
-        Debug.Log(15);
-        _bluePanelPrefab = new GameObject();
-        Debug.Log(16);
-        _redPanelPrefab = new GameObject();
+      
         blueChild.transform.SetParent(_bluePanelPrefab.transform);
         redChild.transform.SetParent(_redPanelPrefab.transform);
-        Debug.Log(17);
     }
     public Transform GetContentParent()
     {

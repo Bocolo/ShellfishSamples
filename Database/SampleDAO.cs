@@ -22,6 +22,7 @@ public class SampleDAO
     }
     public void AddSampleToUserCollection(FirebaseUser currentUser, Sample sample)
     {
+        //should this be in user dao??
         firestore.Collection("Users").Document(currentUser.Email).Collection("UserSamples").Document().SetAsync(sample);
     }
     public async Task<Sample> GetSample(string _path)
