@@ -6,207 +6,210 @@ using System.IO;
 using Firebase.Auth;
 using Firebase.Firestore;
 using System;
-public class SaveData : MonoBehaviour
+namespace Save.Manager
 {
-    /// <summary>
-    /// checkif i c an remove mono bheaciour
-    /// constructor isntead of wake,
-    /// don think itll work
-    /// </summary>
-    /*
-     FIX INSTANCE BS -= SMLLA LARG PRIVATE PUBLIC
-     */
-    //private static SaveData _instance;
-    public static SaveData Instance { get; private set; }
-    private List<Sample> usersSubmittedSamples = new List<Sample>();
-    private List<Sample> usersStoredSamples = new List<Sample>();
-    //  private List<Sample> usersStoredSamples = new List<Sample>();
-    private void Awake()
+    public class SaveData : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        /// <summary>
+        /// checkif i c an remove mono bheaciour
+        /// constructor isntead of wake,
+        /// don think itll work
+        /// </summary>
+        /*
+         FIX INSTANCE BS -= SMLLA LARG PRIVATE PUBLIC
+         */
+        //private static SaveData _instance;
+        public static SaveData Instance { get; private set; }
+        private List<Sample> usersSubmittedSamples = new List<Sample>();
+        private List<Sample> usersStoredSamples = new List<Sample>();
+        //  private List<Sample> usersStoredSamples = new List<Sample>();
+        private void Awake()
         {
-            Destroy(this.gameObject);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(this.gameObject);
+            }
+            //we need to check teh file path exists first
+            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
+            if (System.IO.File.Exists(filepath))
+            {
+                LoadSubmittedSamples();
+                LoadStoredSamples();
+            }
         }
-        else
+
+        public void LoadSubmittedSamples()
         {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
+            //string filepath = Application.persistentDataPath + "/save.dat";
+            try
+            {
+                using (FileStream file = File.Open(filepath, FileMode.Open))
+                {
+                    object loadedData = new BinaryFormatter().Deserialize(file);
+                    List<Sample> saveData = (List<Sample>)loadedData;
+                    usersSubmittedSamples = saveData;
+                    //abbove could be more direct
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            //    usersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
         }
-        //we need to check teh file path exists first
-        string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
-        if (System.IO.File.Exists(filepath))
+        /// <summary>
+        /// Consider a delete stored / submitted samples from deivce
+        /// </summary>
+        public void SaveSubmittedSamples()
         {
-            LoadSubmittedSamples();
-            LoadStoredSamples();
+            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, usersSubmittedSamples);
+            }
+            //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
         }
-    }
-   
-    public void LoadSubmittedSamples()
-    {
-        string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
-        //string filepath = Application.persistentDataPath + "/save.dat";
-        try
+        public void LoadStoredSamples()
         {
+            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
+            //string filepath = Application.persistentDataPath + "/save.dat";
+            try
+            {
+                using (FileStream file = File.Open(filepath, FileMode.Open))
+                {
+                    object loadedData = new BinaryFormatter().Deserialize(file);
+                    List<Sample> saveData = (List<Sample>)loadedData;
+                    usersStoredSamples = saveData;
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
+        }
+        public List<Sample> LoadSamples(String filename)//?? would this updatethisinstancesampels
+        {
+            string filepath = Application.persistentDataPath + filename;
+            //string filepath = Application.persistentDataPath + "/save.dat";
+            try
+            {
+                using (FileStream file = File.Open(filepath, FileMode.Open))
+                {
+                    object loadedData = new BinaryFormatter().Deserialize(file);
+                    List<Sample> saveData = (List<Sample>)loadedData;
+                    return saveData;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        public void SaveSamples(String filename, List<Sample> samples)
+        {
+            string filepath = Application.persistentDataPath + filename;
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, samples);
+            }
+        }
+        public void SaveStoredSamples()
+        {
+            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, usersStoredSamples);
+            }
+            //   SaveSamples("/storedSamplesSave.dat", usersStoredSamples);
+        }
+        public void SaveProfile(String filename, User user)
+        {
+            string filepath = Application.persistentDataPath + filename;
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, user);
+            }
+        }
+        public void SaveUserProfile(User user)
+        {
+            string filepath = Application.persistentDataPath + "/userSave.dat";
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, user);
+            }
+        }
+        public void SaveUserProfile(User user, FirebaseUser firebaseUser)
+        {
+            string filepath = Application.persistentDataPath + "/userSave.dat";
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, user);
+            }
+            if (firebaseUser != null)
+            {
+                var firestore = FirebaseFirestore.DefaultInstance;
+                firestore.Collection("Users").Document(user.Email).SetAsync(user);
+            }
+            else
+            {
+            }
+        }
+        public User LoadUserProfile()
+        {
+            string filepath = Application.persistentDataPath + "/userSave.dat";
+            //string filepath = Application.persistentDataPath + "/save.dat";
             using (FileStream file = File.Open(filepath, FileMode.Open))
             {
                 object loadedData = new BinaryFormatter().Deserialize(file);
-                List<Sample> saveData = (List<Sample>)loadedData;
-                usersSubmittedSamples = saveData;
-                //abbove could be more direct
+                User userData = (User)loadedData;
+                return userData;
             }
         }
-        catch (Exception e)
+        public void AddAndSaveSubmittedSample(Sample sample)
         {
+            AddToSubmittedSamples(sample);
+            SaveSubmittedSamples();
         }
-    //    usersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
-    }
-    /// <summary>
-    /// Consider a delete stored / submitted samples from deivce
-    /// </summary>
-    public void SaveSubmittedSamples()
-    {
-        string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
-        using (FileStream file = File.Create(filepath))
+        public void AddAndSaveStoredSample(Sample sample)
         {
-            new BinaryFormatter().Serialize(file, usersSubmittedSamples);
+            AddToStoredSamples(sample);
+            SaveStoredSamples();
         }
-    //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
-    }
-    public void LoadStoredSamples()
-    {
-        string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
-        //string filepath = Application.persistentDataPath + "/save.dat";
-        try
+        public void UpdateSubmittedStoredSamples()
         {
-            using (FileStream file = File.Open(filepath, FileMode.Open))
-            {
-                object loadedData = new BinaryFormatter().Deserialize(file);
-                List<Sample> saveData = (List<Sample>)loadedData;
-                usersStoredSamples = saveData;
-            }
+            ClearStoredSamplesList();
+            SaveStoredSamples();
+            SaveSubmittedSamples();
         }
-        catch (Exception e)
+        //Could seperate into own scripts
+        public void AddToSubmittedSamples(Sample sample)
         {
+            usersSubmittedSamples.Add(sample);
         }
-     //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
-    }
-    public List<Sample> LoadSamples(String filename)//?? would this updatethisinstancesampels
-    {
-        string filepath = Application.persistentDataPath + filename;
-        //string filepath = Application.persistentDataPath + "/save.dat";
-        try
+        public List<Sample> GetUserSubmittedSamples()
         {
-            using (FileStream file = File.Open(filepath, FileMode.Open))
-            {
-                object loadedData = new BinaryFormatter().Deserialize(file);
-                List<Sample> saveData = (List<Sample>)loadedData;
-                return saveData;
-            }
+            return this.usersSubmittedSamples;
         }
-        catch (Exception e)
+        public void AddToStoredSamples(Sample sample)
         {
-            return null;
+            usersStoredSamples.Add(sample);
         }
-    }
-    public void SaveSamples(String filename, List<Sample> samples)
-    {
-        string filepath = Application.persistentDataPath + filename;
-        using (FileStream file = File.Create(filepath))
+        public List<Sample> GetUserStoredSamples()
         {
-            new BinaryFormatter().Serialize(file, samples);
+            return this.usersStoredSamples;
         }
-    }
-    public void SaveStoredSamples()
-    {
-        string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
-        using (FileStream file = File.Create(filepath))
+        public void ClearStoredSamplesList()
         {
-            new BinaryFormatter().Serialize(file, usersStoredSamples);
+            usersStoredSamples.Clear();
         }
-     //   SaveSamples("/storedSamplesSave.dat", usersStoredSamples);
-    }
-    public void SaveProfile(String filename,User user)
-    {
-        string filepath = Application.persistentDataPath + filename;
-        using (FileStream file = File.Create(filepath))
+        public void ClearSubmittedSamplesList()
         {
-            new BinaryFormatter().Serialize(file, user);
+            usersSubmittedSamples.Clear();
         }
-    }
-    public void SaveUserProfile(User user)
-    {
-        string filepath = Application.persistentDataPath + "/userSave.dat";
-        using (FileStream file = File.Create(filepath))
-        {
-            new BinaryFormatter().Serialize(file, user);
-        }
-    }
-    public void SaveUserProfile(User user, FirebaseUser firebaseUser)
-    {
-        string filepath = Application.persistentDataPath + "/userSave.dat";
-        using (FileStream file = File.Create(filepath))
-        {
-            new BinaryFormatter().Serialize(file, user);
-        }
-        if (firebaseUser != null)
-        {
-            var firestore = FirebaseFirestore.DefaultInstance;
-            firestore.Collection("Users").Document(user.Email).SetAsync(user);
-        }
-        else
-        {
-        }
-    }
-    public User LoadUserProfile()
-    {
-        string filepath = Application.persistentDataPath + "/userSave.dat";
-        //string filepath = Application.persistentDataPath + "/save.dat";
-        using (FileStream file = File.Open(filepath, FileMode.Open))
-        {
-            object loadedData = new BinaryFormatter().Deserialize(file);
-            User userData = (User)loadedData;
-            return userData;
-        }
-    }
-    public void AddAndSaveSubmittedSample(Sample sample)
-    {
-        AddToSubmittedSamples(sample);
-        SaveSubmittedSamples();
-    }
-    public void AddAndSaveStoredSample(Sample sample)
-    {
-        AddToStoredSamples(sample);
-        SaveStoredSamples();
-    }
-    public void UpdateSubmittedStoredSamples()
-    {
-        ClearStoredSamplesList();
-        SaveStoredSamples();
-        SaveSubmittedSamples();
-    }
-    //Could seperate into own scripts
-    public void AddToSubmittedSamples(Sample sample)
-    {
-        usersSubmittedSamples.Add(sample);
-    }
-    public List<Sample> GetUserSubmittedSamples()
-    {
-        return this.usersSubmittedSamples;
-    }
-    public void AddToStoredSamples(Sample sample)
-    {
-        usersStoredSamples.Add(sample);
-    }
-    public List<Sample> GetUserStoredSamples()
-    {
-        return this.usersStoredSamples;
-    }
-    public void ClearStoredSamplesList()
-    {
-        usersStoredSamples.Clear();
-    }
-    public void ClearSubmittedSamplesList()
-    {
-        usersSubmittedSamples.Clear();
     }
 }

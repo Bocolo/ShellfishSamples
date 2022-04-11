@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+namespace UI.Retrieve { 
 public class SearchSampleUI : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown searchDropdown;
@@ -111,4 +112,5 @@ public class SearchSampleUI : MonoBehaviour
         }
     }
 #endif
+}
 }

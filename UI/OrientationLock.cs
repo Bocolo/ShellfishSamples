@@ -1,15 +1,18 @@
 using UnityEngine;
-public class OrientationLock : MonoBehaviour
+namespace UI.Orientation
 {
-    void Start()
+    public class OrientationLock : MonoBehaviour
     {
-        Screen.orientation = ScreenOrientation.Portrait;
-    }
-    private void Update()
-    {
-        if (Screen.orientation == ScreenOrientation.Landscape)
+        void Start()
         {
             Screen.orientation = ScreenOrientation.Portrait;
+        }
+        private void Update()
+        {
+            if (Screen.orientation == ScreenOrientation.Landscape)
+            {
+                Screen.orientation = ScreenOrientation.Portrait;
+            }
         }
     }
 }

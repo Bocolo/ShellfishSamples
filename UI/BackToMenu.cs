@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class BackToMenu : MonoBehaviour
+namespace UI.Menu
 {
-    public void ReturnToMenu()
+    public class BackToMenu : MonoBehaviour
     {
-        SceneManager.LoadScene(0);
+        public void ReturnToMenu()
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }

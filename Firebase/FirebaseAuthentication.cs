@@ -2,6 +2,10 @@ using Firebase.Auth;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UI.Popup;
+using Data.Access;
+using Save.Manager;
+
 public class FirebaseAuthentication : MonoBehaviour
 {
    // protected FirebaseUser user;

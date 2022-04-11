@@ -1,11 +1,13 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Firebase.Firestore;
-using Firebase.Extensions;
 using Firebase.Auth;
-using System.Threading.Tasks;
+using Firebase.Extensions;
+using Firebase.Firestore;
+using Save.Manager;
 using System;
-public class UserDAO 
+using UnityEngine;
+
+namespace Data.Access
+{
+    public class UserDAO 
 {
     private FirebaseFirestore firestore;
     private FirebaseAuth auth;
@@ -66,4 +68,5 @@ public class UserDAO
         user.SubmittedSamplesCount += numberOfSamples;
         SaveData.Instance.SaveUserProfile(user);
     }
+}
 }

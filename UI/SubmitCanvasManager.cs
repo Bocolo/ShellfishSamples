@@ -2,6 +2,9 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Save.Manager;
+
+
 namespace UI.Submit
 {
     public class SubmitCanvasManager : MonoBehaviour
