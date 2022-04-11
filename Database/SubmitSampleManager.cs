@@ -8,27 +8,27 @@ using UnityEngine;
 public class SubmitSampleManager : MonoBehaviour
 {
     //    private SubmitCanvasManager canvasManager;
-    private SubmitSampleData submitSampleUI;
+    private SubmitSampleUI submitSampleUI;
     private SampleDAO sampleDAO;
     private UserDAO userDAO;
 
     private void Awake()
     {
-        submitSampleUI = GetComponent<SubmitSampleData>();
-        //       canvasManager = GetComponent<SubmitCanvasManager>();
+        submitSampleUI = GetComponent<SubmitSampleUI>();
+        sampleDAO = new SampleDAO();
+        userDAO = new UserDAO();
     }
-    public void UploadData()
+    public void UploadSample()
     {
         submitSampleUI.SetValues();
         if (!submitSampleUI.IsValuesMissing())
         {
-            userDAO = new UserDAO();
-            sampleDAO = new SampleDAO();
+      
             var sample = submitSampleUI.NewSample();
             sampleDAO.AddSample(sample);
             SaveData.Instance.AddToSubmittedSamples(sample);
             SaveData.Instance.SaveSubmittedSamples();
-            submitSampleUI.SubmissionComplete();
+            submitSampleUI.CompleteSubmission();
             FirebaseAuth auth = FirebaseAuth.DefaultInstance;
             if (auth.CurrentUser != null)
             {
@@ -41,27 +41,26 @@ public class SubmitSampleManager : MonoBehaviour
 
 
 
-    public void SubmitStoredData()
+    public void SubmitStoredSamples()
     {
         try
         {
-            sampleDAO = new SampleDAO();
-            userDAO = new UserDAO();
+      
             var firestore = FirebaseFirestore.DefaultInstance;
             List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
             FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-            int counter = 0;
+           // int counter = 0;
             for (int i = 0; i < storedSamples.Count; i++)
             {
                 sampleDAO.AddSample(storedSamples[i]);
                 SaveData.Instance.AddToSubmittedSamples(storedSamples[i]);
-                counter++;
+             //   counter++;
                 if (user != null)
                 {
                     sampleDAO.AddSampleToUserCollection(user, storedSamples[i]);
                 }
             }
-            userDAO.UpdateUserSampleCount(user, counter);
+            userDAO.UpdateUserSampleCount(user, storedSamples.Count);
             SaveData.Instance.ClearStoredSamplesList();
             SaveData.Instance.SaveStoredSamples();
             SaveData.Instance.SaveSubmittedSamples();
@@ -78,7 +77,7 @@ public class SubmitSampleManager : MonoBehaviour
         {
             var sample = submitSampleUI.NewSample();
             SaveData.Instance.AddToStoredSamples(sample);
-            submitSampleUI.SubmissionComplete();
+            submitSampleUI.CompleteSubmission();
 
 
         }

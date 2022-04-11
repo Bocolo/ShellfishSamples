@@ -15,13 +15,11 @@ public class SampleDAO
     {
         firestore = FirebaseFirestore.DefaultInstance;
     }
-
     public void AddSample(Sample sample)
     {
       //  firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
         firestore.Collection(_collectionPath).Document().SetAsync(sample);
     }
-
     public void AddSampleToUserCollection(FirebaseUser currentUser, Sample sample)
     {
         firestore.Collection("Users").Document(currentUser.Email).Collection("UserSamples").Document().SetAsync(sample);
@@ -37,8 +35,6 @@ public class SampleDAO
         });
         return sample;
     }
-
-
     public async Task<List<Sample>> GetAllUserSubmittedSamples(FirebaseUser currentuser)
     {
         List<Sample> collectionSamples = new List<Sample>();
@@ -70,14 +66,11 @@ public class SampleDAO
         if (searchField.Equals("ProductionWeekNo"))
         {
             testQuery = samplesReference.WhereEqualTo(searchField, int.Parse(searchName));
-
         }
         else if ((!searchName.Equals("")) && (!searchField.Equals("")))
         {
             testQuery = samplesReference.WhereEqualTo(searchField, searchName);
-
         }
-
         if (searchLimit > 0)
         {
             testQuery = testQuery.Limit(searchLimit);
@@ -100,22 +93,17 @@ public class SampleDAO
             }
         });
         return collectionSamples;
-
     }
     public void UpdateSample()
     {
-
     }
     public void DeleteSample()
     {
-
     }
     public void GetAllSamples()
     {
-
     }
     public void AddStoredSamples(List<Sample> storedSamples)
     {
-
     }
 }
