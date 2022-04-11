@@ -2,11 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Firestore;
 using Firebase.Extensions;
-
 using Firebase.Auth;
 using System.Threading.Tasks;
 using System;
-
 public class UserDAO 
 {
     private FirebaseFirestore firestore;
@@ -17,7 +15,6 @@ public class UserDAO
         firestore = FirebaseFirestore.DefaultInstance;
             auth = FirebaseAuth.DefaultInstance;
     }
-
     public void addUser(User user)
     {
         firestore.Collection("Users").Document(user.Email).SetAsync(user);
@@ -27,8 +24,6 @@ public class UserDAO
     public void UpdateUser(FirebaseUser user)
     {
     }
- 
-
     public async void GetUser()
     {
         DocumentReference docRef = firestore.Collection("Users").Document(auth.CurrentUser.Email);
@@ -45,7 +40,6 @@ public class UserDAO
             {
                 Debug.Log(e.Message);
             }
-
         });
     }
     /// <summary>
@@ -58,27 +52,18 @@ public class UserDAO
         DocumentReference docRef = firestore.Collection("Users").Document(firebaseUser.Email);
       //  docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(1))
         docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(1)).ContinueWithOnMainThread(task => {
-
         });
         User user = SaveData.Instance.LoadUserProfile();
         user.SubmittedSamplesCount++;
         SaveData.Instance.SaveUserProfile(user);
-
-
-
     }
     public void UpdateUserSampleCount(FirebaseUser firebaseUser, int numberOfSamples)
     {
         DocumentReference docRef = firestore.Collection("Users").Document(firebaseUser.Email);
         docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(numberOfSamples)).ContinueWithOnMainThread(task => {
-     
         });
         User user = SaveData.Instance.LoadUserProfile();
         user.SubmittedSamplesCount += numberOfSamples;
         SaveData.Instance.SaveUserProfile(user);
-
     }
-
-
 }
-

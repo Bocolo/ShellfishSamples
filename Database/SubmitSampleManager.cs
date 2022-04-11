@@ -4,14 +4,11 @@ using Submit.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class SubmitSampleManager : MonoBehaviour
 {
-    //    private SubmitCanvasManager canvasManager;
     private SubmitSampleUI submitSampleUI;
     private SampleDAO sampleDAO;
     private UserDAO userDAO;
-
     private void Awake()
     {
         submitSampleUI = GetComponent<SubmitSampleUI>();
@@ -23,7 +20,6 @@ public class SubmitSampleManager : MonoBehaviour
         submitSampleUI.SetValues();
         if (!submitSampleUI.IsValuesMissing())
         {
-      
             var sample = submitSampleUI.NewSample();
             sampleDAO.AddSample(sample);
             SaveData.Instance.AddToSubmittedSamples(sample);
@@ -36,16 +32,11 @@ public class SubmitSampleManager : MonoBehaviour
                 userDAO.UpdateUserSampleCount(auth.CurrentUser);
             }
         }
-
     }
-
-
-
     public void SubmitStoredSamples()
     {
         try
         {
-      
             var firestore = FirebaseFirestore.DefaultInstance;
             List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
             FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
@@ -78,12 +69,7 @@ public class SubmitSampleManager : MonoBehaviour
             var sample = submitSampleUI.NewSample();
             SaveData.Instance.AddToStoredSamples(sample);
             submitSampleUI.CompleteSubmission();
-
-
         }
         SaveData.Instance.SaveStoredSamples();
-        // tidy this up??
     }
-
-
 }

@@ -24,7 +24,6 @@ public class SampleUI : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
         for (int i = 0; i < sampleList.Count; i++)
         {
             Debug.Log("in for");
@@ -32,7 +31,6 @@ public class SampleUI : MonoBehaviour
             if (i % 2 == 0)
             {
                 panel = Instantiate(_bluePanelPrefab);
-
             }
             else
             {
@@ -52,7 +50,6 @@ public class SampleUI : MonoBehaviour
             if (sample.SampleLocationName == null)
             {
                 Debug.Log("Location is null restricted");
-
                 return ("\nSpecies: " + sample.Species
                + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
                + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
@@ -69,7 +66,6 @@ public class SampleUI : MonoBehaviour
             if (sample.SampleLocationName == null)
             {
                 Debug.Log("Location is null");
-
                 return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
                + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
                + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date + "\nComment: " + sample.Comment);
@@ -83,29 +79,23 @@ public class SampleUI : MonoBehaviour
             }
         }
     }
-
 #if UNITY_INCLUDE_TESTS
     public void SetUpTestVariables()
     {
         Debug.Log(1);
-
         GameObject go = new GameObject();
-    
         _contentParent = go.GetComponent<Transform>();
         GameObject blueChild = new GameObject();
         GameObject redChild = new GameObject();
         redChild.AddComponent<Text>();
         blueChild.AddComponent<Text>();
         Debug.Log(15);
-
-   
         _bluePanelPrefab = new GameObject();
         Debug.Log(16);
         _redPanelPrefab = new GameObject();
         blueChild.transform.SetParent(_bluePanelPrefab.transform);
         redChild.transform.SetParent(_redPanelPrefab.transform);
         Debug.Log(17);
-
     }
     public Transform GetContentParent()
     {

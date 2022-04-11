@@ -1,23 +1,19 @@
 using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class LogInOutButtonManager : MonoBehaviour
 {
     private bool isLoggedIn;
     [SerializeField] private Button logInButton;
     [SerializeField] private Button signoutButton;
-
     private void Start()
     {
         SetLoggedIn(FirebaseAuth.DefaultInstance.CurrentUser != null);
     }
-
     public void SetLoggedIn(bool isLoggedIn)
     {
         this.isLoggedIn = isLoggedIn;
         SetLogInOutButtonInteractable();
-
     }
     private void SetLogInOutButtonInteractable()
     {
@@ -43,7 +39,6 @@ public class LogInOutButtonManager : MonoBehaviour
         GameObject go2 = new GameObject();
         SetLoginButton(go1);
         SetSignoutButton(go2);
-
     }
     //bacse adding to this, doesnt work --- mroe than one btn component
     public void SetLoginButton(GameObject go)

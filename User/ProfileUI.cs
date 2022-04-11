@@ -4,10 +4,8 @@ using UnityEngine;
 public class ProfileUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text _profileText;
-
     [SerializeField] private TMP_InputField _userNameInput;
     [SerializeField] private TMP_InputField _companyInput;
-
     [SerializeField] private GameObject _updateProfileButton;
     [SerializeField] private GameObject _saveProfileButton;
     private User user;
@@ -19,7 +17,6 @@ public class ProfileUI : MonoBehaviour
     public void SaveProfile()
     {
         string filepath = Application.persistentDataPath + "/userSave.dat";
-
         if (System.IO.File.Exists(filepath))
         {
             UpdateProfile();
@@ -28,7 +25,6 @@ public class ProfileUI : MonoBehaviour
         {
             CreateProfile();
         }
-
         GoToViewProfile();
         SetProfileText();
     }
@@ -40,13 +36,11 @@ public class ProfileUI : MonoBehaviour
         _saveProfileButton.SetActive(false);
         _userNameInput.gameObject.SetActive(false);
         _companyInput.gameObject.SetActive(false);
-
     }
     public void GoToUpdateProfile()
     {
         _profileText.gameObject.SetActive(false);
         _updateProfileButton.SetActive(false);
-
         _saveProfileButton.SetActive(true);
         _userNameInput.gameObject.SetActive(true);
         _companyInput.gameObject.SetActive(true);
@@ -59,49 +53,41 @@ public class ProfileUI : MonoBehaviour
              + "\n\n<b>Company: </b>" + user.Company
              + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.GetUserStoredSamples().Count
              + "\n\n<b>No of Submitted Samples from this Device: </b>" + SaveData.Instance.GetUserSubmittedSamples().Count;
-
         //Can fic theis by making stores submitted samples equal to the upd.ssc
         //then no need for if else
         if (FirebaseAuth.DefaultInstance.CurrentUser != null)
         {
             profileText += "\n\n<b>No of Submitted Samples from logged in user: </b>" + user.SubmittedSamplesCount;
         }
-     
         _profileText.text = profileText;
     }
     private void LoadUser()
     {
         user = SaveData.Instance.LoadUserProfile();
     }
-
     private void CreateProfile()
     {
         User newUser = new User
         {
             Name = _userNameInput.text,
             Company = _companyInput.text,
-
         };
         SaveData.Instance.SaveUserProfile(newUser);
     }
-
     //https://www.youtube.com/watch?v=52yUcKLMKX0
     private void UpdateProfile()
     {
         LoadUser();
-
         user.Name = _userNameInput.text;
         user.Company = _companyInput.text;
         if(FirebaseAuth.DefaultInstance.CurrentUser!= null){
           SaveData.Instance.SaveUserProfile(user, FirebaseAuth.DefaultInstance.CurrentUser);
-
         }
         else
         {
             SaveData.Instance.SaveUserProfile(user);
         }
     }
-
 #if UNITY_INCLUDE_TESTS
     //need to solve this without awake-- possibly use the internal testing for unity
     // review in morning

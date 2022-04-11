@@ -1,9 +1,7 @@
-
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace Submit.UI
 {
     public class SubmitCanvasManager : MonoBehaviour
@@ -22,14 +20,10 @@ namespace Submit.UI
         public TMP_Dropdown YearDrop;
         public TMP_Dropdown _iceRectangle;
         public TMP_Dropdown _sampleLocationName;
-
         public Button _submitButton;
-
-
         //SMALL CANVAS
         [SerializeField] private TMP_InputField _name_sml;
         [SerializeField] private TMP_InputField _company_sml;
-
         [SerializeField] private TMP_InputField _pop_up_sml;
         [SerializeField] private TMP_Dropdown _productionWk_sml;
         [SerializeField] private TMP_Dropdown _species_sml;
@@ -39,14 +33,10 @@ namespace Submit.UI
         [SerializeField] private TMP_Dropdown _iceRectangle_sml;
         [SerializeField] private TMP_Dropdown _sampleLocationName_sml;
         [SerializeField] private TMP_InputField _comments_sml;
-
         [SerializeField] private Button _submitButton_sml;
-
-
         //LARGE CANVAS
         [SerializeField] private TMP_InputField _name_lrg;
         [SerializeField] private TMP_InputField _company_lrg;
-
         [SerializeField] private TMP_InputField _pop_up_lrg;
         [SerializeField] private TMP_Dropdown _productionWk_lrg;
         [SerializeField] private TMP_Dropdown _species_lrg;
@@ -56,12 +46,10 @@ namespace Submit.UI
         [SerializeField] private TMP_Dropdown _iceRectangle_lrg;
         [SerializeField] private TMP_Dropdown _sampleLocationName_lrg;
         [SerializeField] private TMP_InputField _comments_lrg;
-
         [SerializeField] private Button _submitButton_lrg;
         private static bool isSmallCanvas = false;
         private void Awake()
         {
-
             SetCanvas(isSmallCanvas);
             //try catch for testing
             try
@@ -70,10 +58,7 @@ namespace Submit.UI
             }
             catch (Exception e)
             {
-
             }
-
-
         }
         public void SetNameAndCompanyFromProfile()
         {
@@ -85,7 +70,6 @@ namespace Submit.UI
         {
             if (SmallCanvas.activeInHierarchy)
             {
-
                 isSmallCanvas = false;
                 /*    SetCanvas(isSmallCanvas);
                     SetNameAndCompanyFromProfile();*/
@@ -95,11 +79,9 @@ namespace Submit.UI
             }
             else
             {
-
                 isSmallCanvas = true;
                 /*      SetCanvas(isSmallCanvas);
                       SetNameAndCompanyFromProfile();*/
-
             }
             SetCanvas(isSmallCanvas);
             SetNameAndCompanyFromProfile();
@@ -110,7 +92,6 @@ namespace Submit.UI
             LargeCanvas.SetActive(!isSmall);
             if (isSmall)
             {
-
                 _name = _name_sml;
                 _company = _company_sml;
                 _productionWk = _productionWk_sml;
@@ -123,11 +104,9 @@ namespace Submit.UI
                 _comments = _comments_sml;
                 _submitButton = _submitButton_sml;
                 _pop_up = _pop_up_sml;
-
             }
             else
             {
-
                 _name = _name_lrg;
                 _company = _company_lrg;
                 _productionWk = _productionWk_lrg;
@@ -140,11 +119,8 @@ namespace Submit.UI
                 _comments = _comments_lrg;
                 _submitButton = _submitButton_lrg;
                 _pop_up = _pop_up_lrg;
-
             }
         }
-
-
         public void DisplayPopUP(String missingValues)
         {
             _pop_up.text = missingValues;
@@ -165,14 +141,11 @@ namespace Submit.UI
             MonthDrop.value = 0;
             YearDrop.value = 0;
             SetNameAndCompanyFromProfile();
-
         }
 #if UNITY_INCLUDE_TESTS
         public void SetSmallCanvasTest()
         {
-
         }
 #endif
     }
-
 }

@@ -5,24 +5,18 @@ using Firebase.Extensions;
 using System.Threading.Tasks;
 using Firebase.Firestore;
 using System;
-
 public class FirebaseAuthentication : MonoBehaviour
 {
-
     protected FirebaseAuth auth;
     protected FirebaseUser user;
     [SerializeField] private TMP_InputField email;
     [SerializeField] private TMP_InputField password;
     [SerializeField] private TMP_InputField _userNameInput;
     [SerializeField] private TMP_InputField _companyInput;
-
     private UserDAO userDAO;
-
     [SerializeField] private GameObject popUpObject;
     private bool isSuccessfulLogin = false;
     private bool isSuccessfulSignUp = false;
-
-
     public async void SignUp()
     {
         userDAO = new UserDAO();
@@ -88,13 +82,11 @@ public class FirebaseAuthentication : MonoBehaviour
            {
                Debug.Log(e + " __ error converting to user");
            }
-
        });
     }
     private async Task ValidateAuthenticationLogin(string email, string password)
     {
         auth = FirebaseAuth.DefaultInstance;//?
-
         await auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
             if (task.IsCanceled)
@@ -109,17 +101,12 @@ public class FirebaseAuthentication : MonoBehaviour
                 isSuccessfulLogin = false;
                 return;
             }
-
             FirebaseUser newUser = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
-
             isSuccessfulLogin = true;
         });
-
     }
-
-    
     private async Task SetUpAuthentication(string email, string password, string name, string company)
     {
         auth = FirebaseAuth.DefaultInstance;//?
@@ -140,7 +127,6 @@ public class FirebaseAuthentication : MonoBehaviour
             FirebaseUser user = task.Result;
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 user.DisplayName, user.UserId);
-
             auth.CurrentUser.UpdateUserProfileAsync(new UserProfile
             {
                 DisplayName = name,
@@ -153,7 +139,6 @@ public class FirebaseAuthentication : MonoBehaviour
     public async Task AuthenticationTest(string email, string password, string name, string company)
     {
          await SetUpAuthentication( email,  password,  name,  company);
-       
     }
 #endif
 }

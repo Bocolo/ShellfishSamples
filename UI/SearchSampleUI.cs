@@ -8,9 +8,6 @@ public class SearchSampleUI : MonoBehaviour
    private string searchFieldSelection = "";
      private string searchNameSelection = "";
     private int searchLimitSelection = 0;
-
-
-
     public string GetSearchFieldSelection()
     {
         return searchFieldSelection;
@@ -19,23 +16,14 @@ public class SearchSampleUI : MonoBehaviour
     {
         return searchNameSelection;
     }
-
-
-
     public int GetSearchLimitSelection()
     {
         return searchLimitSelection;
     }
-
-
-
     private void SetSearchNameSelection()
     {
         searchNameSelection =searchInput.text;
     }
-
-
-
     private void SetSearchLimitSelection()
     {
         if (!searchLimit.text.Equals(""))
@@ -76,7 +64,6 @@ public class SearchSampleUI : MonoBehaviour
                 break;
         }
     }
-
 #if UNITY_INCLUDE_TESTS
     public void SetUpTestVariables()
     {
@@ -87,14 +74,12 @@ public class SearchSampleUI : MonoBehaviour
         searchInput = go3.AddComponent<TMP_InputField>();
         searchLimit = go4.AddComponent<TMP_InputField>();
     }
-
     /// <summary>
     /// fix all of this too
     /// </summary>
     /// <param name="dropdownValue"></param>
     public void SetSeachFieldTest(int dropdownValue)
     {
-
         Debug.Log("DDV: " + dropdownValue);
         SetSearchFieldValue(dropdownValue);
     }
@@ -125,6 +110,5 @@ public class SearchSampleUI : MonoBehaviour
                 break;
         }
     }
-
 #endif
 }

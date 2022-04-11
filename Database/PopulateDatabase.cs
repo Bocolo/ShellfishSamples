@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 public class PopulateDatabase : MonoBehaviour
 {
-   
     [SerializeField] private string FileLocation;
     List<Data> temp;
     int count = 0;
@@ -12,9 +11,7 @@ public class PopulateDatabase : MonoBehaviour
     {
         temp = SaveToList();
         Debug.Log(temp[0].Species);
- 
     }
-
     private List<Data> SaveToList()
     {
         List<Data> values = File.ReadAllLines("C:\\Users\\brona\\OneDrive\\Documents\\Bronagh_programming\\College_work\\IndustrialProject\\SQL\\FD_SQL_Test_c.csv")
@@ -25,7 +22,6 @@ public class PopulateDatabase : MonoBehaviour
     }
     class Data
     {
-
         public string Species;
         public int ProductionWeekNo;
         public string IcesRectangleNo;
@@ -33,7 +29,6 @@ public class PopulateDatabase : MonoBehaviour
         public string Date;
         public string Name;
         public string SampleLocationName;
-        
         public static Data FromFile(string line)
         {
             string[] values = line.Split(';');
@@ -47,6 +42,5 @@ public class PopulateDatabase : MonoBehaviour
             data.Date = values[7];
             return data;
         }
-      
     }
 }

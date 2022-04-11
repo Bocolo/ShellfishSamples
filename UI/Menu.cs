@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
     [SerializeField] private GameObject popUpObject;
-
     public void RetrievalPage()
     {
         FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
@@ -19,13 +18,11 @@ public class Menu : MonoBehaviour
             Debug.Log("Please sign in to access database");
         }
     }
-
     public void LogOut()
     {
         FirebaseAuth.DefaultInstance.SignOut();
         SaveData.Instance.SaveUserProfile(new User { });
     }
-
     public void SubmitPage()
     {
         SceneManager.LoadScene(1);
@@ -34,17 +31,14 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene(3);
     }
-
     public void ProfilePage()
     {
         SceneManager.LoadScene(4);
     }
-
     public void LoginPage()
     {
         SceneManager.LoadScene(5);
     }
-
     public void HelpPage()
     {
         SceneManager.LoadScene(6);

@@ -1,10 +1,8 @@
 using Firebase.Firestore;
-
 [FirestoreData]
 [System.Serializable]
 public struct Sample 
 {
-
    [FirestoreProperty]
     public string Species { get; set; }
     [FirestoreProperty]
@@ -21,5 +19,4 @@ public struct Sample
     public string SampleLocationName { get; set; }
     [FirestoreProperty]
     public string Comment { get; set; }
-   
 }

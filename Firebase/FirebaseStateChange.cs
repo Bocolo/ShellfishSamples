@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class FirebaseStateChange : MonoBehaviour
 {
     Firebase.Auth.FirebaseAuth auth;
@@ -15,7 +14,6 @@ public class FirebaseStateChange : MonoBehaviour
         auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
     }
-
     // Track state changes of the auth object.
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
@@ -33,7 +31,6 @@ public class FirebaseStateChange : MonoBehaviour
             }
         }
     }
-
     void OnDestroy()
     {
         auth.StateChanged -= AuthStateChanged;

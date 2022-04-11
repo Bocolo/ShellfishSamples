@@ -1,8 +1,4 @@
-
 using Firebase.Firestore;
-
-
-
 [FirestoreData]
 [System.Serializable]
 public struct User
@@ -15,5 +11,4 @@ public struct User
     public string Email { get; set; }
     [FirestoreProperty]
     public int SubmittedSamplesCount { get; set; }
-    
 }

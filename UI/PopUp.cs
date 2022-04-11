@@ -3,11 +3,9 @@ using UnityEngine;
 public class PopUp : MonoBehaviour
 {
     [SerializeField] private TMP_Text popUpText;
-
     public void PopUpAcknowleged()
     {
         this.gameObject.SetActive(false);
-
     }
     public void SetPopUpText(string text)
     {
@@ -33,7 +31,6 @@ public class PopUp : MonoBehaviour
 #if UNITY_INCLUDE_TESTS
     public void SetPopUp()
     {
-       
         popUpText = this.gameObject.AddComponent<TextMeshPro>();
     }
     public GameObject GetPopUp()
@@ -45,5 +42,4 @@ public class PopUp : MonoBehaviour
         return popUpText.text;
     }
 #endif
-
 }

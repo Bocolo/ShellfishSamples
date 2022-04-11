@@ -1,7 +1,6 @@
 using Submit.UI;
 using System;
 using UnityEngine;
-
 public class SubmitSampleUI : MonoBehaviour
 {
   private SubmitCanvasManager canvasManager;
@@ -11,15 +10,12 @@ public class SubmitSampleUI : MonoBehaviour
     private string _speciesString = null;
     private string _icesString = null;
     private string _locationString = null;
-
     private string date =null;
     /// <summary>
     /// /SERPERATE ALL THIS, ALL STRING GET AND SET IN OWN CLASS
     /// 
     /// SAMPLEDETAILS
     /// </summary>
-
-
     private string missingValues = "";
     private void Awake()
     {
