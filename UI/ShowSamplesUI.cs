@@ -22,13 +22,18 @@ namespace Data.Display
         }
         public void ShowStoredSamples()
         {
-            SaveData.Instance.LoadStoredSamples();//MAYBE???
-            sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserStoredSamples());
+  /*          SaveData.Instance.LoadStoredSamples();//MAYBE???
+            sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserStoredSamples());*/
+            
+            
+            sampleUI.AddTextAndPrefab(SaveData.Instance.LoadAndGetStoredSamples());
         }
         public void ShowAllDeviceSubmittedSamples()
         {
-            SaveData.Instance.LoadSubmittedSamples();//MAYBE???
-            sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserSubmittedSamples());
+    /*        SaveData.Instance.LoadSubmittedSamples();//MAYBE???
+            sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserSubmittedSamples());*/
+
+            sampleUI.AddTextAndPrefab(SaveData.Instance.LoadAndGetSubmittedSamples());
         }
         public async void ShowUserSubmittedSamples(GameObject popUp)
         {

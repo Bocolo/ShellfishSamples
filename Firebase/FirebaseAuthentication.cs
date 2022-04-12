@@ -20,6 +20,11 @@ public class FirebaseAuthentication : MonoBehaviour
 
     private bool isSuccessfulLogin = false;
     private bool isSuccessfulSignUp = false;
+    public void Start()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+        userDAO = new UserDAO();
+    }
     public async void SignUp()
     {
         if (!_userNameInput.text.Equals("") && !_companyInput.text.Equals(""))
@@ -85,7 +90,7 @@ public class FirebaseAuthentication : MonoBehaviour
         await auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
             if (task.IsCanceled)
-            {
+            { 
                 isSuccessfulLogin = false;
                 return;
             }
@@ -128,11 +133,7 @@ public class FirebaseAuthentication : MonoBehaviour
     {
 
     }*/
-    public void Start()
-    {
-        auth = FirebaseAuth.DefaultInstance;
-        userDAO = new UserDAO();
-    }
+
 #if UNITY_INCLUDE_TESTS
     public async Task AuthenticationTest(string email, string password, string name)
     {

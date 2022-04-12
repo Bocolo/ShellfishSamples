@@ -42,99 +42,17 @@ namespace Save.Manager
                 LoadStoredSamples();
             }
         }
+        public List<Sample> LoadAndGetStoredSamples()
+        {
+            LoadStoredSamples();
+            return this.usersStoredSamples;
+        }
+        public List<Sample> LoadAndGetSubmittedSamples()
+        {
+            LoadSubmittedSamples();
+            return this.usersSubmittedSamples;
+        }
 
-        public void LoadSubmittedSamples()
-        {
-            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
-            //string filepath = Application.persistentDataPath + "/save.dat";
-            try
-            {
-                using (FileStream file = File.Open(filepath, FileMode.Open))
-                {
-                    object loadedData = new BinaryFormatter().Deserialize(file);
-                    List<Sample> saveData = (List<Sample>)loadedData;
-                    usersSubmittedSamples = saveData;
-                    //abbove could be more direct
-                }
-            }
-            catch (Exception e)
-            {
-            }
-            //    usersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
-        }
-        /// <summary>
-        /// Consider a delete stored / submitted samples from deivce
-        /// </summary>
-        public void SaveSubmittedSamples()
-        {
-            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, usersSubmittedSamples);
-            }
-            //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
-        }
-        public void LoadStoredSamples()
-        {
-            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
-            //string filepath = Application.persistentDataPath + "/save.dat";
-            try
-            {
-                using (FileStream file = File.Open(filepath, FileMode.Open))
-                {
-                    object loadedData = new BinaryFormatter().Deserialize(file);
-                    List<Sample> saveData = (List<Sample>)loadedData;
-                    usersStoredSamples = saveData;
-                }
-            }
-            catch (Exception e)
-            {
-            }
-            //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
-        }
-        public List<Sample> LoadSamples(String filename)//?? would this updatethisinstancesampels
-        {
-            string filepath = Application.persistentDataPath + filename;
-            //string filepath = Application.persistentDataPath + "/save.dat";
-            try
-            {
-                using (FileStream file = File.Open(filepath, FileMode.Open))
-                {
-                    object loadedData = new BinaryFormatter().Deserialize(file);
-                    List<Sample> saveData = (List<Sample>)loadedData;
-                    return saveData;
-                }
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-        public void SaveSamples(String filename, List<Sample> samples)
-        {
-            string filepath = Application.persistentDataPath + filename;
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, samples);
-            }
-        }
-        public void SaveStoredSamples()
-        {
-            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, usersStoredSamples);
-            }
-            //   SaveSamples("/storedSamplesSave.dat", usersStoredSamples);
-        }
-        public void SaveProfile(String filename, User user)
-        {
-            string filepath = Application.persistentDataPath + filename;
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, user);
-            }
-        }
         public void SaveUserProfile(User user)
         {
             string filepath = Application.persistentDataPath + "/userSave.dat";
@@ -170,6 +88,7 @@ namespace Save.Manager
                 return userData;
             }
         }
+        
         public void AddAndSaveSubmittedSample(Sample sample)
         {
             AddToSubmittedSamples(sample);
@@ -210,6 +129,101 @@ namespace Save.Manager
         public void ClearSubmittedSamplesList()
         {
             usersSubmittedSamples.Clear();
+        }
+
+
+
+        private void LoadSubmittedSamples()
+        {
+            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
+            //string filepath = Application.persistentDataPath + "/save.dat";
+            try
+            {
+                using (FileStream file = File.Open(filepath, FileMode.Open))
+                {
+                    object loadedData = new BinaryFormatter().Deserialize(file);
+                    List<Sample> saveData = (List<Sample>)loadedData;
+                    usersSubmittedSamples = saveData;
+                    //abbove could be more direct
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            //    usersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
+        }
+        /// <summary>
+        /// Consider a delete stored / submitted samples from deivce
+        /// </summary>
+        private void SaveSubmittedSamples()
+        {
+            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, usersSubmittedSamples);
+            }
+            //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
+        }
+        private void LoadStoredSamples()
+        {
+            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
+            //string filepath = Application.persistentDataPath + "/save.dat";
+            try
+            {
+                using (FileStream file = File.Open(filepath, FileMode.Open))
+                {
+                    object loadedData = new BinaryFormatter().Deserialize(file);
+                    List<Sample> saveData = (List<Sample>)loadedData;
+                    usersStoredSamples = saveData;
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
+        }
+        private List<Sample> LoadSamples(String filename)//?? would this updatethisinstancesampels
+        {
+            string filepath = Application.persistentDataPath + filename;
+            //string filepath = Application.persistentDataPath + "/save.dat";
+            try
+            {
+                using (FileStream file = File.Open(filepath, FileMode.Open))
+                {
+                    object loadedData = new BinaryFormatter().Deserialize(file);
+                    List<Sample> saveData = (List<Sample>)loadedData;
+                    return saveData;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        private void SaveSamples(String filename, List<Sample> samples)
+        {
+            string filepath = Application.persistentDataPath + filename;
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, samples);
+            }
+        }
+        private void SaveStoredSamples()
+        {
+            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, usersStoredSamples);
+            }
+            //   SaveSamples("/storedSamplesSave.dat", usersStoredSamples);
+        }
+        private void SaveProfile(String filename, User user)
+        {
+            string filepath = Application.persistentDataPath + filename;
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, user);
+            }
         }
     }
 }
