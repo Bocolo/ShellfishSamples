@@ -25,7 +25,8 @@ namespace UI.Submit
         }
         public void CompleteSubmission()
         {
-            canvasManager.OnSubmitClearFields();
+            canvasManager.OnSubmitResetFields();
+        //    canvasManager.SetNameAndCompanyFromProfile();
             //successfully stored vs submittes
             canvasManager.DisplayPopUP("\n\nSuccessfully Submitted Sample");// this is wrinfg -- can onlt reeally be successful is only
         }
@@ -38,7 +39,7 @@ namespace UI.Submit
                 Company = _companyString,
                 Date = date,
                 Name = _nameString,
-                ProductionWeekNo = int.Parse(canvasManager._productionWk.options[canvasManager._productionWk.value].text),
+                ProductionWeekNo = int.Parse(canvasManager.ProductionWk.options[canvasManager.ProductionWk.value].text),
                 SampleLocationName = _locationString,
                 Comment = _commentsString
             };
@@ -180,7 +181,7 @@ namespace UI.Submit
         }
         private String MissingProductionWeek(String missingValues)
         {
-            if (canvasManager._productionWk.value == 0)
+            if (canvasManager.ProductionWk.value == 0)
             {
                 missingValues += "Please enter the production week\n";
             }
@@ -197,9 +198,9 @@ namespace UI.Submit
         }
         private void SetNameToCanvas()
         {
-            if (canvasManager._name.text != "")
+            if (canvasManager.Name.text != "")
             {
-                this._nameString = (canvasManager._name.text);
+                this._nameString = (canvasManager.Name.text);
             }
             else
             {
@@ -208,9 +209,9 @@ namespace UI.Submit
         }
         private void SetCompanyToCanvas()
         {
-            if (canvasManager._company.text != "")
+            if (canvasManager.Company.text != "")
             {
-                this._companyString = (canvasManager._company.text);
+                this._companyString = (canvasManager.Company.text);
             }
             else
             {
@@ -219,9 +220,9 @@ namespace UI.Submit
         }
         private void SetCommentToCanvas()
         {
-            if (canvasManager._comments.text != null)
+            if (canvasManager.Comments.text != null)
             {
-                this._commentsString = (canvasManager._comments.text);
+                this._commentsString = (canvasManager.Comments.text);
             }
             else
             {
@@ -231,9 +232,9 @@ namespace UI.Submit
         }
         private void SetSpeciesToCanvas()
         {
-            if (canvasManager._species.value != 0)
+            if (canvasManager.Species.value != 0)
             {
-                this._speciesString = (canvasManager._species.options[canvasManager._species.value].text);
+                this._speciesString = (canvasManager.Species.options[canvasManager.Species.value].text);
             }
             else
             {
@@ -242,9 +243,9 @@ namespace UI.Submit
         }
         private void SetIcesRectangleToCanvas()
         {
-            if (canvasManager._iceRectangle.value != 0)
+            if (canvasManager.IceRectangle.value != 0)
             {
-                this._icesString = (canvasManager._iceRectangle.options[canvasManager._iceRectangle.value].text);
+                this._icesString = (canvasManager.IceRectangle.options[canvasManager.IceRectangle.value].text);
             }
             else
             {
@@ -268,9 +269,9 @@ namespace UI.Submit
         }
         private void SetLocationToCanvas()
         {
-            if (canvasManager._sampleLocationName.value != 0)
+            if (canvasManager.SampleLocationName.value != 0)
             {
-                this._locationString = (canvasManager._sampleLocationName.options[canvasManager._sampleLocationName.value].text);
+                this._locationString = (canvasManager.SampleLocationName.options[canvasManager.SampleLocationName.value].text);
             }
             else
             {

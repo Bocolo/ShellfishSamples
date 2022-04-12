@@ -8,21 +8,11 @@ namespace UI.Retrieve
         [SerializeField] private TMP_Dropdown searchDropdown;
         [SerializeField] private TMP_InputField searchInput;
         [SerializeField] private TMP_InputField searchLimit;
-        private string searchFieldSelection = "";
-        private string searchNameSelection = "";
-        private int searchLimitSelection = 0;
-        public string GetSearchFieldSelection()
-        {
-            return searchFieldSelection;
-        }
-        public string GetSearchNameSelection()
-        {
-            return searchNameSelection;
-        }
-        public int GetSearchLimitSelection()
-        {
-            return searchLimitSelection;
-        }
+        public string SearchFieldSelection { get; private set; } = "";
+        public string SearchNameSelection { get; private set; } = "";
+        public int SearchLimitSelection { get; private set; } = 0;
+   
+
         public void SetSearchValues()
         {
             SetSearchFieldValue(searchDropdown.value);
@@ -31,7 +21,7 @@ namespace UI.Retrieve
         }
         private void SetSearchNameSelection()
         {
-            searchNameSelection = searchInput.text;
+            SearchNameSelection = searchInput.text;
         }
         private void SetSearchLimitSelection()
         {
@@ -39,11 +29,11 @@ namespace UI.Retrieve
             {
                 //try  catch not necessary as the ui prevent letter input
                 try {
-                    searchLimitSelection = int.Parse(searchLimit.text);
+                    SearchLimitSelection = int.Parse(searchLimit.text);
                 }
                 catch(FormatException e)
                 {
-                    searchLimitSelection = 0;
+                    SearchLimitSelection = 0;
                 }
                
             }
@@ -57,22 +47,22 @@ namespace UI.Retrieve
             switch (dropdownValue)
             {
                 case 0:
-                    searchFieldSelection = "";
+                    SearchFieldSelection = "";
                     break;
                 case 1:
-                    searchFieldSelection = "Name";
+                    SearchFieldSelection = "Name";
                     break;
                 case 2:
-                    searchFieldSelection = "Company";
+                    SearchFieldSelection = "Company";
                     break;
                 case 3:
-                    searchFieldSelection = "Species";
+                    SearchFieldSelection = "Species";
                     break;
                 case 4:
-                    searchFieldSelection = "ProductionWeekNo";
+                    SearchFieldSelection = "ProductionWeekNo";
                     break;
                 case 5:
-                    searchFieldSelection = "Date";
+                    SearchFieldSelection = "Date";
                     break;
             }
         }

@@ -55,9 +55,9 @@ namespace Data.Display
             sampleDAO = new SampleDAO();
             //This is ugly looking
             collectionSamples = await sampleDAO.GetSamplesBySearch(
-                sampleDAO.SetTestQuery(searchSampleUI.GetSearchFieldSelection(), 
-                searchSampleUI.GetSearchNameSelection(), 
-                searchSampleUI.GetSearchLimitSelection()));
+                sampleDAO.SetTestQuery(searchSampleUI.SearchFieldSelection, 
+                searchSampleUI.SearchNameSelection, 
+                searchSampleUI.SearchLimitSelection));
        /*     collectionSamples = await sampleDAO.GetSamplesBySearch(
               searchSampleUI.GetSearchFieldSelection(),
               searchSampleUI.GetSearchNameSelection(),

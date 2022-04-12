@@ -16,7 +16,7 @@ public class FirebaseAuthentication : MonoBehaviour
  
     [SerializeField] private GameObject popUpObject;
     private UserDAO userDAO;
-    protected FirebaseAuth auth;
+    private FirebaseAuth auth;
 
     private bool isSuccessfulLogin = false;
     private bool isSuccessfulSignUp = false;

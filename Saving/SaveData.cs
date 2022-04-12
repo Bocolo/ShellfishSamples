@@ -20,8 +20,8 @@ namespace Save.Manager
          */
         //private static SaveData _instance;
         public static SaveData Instance { get; private set; }
-        private List<Sample> usersSubmittedSamples = new List<Sample>();
-        private List<Sample> usersStoredSamples = new List<Sample>();
+        public List<Sample> UsersSubmittedSamples { get; private set; } = new List<Sample>();
+        public List<Sample> UsersStoredSamples { get; private set; } = new List<Sample>();
         //  private List<Sample> usersStoredSamples = new List<Sample>();
         private void Awake()
         {
@@ -32,7 +32,7 @@ namespace Save.Manager
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(this.gameObject);
+                DontDestroyOnLoad(this.gameObject);//this needs to be fixed? m\ybe dont need this
             }
             //we need to check teh file path exists first
             string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
@@ -45,12 +45,12 @@ namespace Save.Manager
         public List<Sample> LoadAndGetStoredSamples()
         {
             LoadStoredSamples();
-            return this.usersStoredSamples;
+            return this.UsersStoredSamples;
         }
         public List<Sample> LoadAndGetSubmittedSamples()
         {
             LoadSubmittedSamples();
-            return this.usersSubmittedSamples;
+            return this.UsersSubmittedSamples;
         }
 
         public void SaveUserProfile(User user)
@@ -73,9 +73,7 @@ namespace Save.Manager
                 var firestore = FirebaseFirestore.DefaultInstance;
                 firestore.Collection("Users").Document(user.Email).SetAsync(user);
             }
-            else
-            {
-            }
+           
         }
         public User LoadUserProfile()
         {
@@ -108,27 +106,21 @@ namespace Save.Manager
         //Could seperate into own scripts
         public void AddToSubmittedSamples(Sample sample)
         {
-            usersSubmittedSamples.Add(sample);
+            UsersSubmittedSamples.Add(sample);
         }
-        public List<Sample> GetUserSubmittedSamples()
-        {
-            return this.usersSubmittedSamples;
-        }
+  
         public void AddToStoredSamples(Sample sample)
         {
-            usersStoredSamples.Add(sample);
+            UsersStoredSamples.Add(sample);
         }
-        public List<Sample> GetUserStoredSamples()
-        {
-            return this.usersStoredSamples;
-        }
+   //these arent used remove them
         public void ClearStoredSamplesList()
         {
-            usersStoredSamples.Clear();
+            UsersStoredSamples.Clear();
         }
         public void ClearSubmittedSamplesList()
         {
-            usersSubmittedSamples.Clear();
+            UsersSubmittedSamples.Clear();
         }
 
 
@@ -143,7 +135,7 @@ namespace Save.Manager
                 {
                     object loadedData = new BinaryFormatter().Deserialize(file);
                     List<Sample> saveData = (List<Sample>)loadedData;
-                    usersSubmittedSamples = saveData;
+                    UsersSubmittedSamples = saveData;
                     //abbove could be more direct
                 }
             }
@@ -160,7 +152,7 @@ namespace Save.Manager
             string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
             using (FileStream file = File.Create(filepath))
             {
-                new BinaryFormatter().Serialize(file, usersSubmittedSamples);
+                new BinaryFormatter().Serialize(file, UsersSubmittedSamples);
             }
             //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
         }
@@ -174,7 +166,7 @@ namespace Save.Manager
                 {
                     object loadedData = new BinaryFormatter().Deserialize(file);
                     List<Sample> saveData = (List<Sample>)loadedData;
-                    usersStoredSamples = saveData;
+                    UsersStoredSamples = saveData;
                 }
             }
             catch (Exception e)
@@ -213,7 +205,7 @@ namespace Save.Manager
             string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
             using (FileStream file = File.Create(filepath))
             {
-                new BinaryFormatter().Serialize(file, usersStoredSamples);
+                new BinaryFormatter().Serialize(file, UsersStoredSamples);
             }
             //   SaveSamples("/storedSamplesSave.dat", usersStoredSamples);
         }

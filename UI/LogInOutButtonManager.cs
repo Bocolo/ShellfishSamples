@@ -5,19 +5,19 @@ namespace UI.Authentication
 {
     public class LogInOutButtonManager : MonoBehaviour
     {
-        private bool isLoggedIn;
+        public bool IsLoggedIn {  private get;  set; }
         [SerializeField] private Button logInButton;
         [SerializeField] private Button signoutButton;
         private void Start()
         {
-            SetLoggedIn(FirebaseAuth.DefaultInstance.CurrentUser != null);
-            SetLogInOutButtonInteractable(isLoggedIn);
+            IsLoggedIn =FirebaseAuth.DefaultInstance.CurrentUser != null;
+            SetLogInOutButtonInteractable(IsLoggedIn);
         }
-        public void SetLoggedIn(bool isLoggedIn)
+   /*     private void SetLoggedIn(bool isLoggedIn)
         {
-            this.isLoggedIn = isLoggedIn;
+            this.IsLoggedIn = isLoggedIn;
             //   SetLogInOutButtonInteractable(isLoggedIn);
-        }
+        }*/
         private void SetLogInOutButtonInteractable(bool isLoggedIn)
         {
             if (isLoggedIn)
@@ -34,7 +34,7 @@ namespace UI.Authentication
 #if UNITY_INCLUDE_TESTS
         public bool GetLoggedIn()
         {
-            return this.isLoggedIn;
+            return this.IsLoggedIn;
         }
         public void SetTestButtons()
         {

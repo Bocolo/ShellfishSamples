@@ -34,15 +34,7 @@ namespace UI.Profile
             GoToViewProfile();
             SetProfileText();
         }
-        public void GoToViewProfile()
-        {
-            _profileText.gameObject.SetActive(true);
-            _updateProfileButton.SetActive(true);
-            //remove addintioal save prod button here?
-            _saveProfileButton.SetActive(false);
-            _userNameInput.gameObject.SetActive(false);
-            _companyInput.gameObject.SetActive(false);
-        }
+     
         public void GoToUpdateProfile()
         {
             _profileText.gameObject.SetActive(false);
@@ -51,14 +43,23 @@ namespace UI.Profile
             _userNameInput.gameObject.SetActive(true);
             _companyInput.gameObject.SetActive(true);
         }
+        private void GoToViewProfile()
+        {
+            _profileText.gameObject.SetActive(true);
+            _updateProfileButton.SetActive(true);
+            //remove addintioal save prod button here?
+            _saveProfileButton.SetActive(false);
+            _userNameInput.gameObject.SetActive(false);
+            _companyInput.gameObject.SetActive(false);
+        }
         private void SetProfileText()
         {
             //neeed to laod the user submitted sample stored
             //maybe do if protext not nulll - in order to correctly execute testing
             string profileText = "<b>Name : </b>" + user.Name
                  + "\n\n<b>Company: </b>" + user.Company
-                 + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.GetUserStoredSamples().Count
-                 + "\n\n<b>No of Submitted Samples from this Device: </b>" + SaveData.Instance.GetUserSubmittedSamples().Count;
+                 + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.UsersStoredSamples.Count
+                 + "\n\n<b>No of Submitted Samples from this Device: </b>" + SaveData.Instance.UsersSubmittedSamples.Count;
             //Can fic theis by making stores submitted samples equal to the upd.ssc
             //then no need for if else
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)

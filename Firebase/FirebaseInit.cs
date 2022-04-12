@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Firebase;
 using Firebase.Analytics;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
+using UnityEngine;
 /*
  REVIEW THIS -ADD THE LOGIN CORROUTINES
 https://www.youtube.com/watch?v=NsAUEyA2TRo

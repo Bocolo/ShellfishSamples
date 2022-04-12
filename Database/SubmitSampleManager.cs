@@ -11,12 +11,12 @@ namespace Data.Submit
 {
     public class SubmitSampleManager : MonoBehaviour
     {
-        private SampleValidator submitSampleUI;
+        private SampleValidator sampleValidator;
         private SampleDAO sampleDAO;
         private UserDAO userDAO;
         private void Awake()
         {
-            submitSampleUI = GetComponent<SampleValidator>();
+            sampleValidator = GetComponent<SampleValidator>();
             sampleDAO = new SampleDAO();
             userDAO = new UserDAO();
         }
@@ -35,29 +35,40 @@ namespace Data.Submit
         }
         public void StoreSample()
         {
-            if (submitSampleUI.ValidateValues())
+            if (sampleValidator.ValidateValues())
             {
-                SaveData.Instance.AddAndSaveStoredSample(submitSampleUI.NewSample());
-                submitSampleUI.CompleteSubmission();
+                SaveData.Instance.AddAndSaveStoredSample(sampleValidator.NewSample());
+                sampleValidator.CompleteSubmission();
             }
             //testing --- move to if block
             /* SaveData.Instance.SaveStoredSamples();*/
         }
         public void UploadSample()
         {
-            if (submitSampleUI.ValidateValues())
+            if (sampleValidator.ValidateValues())
             {
-                var sample = submitSampleUI.NewSample();
+                var sample = sampleValidator.NewSample();
                 sampleDAO.AddSample(sample);
 
                 SaveData.Instance.AddAndSaveSubmittedSample(sample);
-                submitSampleUI.CompleteSubmission();
+                sampleValidator.CompleteSubmission();
 
                 UpdateFirebaseUserSample(sample);
             }
 
         }
-   
+        private void SubmitStoredSamples()
+        {
+            FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
+
+            List<Sample> storedSamples = SaveData.Instance.UsersStoredSamples;
+
+            UploadStoredSamples(user, storedSamples);
+            if (user != null)
+            {
+                userDAO.UpdateUserSampleCount(user, storedSamples.Count);
+            }
+        }
         //move this to the firebase class or submission classes
         private void UpdateFirebaseUserSample(Sample sample)
         {
@@ -81,18 +92,7 @@ namespace Data.Submit
                 }
             }
         }
-        private void SubmitStoredSamples()
-        {
-            FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-
-            List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
-
-            UploadStoredSamples(user, storedSamples);
-            if (user != null)
-            {
-                userDAO.UpdateUserSampleCount(user, storedSamples.Count);
-            }
-        }
+   
 
     }
 }
