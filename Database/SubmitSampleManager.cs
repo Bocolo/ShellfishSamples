@@ -11,68 +11,14 @@ namespace Data.Submit
 {
     public class SubmitSampleManager : MonoBehaviour
     {
-        private SubmitSampleUI submitSampleUI;
+        private SampleValidator submitSampleUI;
         private SampleDAO sampleDAO;
         private UserDAO userDAO;
         private void Awake()
         {
-            submitSampleUI = GetComponent<SubmitSampleUI>();
+            submitSampleUI = GetComponent<SampleValidator>();
             sampleDAO = new SampleDAO();
             userDAO = new UserDAO();
-        }
-
-        /// <summary>
-        /// Can be removed later
-        /// </summary>
-        /// <param name="AddAndSaveSample"></param>
-        public void Sampler(Del AddAndSaveSample)
-        {
-            if (submitSampleUI.ValidateValues())
-            {
-                var sample = submitSampleUI.NewSample();
-                sampleDAO.AddSample(sample);
-                AddAndSaveSample(sample);
-                submitSampleUI.CompleteSubmission();
-
-                UpdateFirebaseUserSample(sample);
-            }
-        }
-        public delegate void Del(Sample sample);
-
-        //move this to the firebase class or submission classes
-        public void UpdateFirebaseUserSample(Sample sample)
-        {
-            FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-            if (auth.CurrentUser != null)
-            {
-                sampleDAO.AddSampleToUserCollection(auth.CurrentUser, sample);
-                userDAO.UpdateUserSampleCount(auth.CurrentUser);
-            }
-        }
-        public void UploadStoredSamples(FirebaseUser user, List<Sample> storedSamples)
-        {
-            for (int i = 0; i < storedSamples.Count; i++)
-            {
-                sampleDAO.AddSample(storedSamples[i]);
-                SaveData.Instance.AddToSubmittedSamples(storedSamples[i]);
-                //   counter++;
-                if (user != null)
-                {
-                    sampleDAO.AddSampleToUserCollection(user, storedSamples[i]);
-                }
-            }
-        }
-        public void SubmitStoredSamples()
-        {
-            FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-
-            List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
-
-            UploadStoredSamples(user, storedSamples);
-            if (user != null)
-            {
-                userDAO.UpdateUserSampleCount(user, storedSamples.Count);
-            }
         }
         public void SubmitAndSaveStoredSamples()
         {
@@ -111,5 +57,42 @@ namespace Data.Submit
             }
 
         }
+   
+        //move this to the firebase class or submission classes
+        private void UpdateFirebaseUserSample(Sample sample)
+        {
+            FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+            if (auth.CurrentUser != null)
+            {
+                sampleDAO.AddSampleToUserCollection(auth.CurrentUser, sample);
+                userDAO.UpdateUserSampleCount(auth.CurrentUser);
+            }
+        }
+        private void UploadStoredSamples(FirebaseUser user, List<Sample> storedSamples)
+        {
+            for (int i = 0; i < storedSamples.Count; i++)
+            {
+                sampleDAO.AddSample(storedSamples[i]);
+                SaveData.Instance.AddToSubmittedSamples(storedSamples[i]);
+                //   counter++;
+                if (user != null)
+                {
+                    sampleDAO.AddSampleToUserCollection(user, storedSamples[i]);
+                }
+            }
+        }
+        private void SubmitStoredSamples()
+        {
+            FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
+
+            List<Sample> storedSamples = SaveData.Instance.GetUserStoredSamples();
+
+            UploadStoredSamples(user, storedSamples);
+            if (user != null)
+            {
+                userDAO.UpdateUserSampleCount(user, storedSamples.Count);
+            }
+        }
+
     }
 }

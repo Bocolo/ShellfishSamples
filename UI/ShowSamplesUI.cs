@@ -48,8 +48,16 @@ namespace Data.Display
         {
             searchSampleUI.SetSearchValues();
             sampleDAO = new SampleDAO();
-            collectionSamples = await sampleDAO.GetSamplesBySearch(searchSampleUI.GetSearchFieldSelection(), searchSampleUI.GetSearchNameSelection(), searchSampleUI.GetSearchLimitSelection());
-            sampleUI.AddTextAndPrefab(collectionSamples);
+            //This is ugly looking
+            collectionSamples = await sampleDAO.GetSamplesBySearch(
+                sampleDAO.SetTestQuery(searchSampleUI.GetSearchFieldSelection(), 
+                searchSampleUI.GetSearchNameSelection(), 
+                searchSampleUI.GetSearchLimitSelection()));
+       /*     collectionSamples = await sampleDAO.GetSamplesBySearch(
+              searchSampleUI.GetSearchFieldSelection(),
+              searchSampleUI.GetSearchNameSelection(),
+              searchSampleUI.GetSearchLimitSelection());
+            sampleUI.AddTextAndPrefab(collectionSamples);*/
         }
 #if UNITY_INCLUDE_TESTS
         public void SetUpTestVariables()

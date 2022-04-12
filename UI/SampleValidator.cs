@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 namespace UI.Submit
 {
-    public class SubmitSampleUI : MonoBehaviour
+    public class SampleValidator : MonoBehaviour
     {
         private SubmitCanvasManager canvasManager;
         private string _nameString = null;

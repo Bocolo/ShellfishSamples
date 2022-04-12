@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UI.Popup;
 using Save.Manager;
 
-namespace UI.Menu
+namespace UI.Navigation
 {
     public class Menu : MonoBehaviour
     {

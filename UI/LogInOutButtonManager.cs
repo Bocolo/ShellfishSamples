@@ -36,7 +36,7 @@ namespace UI.Authentication
         {
             return this.isLoggedIn;
         }
-        public void SetButtons()
+        public void SetTestButtons()
         {
             GameObject go1 = new GameObject();
             GameObject go2 = new GameObject();

@@ -60,18 +60,109 @@ namespace Data.Access
              });
             return collectionSamples;
         }
-        public async Task<List<Sample>> GetSamplesBySearch(string searchField, string searchName, int searchLimit)
+        public Query SetTestQuery(string searchField, string searchName, int searchLimit)
         {
-            List<Sample> collectionSamples = new List<Sample>();
-            CollectionReference samplesReference = firestore.Collection("Samples");
-            Query testQuery = samplesReference;
+        
+
+            Query testQuery = SetQuerySearchParamaters(searchField, searchName);
+            testQuery = SetTestQueryLimit(testQuery, searchLimit);
+  
+            return testQuery;
+        }
+        private Query SetQuerySearchParamaters(string searchField, string searchName)
+        {
+  
+          Query testQuery =   firestore.Collection("Samples");
             if (searchField.Equals("ProductionWeekNo"))
             {
-                testQuery = samplesReference.WhereEqualTo(searchField, int.Parse(searchName));
+                try
+                {
+                    testQuery = testQuery.WhereEqualTo(searchField, int.Parse(searchName));
+                }
+                catch (FormatException formatException)
+                {
+                    Debug.LogError(formatException.Message + "rarar");
+         
+         
+                }
             }
             else if ((!searchName.Equals("")) && (!searchField.Equals("")))
             {
-                testQuery = samplesReference.WhereEqualTo(searchField, searchName);
+                testQuery = testQuery.WhereEqualTo(searchField, searchName);
+            }
+            return testQuery;
+        }
+        private Query SetTestQueryLimit(Query testQuery, int searchLimit)
+        {
+            if (searchLimit > 0)
+            {
+                testQuery = testQuery.Limit(searchLimit);
+            }
+            return testQuery;
+        }
+        public async Task<List<Sample>> GetSamplesBySearch(Query testQuery)
+        {
+            List<Sample> collectionSamples = new List<Sample>();
+
+            await testQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            {
+                Assert.IsNull(task.Exception);
+                QuerySnapshot collectionSnapshot = task.Result;
+                foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
+                {
+                    try
+                    {
+                        Sample sample = documentSnapshot.ConvertTo<Sample>();
+                        collectionSamples.Add(sample);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log(e.StackTrace);
+                    }
+                }
+            });
+            return collectionSamples;
+        }
+      /*  public async Task<List<Sample>> GetSamplesBySearch(string searchField, string searchName, int searchLimit)
+        {
+            List<Sample> collectionSamples = new List<Sample>();
+            Query testQuery = SetTestQuery(searchField, searchName, searchLimit);
+
+
+            await testQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            {
+                Assert.IsNull(task.Exception);
+                QuerySnapshot collectionSnapshot = task.Result;
+                foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
+                {
+                    try
+                    {
+                        Sample sample = documentSnapshot.ConvertTo<Sample>();
+                        collectionSamples.Add(sample);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log(e.StackTrace);
+                    }
+                }
+            });
+            return collectionSamples;
+        }*/
+    }
+}
+
+/*  public async Task<List<Sample>> GetSamplesBySearch(string searchField, string searchName, int searchLimit)
+        {
+            List<Sample> collectionSamples = new List<Sample>();
+         //  CollectionReference samplesReference = firestore.Collection("Samples");
+            Query testQuery = firestore.Collection("Samples");
+            if (searchField.Equals("ProductionWeekNo"))
+            {
+                testQuery = testQuery.WhereEqualTo(searchField, int.Parse(searchName));
+            }
+            else if ((!searchName.Equals("")) && (!searchField.Equals("")))
+            {
+                testQuery = testQuery.WhereEqualTo(searchField, searchName);
             }
             if (searchLimit > 0)
             {
@@ -96,17 +187,4 @@ namespace Data.Access
             });
             return collectionSamples;
         }
-        public void UpdateSample()
-        {
-        }
-        public void DeleteSample()
-        {
-        }
-        public void GetAllSamples()
-        {
-        }
-        public void AddStoredSamples(List<Sample> storedSamples)
-        {
-        }
-    }
-}
+       */

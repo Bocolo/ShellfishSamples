@@ -31,12 +31,10 @@ namespace Data.Access
         DocumentReference docRef = firestore.Collection("Users").Document(auth.CurrentUser.Email);
         await docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
-            Debug.Log(task.Result + " --- > " + task.Result.GetValue<int>("SubmittedSamplesCount"));
             try
             {
                 user = task.Result.ConvertTo<User>();
                 SaveData.Instance.SaveUserProfile(user);
-                Debug.Log(SaveData.Instance.LoadUserProfile().Email + "new usre data");
             }
             catch (Exception e)
             {

@@ -2,6 +2,7 @@ using Firebase.Auth;
 using TMPro;
 using UnityEngine;
 using Save.Manager;
+using System;
 
 namespace UI.Profile
 {
@@ -13,6 +14,7 @@ namespace UI.Profile
         [SerializeField] private GameObject _updateProfileButton;
         [SerializeField] private GameObject _saveProfileButton;
         private User user;
+ 
         public void Start()
         {
             LoadUser();
@@ -69,6 +71,7 @@ namespace UI.Profile
         {
             user = SaveData.Instance.LoadUserProfile();
         }
+  
         private void CreateProfile()
         {
             User newUser = new User
@@ -84,6 +87,11 @@ namespace UI.Profile
             LoadUser();
             user.Name = _userNameInput.text;
             user.Company = _companyInput.text;
+            SaveUserProfile();
+     
+        }
+        private void SaveUserProfile()
+        {
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)
             {
                 SaveData.Instance.SaveUserProfile(user, FirebaseAuth.DefaultInstance.CurrentUser);
@@ -103,6 +111,11 @@ namespace UI.Profile
                Debug.Log("Mid wake");
                SetTexts();
            }*/
+        public User GetUser()
+        {
+            return this.user;
+        }
+        public void SetUser(User user) => user = this.user;
         public void SetTexts()
         {
             _userNameInput.text = "Test Name";
@@ -122,7 +135,6 @@ namespace UI.Profile
         }
         public GameObject GetProfileTextGO()
         {
-            Debug.Log("GP3TG");
             return _profileText.gameObject;
         }
         public GameObject GetUserNameInputGO()

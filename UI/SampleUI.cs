@@ -99,7 +99,7 @@ namespace UI.SampleDisplay
             _redPanelPrefab = new GameObject();
             redChild.AddComponent<Text>();
             blueChild.AddComponent<Text>();
-
+        //    _redPanelPrefab.AddComponent<Text>();
             blueChild.transform.SetParent(_bluePanelPrefab.transform);
             redChild.transform.SetParent(_redPanelPrefab.transform);
         }
@@ -107,10 +107,7 @@ namespace UI.SampleDisplay
         {
             return this._contentParent;
         }
-        public void TextAndPrefabTest(List<Sample> samples)
-        {
-            AddTextAndPrefab(samples);
-        }
+   
 #endif
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-namespace UI.Menu
+namespace UI.Navigation
 {
     public class BackToMenu : MonoBehaviour
     {
