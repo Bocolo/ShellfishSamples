@@ -23,13 +23,18 @@ namespace UI.Submit
         {
             canvasManager = GetComponent<SubmitCanvasManager>();
         }
-        public void CompleteSubmission()
+        //maybe a smaller pop up
+        //also should this be here
+/*        public void CompleteSubmission()
         {
             canvasManager.OnSubmitResetFields();
-        //    canvasManager.SetNameAndCompanyFromProfile();
-            //successfully stored vs submittes
-            canvasManager.DisplayPopUP("\n\nSuccessfully Submitted Sample");// this is wrinfg -- can onlt reeally be successful is only
+            canvasManager.DisplayPopUP("\n\nSuccessfully Submitted Sample");
         }
+        public void CompleteStore()
+        {
+            canvasManager.OnSubmitResetFields();
+            canvasManager.DisplayPopUP("\n\nSuccessfully Stored Sample");
+        }*/
         public Sample NewSample()
         {
             Sample sample = new Sample
@@ -114,7 +119,7 @@ namespace UI.Submit
             if (!missingValues.Equals(""))
             {
                 //    missingValues = ("<b>Incorrect Input Format: </b>\n\n" + missingValues);
-                canvasManager.DisplayPopUP(missingValues);
+                canvasManager.MissingValuePopup(missingValues);
                 return false;
             }
             else

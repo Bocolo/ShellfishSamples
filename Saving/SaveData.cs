@@ -32,7 +32,7 @@ namespace Save.Manager
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(this.gameObject);//this needs to be fixed? m\ybe dont need this
+               // DontDestroyOnLoad(this.gameObject);//this needs to be fixed? m\ybe dont need this
             }
             //we need to check teh file path exists first
             string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
@@ -74,6 +74,11 @@ namespace Save.Manager
                 firestore.Collection("Users").Document(user.Email).SetAsync(user);
             }
            
+        }
+        public void DeleteSubmittedSamplesFromDevice()
+        {
+            ClearSubmittedSamplesList();
+            SaveSubmittedSamples();
         }
         public User LoadUserProfile()
         {

@@ -10,8 +10,8 @@ namespace Data.Access
 {
     public class SampleDAO
     {
-        private FirebaseFirestore firestore;
-        private string _collectionPath = "Samples";
+        private readonly FirebaseFirestore firestore;
+        private readonly string _collectionPath = "Samples";
         public SampleDAO()
         {
             firestore = FirebaseFirestore.DefaultInstance;
@@ -62,11 +62,13 @@ namespace Data.Access
         }
         public Query SetTestQuery(string searchField, string searchName, int searchLimit)
         {
-        
+
+            Debug.Log("Setting query");
 
             Query testQuery = SetQuerySearchParamaters(searchField, searchName);
             testQuery = SetTestQueryLimit(testQuery, searchLimit);
-  
+            Debug.Log("Set query: " + testQuery);
+
             return testQuery;
         }
         private Query SetQuerySearchParamaters(string searchField, string searchName)
@@ -97,21 +99,32 @@ namespace Data.Access
             if (searchLimit > 0)
             {
                 testQuery = testQuery.Limit(searchLimit);
+                Debug.Log("Set query limit: " + testQuery);
+
             }
             return testQuery;
         }
         public async Task<List<Sample>> GetSamplesBySearch(Query testQuery)
         {
             List<Sample> collectionSamples = new List<Sample>();
+            Debug.Log("Getting sample: " + testQuery);
 
             await testQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
+                Debug.Log("In await: ");
+
                 Assert.IsNull(task.Exception);
                 QuerySnapshot collectionSnapshot = task.Result;
+                Debug.Log("In await:  have snapshot");
+
                 foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
                 {
+                    Debug.Log("In await: foreach");
+
                     try
                     {
+                        Debug.Log("In await: foreach try ");
+
                         Sample sample = documentSnapshot.ConvertTo<Sample>();
                         collectionSamples.Add(sample);
                     }
@@ -123,68 +136,6 @@ namespace Data.Access
             });
             return collectionSamples;
         }
-      /*  public async Task<List<Sample>> GetSamplesBySearch(string searchField, string searchName, int searchLimit)
-        {
-            List<Sample> collectionSamples = new List<Sample>();
-            Query testQuery = SetTestQuery(searchField, searchName, searchLimit);
-
-
-            await testQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
-            {
-                Assert.IsNull(task.Exception);
-                QuerySnapshot collectionSnapshot = task.Result;
-                foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
-                {
-                    try
-                    {
-                        Sample sample = documentSnapshot.ConvertTo<Sample>();
-                        collectionSamples.Add(sample);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.Log(e.StackTrace);
-                    }
-                }
-            });
-            return collectionSamples;
-        }*/
+     
     }
 }
-
-/*  public async Task<List<Sample>> GetSamplesBySearch(string searchField, string searchName, int searchLimit)
-        {
-            List<Sample> collectionSamples = new List<Sample>();
-         //  CollectionReference samplesReference = firestore.Collection("Samples");
-            Query testQuery = firestore.Collection("Samples");
-            if (searchField.Equals("ProductionWeekNo"))
-            {
-                testQuery = testQuery.WhereEqualTo(searchField, int.Parse(searchName));
-            }
-            else if ((!searchName.Equals("")) && (!searchField.Equals("")))
-            {
-                testQuery = testQuery.WhereEqualTo(searchField, searchName);
-            }
-            if (searchLimit > 0)
-            {
-                testQuery = testQuery.Limit(searchLimit);
-            }
-            await testQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
-            {
-                Assert.IsNull(task.Exception);
-                QuerySnapshot collectionSnapshot = task.Result;
-                foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
-                {
-                    try
-                    {
-                        Sample sample = documentSnapshot.ConvertTo<Sample>();
-                        collectionSamples.Add(sample);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.Log(e.StackTrace);
-                    }
-                }
-            });
-            return collectionSamples;
-        }
-       */

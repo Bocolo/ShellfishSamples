@@ -35,8 +35,15 @@ namespace UI.Profile
             SetProfileText();
         }
      
+        private void SetUserDetailsForUpdate()
+        {
+            _userNameInput.text = user.Name;
+            _companyInput.text = user.Company;
+        }
+
         public void GoToUpdateProfile()
         {
+            SetUserDetailsForUpdate();
             _profileText.gameObject.SetActive(false);
             _updateProfileButton.SetActive(false);
             _saveProfileButton.SetActive(true);

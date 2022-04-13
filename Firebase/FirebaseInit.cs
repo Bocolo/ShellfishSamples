@@ -23,6 +23,7 @@ public class FirebaseInit : MonoBehaviour
     // Track state changes of the auth object.
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
+        Debug.Log("Auth changed firebase init");
         if (auth.CurrentUser != user)
         {
             user = auth.CurrentUser;
@@ -49,7 +50,6 @@ public class FirebaseInit : MonoBehaviour
                 app = FirebaseApp.DefaultInstance;
                 InitializeFirebase();
                 // Set a flag here to indicate whether Firebase is ready to use by your app.
-                Debug.Log("Got as far as here");
             }
         });
     }

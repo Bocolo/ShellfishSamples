@@ -1,7 +1,7 @@
 using UnityEngine;
 public class FirebaseStateChange : MonoBehaviour
 {
-    Firebase.Auth.FirebaseAuth auth;
+/*    Firebase.Auth.FirebaseAuth auth;
     Firebase.Auth.FirebaseUser user;
     //check this vs init
     // Handle initialization of the necessary firebase modules:
@@ -14,6 +14,8 @@ public class FirebaseStateChange : MonoBehaviour
     // Track state changes of the auth object.
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
+        Debug.Log("Auth changed firebase StateChanged");
+
         if (auth.CurrentUser != user)
         {
          
@@ -25,5 +27,5 @@ public class FirebaseStateChange : MonoBehaviour
     {
         auth.StateChanged -= AuthStateChanged;
         auth = null;
-    }
+    }*/
 }

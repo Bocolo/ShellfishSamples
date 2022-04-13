@@ -2,7 +2,7 @@ using Firebase.Firestore;
 using UnityEngine;
 public class FirebaseUserData : MonoBehaviour
 {
-    public void AddUser(User user)
+ /*   public void AddUser(User user)
     {
         var firestore = FirebaseFirestore.DefaultInstance;
         firestore.Collection("Users").Document(user.Email).SetAsync(user);
@@ -10,5 +10,5 @@ public class FirebaseUserData : MonoBehaviour
     }
     public void UpdateUser(User user)
     {
-    }
+    }*/
 }

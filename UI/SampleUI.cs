@@ -63,7 +63,7 @@ namespace UI.SampleDisplay
             Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
             panelText.text = FullSampleToString(sample);
         }
-        private void DestroyParentChildren(Transform _contentParent)
+        public void DestroyParentChildren(Transform _contentParent)
         {
             foreach (Transform child in _contentParent)
             {
@@ -78,6 +78,7 @@ namespace UI.SampleDisplay
                 if (i % 2 == 0)
                 {
                     panel = Instantiate(_redPanelPrefab);
+                    
                 }
                 else
                 {

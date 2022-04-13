@@ -3,7 +3,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-
+using UI.Popup;
 namespace UI.Submit
 {
     public class SubmitCanvasManager : MonoBehaviour
@@ -13,7 +13,7 @@ namespace UI.Submit
         public TMP_InputField Name { get; private set; }
         public TMP_InputField Company { get; private set; }
         public TMP_InputField Comments { get; private set; }
-        public TMP_InputField Pop_up { get; private set; }
+        public PopUp MissingValuesPopUp { get; private set; }
         public TMP_Dropdown ProductionWk { get; private set; }
         public TMP_Dropdown Species { get; private set; }
         public TMP_Dropdown DayDrop { get; private set; }
@@ -24,7 +24,7 @@ namespace UI.Submit
         //SMALL CANVAS
         [SerializeField] private TMP_InputField _name_sml;
         [SerializeField] private TMP_InputField _company_sml;
-        [SerializeField] private TMP_InputField _pop_up_sml;
+        [SerializeField] private PopUp _missingValuesPopUp_sml;
         [SerializeField] private TMP_Dropdown _productionWk_sml;
         [SerializeField] private TMP_Dropdown _species_sml;
         [SerializeField] private TMP_Dropdown DayDrop_sml;
@@ -36,7 +36,7 @@ namespace UI.Submit
         //LARGE CANVAS
         [SerializeField] private TMP_InputField _name_lrg;
         [SerializeField] private TMP_InputField _company_lrg;
-        [SerializeField] private TMP_InputField _pop_up_lrg;
+        [SerializeField] private PopUp _missingValuesPopUp_lrg;
         [SerializeField] private TMP_Dropdown _productionWk_lrg;
         [SerializeField] private TMP_Dropdown _species_lrg;
         [SerializeField] private TMP_Dropdown DayDrop_lrg;
@@ -45,21 +45,21 @@ namespace UI.Submit
         [SerializeField] private TMP_Dropdown _iceRectangle_lrg;
         [SerializeField] private TMP_Dropdown _sampleLocationName_lrg;
         [SerializeField] private TMP_InputField _comments_lrg;
+
+        [SerializeField] private PopUp submissionPopUp_sml;//{ get; private set; }
+        [SerializeField] private PopUp submissionPopUp_lrg;//{ get; private set; }
+        public PopUp SubmissionPopUp { get; private set; }
         private void Awake()
         {
             SetCanvasSmall(false);
             SetNameAndCompanyFromProfile();
         }
-        public void DisplayPopUP(String missingValues)
+        public void MissingValuePopup(String missingValues)
         {
-            Pop_up.text = missingValues;
-            Pop_up.gameObject.SetActive(true);
+            MissingValuesPopUp.SetPopUpText(missingValues);
         }
-        public void HidePopUp()
-        {
-            Pop_up.gameObject.SetActive(false);
-        }
-        public void OnSubmitResetFields()
+     
+        private void OnSubmitResetFields()
         {
             Comments.text = "";
             Species.value = 0;
@@ -71,7 +71,21 @@ namespace UI.Submit
             YearDrop.value = 0;
             SetNameAndCompanyFromProfile();
         }
+        public void CompleteSubmission()
+        {
+            OnSubmitResetFields();
+           // DisplaySubmissionPopUp();
+            SubmissionPopUp.SuccessfulSubmission();
 
+        }
+        public void CompleteStore()
+        {
+            OnSubmitResetFields();
+            //    DisplayStoredPopUp();
+            SubmissionPopUp.SuccessfulStorage();
+
+        }
+   
         public void SwitchCanvas()
         {
             if (SmallCanvas.activeInHierarchy)
@@ -90,16 +104,7 @@ namespace UI.Submit
             Name.text = user.Name;
             Company.text = user.Company;
         }
-        private void ActivateSmallCanvas(bool isSmall)
-        {
-            SmallCanvas.SetActive(isSmall);
 
-        }
-        private void ActivateLargeCanvas(bool isSmall)
-        {
-            LargeCanvas.SetActive(!isSmall);
-
-        }
         private void SwitchInputFields(bool isSmall)
         {
             if (isSmall)
@@ -114,7 +119,8 @@ namespace UI.Submit
                 IceRectangle = _iceRectangle_sml;
                 SampleLocationName = _sampleLocationName_sml;
                 Comments = _comments_sml;
-                Pop_up = _pop_up_sml;
+                MissingValuesPopUp = _missingValuesPopUp_sml;
+                SubmissionPopUp = submissionPopUp_sml;
             }
             else
             {
@@ -128,13 +134,17 @@ namespace UI.Submit
                 IceRectangle = _iceRectangle_lrg;
                 SampleLocationName = _sampleLocationName_lrg;
                 Comments = _comments_lrg;
-                Pop_up = _pop_up_lrg;
+                MissingValuesPopUp = _missingValuesPopUp_lrg;
+                SubmissionPopUp = submissionPopUp_lrg;
+
             }
         }
         private void SetCanvasSmall(bool isSmall)
         {
-            ActivateLargeCanvas(isSmall);
-            ActivateSmallCanvas(isSmall);
+            LargeCanvas.SetActive(!isSmall);
+            SmallCanvas.SetActive(isSmall);
+
+
             SwitchInputFields(isSmall);
 
         }
@@ -157,7 +167,7 @@ namespace UI.Submit
             GameObject go10 = new GameObject();
 
 
-            Pop_up = this.gameObject.AddComponent<TMP_InputField>();
+         //   MissingValuesPopUp = this.gameObject.AddComponent<TMP_InputField>();
             Comments = go1.AddComponent<TMP_InputField>();
             Name = go2.AddComponent<TMP_InputField>();
             Company = go3.AddComponent<TMP_InputField>();

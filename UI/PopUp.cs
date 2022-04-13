@@ -30,6 +30,14 @@ namespace UI.Popup
         {
             SetPopUpText("Sign Up NOT Successful");
         }
+        public void SuccessfulSubmission()
+        {
+            SetPopUpText("Sample Successfully Submitted");
+        }
+        public void SuccessfulStorage()
+        {
+            SetPopUpText("Sample Successfully Stored");
+        }
 #if UNITY_INCLUDE_TESTS
         public void SetPopUp()
         {

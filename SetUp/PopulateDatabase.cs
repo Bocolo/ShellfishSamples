@@ -4,25 +4,19 @@ using System.Linq;
 using UnityEngine;
 namespace App.Setup
 {
-    public class PopulateDatabase : MonoBehaviour
+    public class PopulateDatabase 
     {
-        [SerializeField] private string FileLocation;
-        List<Data> temp;
-        int count = 0;
-        private void Start()
+        [SerializeField] private string fileLocation;//"C:\\Users\\brona\\OneDrive\\Documents\\Bronagh_programming\\College_work\\IndustrialProject\\SQL\\FD_SQL_Test_c.csv"
+
+        public List<Data> SaveToList()
         {
-            temp = SaveToList();
-            Debug.Log(temp[0].Species);
-        }
-        private List<Data> SaveToList()
-        {
-            List<Data> values = File.ReadAllLines("C:\\Users\\brona\\OneDrive\\Documents\\Bronagh_programming\\College_work\\IndustrialProject\\SQL\\FD_SQL_Test_c.csv")
+            List<Data> values = File.ReadAllLines(fileLocation)
                 .Skip(1)
-                .Select(v => Data.FromFile(v))
+                .Select(v => Data.ExtractFromFile(v))
                 .ToList();
             return values;
         }
-        class Data
+       public class Data
         {
             public string Species;
             public int ProductionWeekNo;
@@ -31,7 +25,7 @@ namespace App.Setup
             public string Date;
             public string Name;
             public string SampleLocationName;
-            public static Data FromFile(string line)
+            public static Data ExtractFromFile(string line)
             {
                 string[] values = line.Split(';');
                 Data data = new Data();

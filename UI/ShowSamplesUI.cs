@@ -22,17 +22,10 @@ namespace Data.Display
         }
         public void ShowStoredSamples()
         {
-  /*          SaveData.Instance.LoadStoredSamples();//MAYBE???
-            sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserStoredSamples());*/
-            
-            
             sampleUI.AddTextAndPrefab(SaveData.Instance.LoadAndGetStoredSamples());
         }
         public void ShowAllDeviceSubmittedSamples()
         {
-    /*        SaveData.Instance.LoadSubmittedSamples();//MAYBE???
-            sampleUI.AddTextAndPrefab(SaveData.Instance.GetUserSubmittedSamples());*/
-
             sampleUI.AddTextAndPrefab(SaveData.Instance.LoadAndGetSubmittedSamples());
         }
         public async void ShowUserSubmittedSamples(GameObject popUp)
@@ -54,15 +47,18 @@ namespace Data.Display
             searchSampleUI.SetSearchValues();
             sampleDAO = new SampleDAO();
             //This is ugly looking
+            Debug.Log("About to Search");
             collectionSamples = await sampleDAO.GetSamplesBySearch(
                 sampleDAO.SetTestQuery(searchSampleUI.SearchFieldSelection, 
                 searchSampleUI.SearchNameSelection, 
                 searchSampleUI.SearchLimitSelection));
-       /*     collectionSamples = await sampleDAO.GetSamplesBySearch(
-              searchSampleUI.GetSearchFieldSelection(),
-              searchSampleUI.GetSearchNameSelection(),
-              searchSampleUI.GetSearchLimitSelection());
-            sampleUI.AddTextAndPrefab(collectionSamples);*/
+            Debug.Log("About to Search should be over");
+            sampleUI.AddTextAndPrefab(collectionSamples);
+            /*     collectionSamples = await sampleDAO.GetSamplesBySearch(
+                   searchSampleUI.GetSearchFieldSelection(),
+                   searchSampleUI.GetSearchNameSelection(),
+                   searchSampleUI.GetSearchLimitSelection());
+                 sampleUI.AddTextAndPrefab(collectionSamples);*/
         }
 #if UNITY_INCLUDE_TESTS
         public void SetUpTestVariables()
