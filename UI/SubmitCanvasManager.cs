@@ -148,7 +148,7 @@ namespace UI.Submit
             SwitchInputFields(isSmall);
 
         }
-
+/*
 #if UNITY_INCLUDE_TESTS
         public void SetSmallCanvasTest()
         {
@@ -188,7 +188,7 @@ namespace UI.Submit
         {
             return this.LargeCanvas;
         }
-#endif
+#endif*/
     }
 }
 
