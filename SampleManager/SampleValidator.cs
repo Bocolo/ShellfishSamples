@@ -3,25 +3,35 @@ using System;
 using UnityEngine;
 namespace UI.Submit
 {
+    /// <summary>
+    /// This class is for validation of samples from the _canvasManager inputs
+    /// </summary>
     public class SampleValidator : MonoBehaviour
     {
-        private SubmitCanvasManager canvasManager;
-        private string _nameString = null;
-        private string _companyString = null;
-        private string _commentsString = null;
-        private string _speciesString = null;
-        private string _icesString = null;
-        private string _locationString = null;
-        private string date = null;
+        private SubmitCanvasManager _canvasManager;
+        private string _name = null;
+        private string _company = null;
+        private string _comments = null;
+        private string _species = null;
+        private string _icesRectangle = null;
+        private string _location = null;
+        private string _date = null;
         /// <summary>
         /// /SERPERATE ALL THIS, ALL STRING GET AND SET IN OWN CLASS
         /// 
         /// SAMPLEDETAILS
         /// </summary>
         //  private string missingValues = "";
+
+        ///
+
+
+        /// <summary>
+        /// Called on awake.  Sets the submitcanvasManager
+        /// </summary>
         private void Awake()
         {
-            canvasManager = GetComponent<SubmitCanvasManager>();
+            _canvasManager = GetComponent<SubmitCanvasManager>();
         }
         //maybe a smaller pop up
         //also should this be here
@@ -35,21 +45,29 @@ namespace UI.Submit
             canvasManager.OnSubmitResetFields();
             canvasManager.DisplayPopUP("\n\nSuccessfully Stored Sample");
         }*/
+/// <summary>
+/// Creates and returns a new samples using the submit canvas manager inputs
+/// </summary>
+/// <returns></returns>
         public Sample NewSample()
         {
             Sample sample = new Sample
             {
-                Species = _speciesString,
-                IcesRectangleNo = _icesString,
-                Company = _companyString,
-                Date = date,
-                Name = _nameString,
-                ProductionWeekNo = int.Parse(canvasManager.ProductionWk.options[canvasManager.ProductionWk.value].text),
-                SampleLocationName = _locationString,
-                Comment = _commentsString
+                Species = _species,
+                IcesRectangleNo = _icesRectangle,
+                Company = _company,
+                Date = _date,
+                Name = _name,
+                ProductionWeekNo = int.Parse(_canvasManager.ProductionWk.options[_canvasManager.ProductionWk.value].text),
+                SampleLocationName = _location,
+                Comment = _comments
             };
             return sample;
         }
+        /// <summary>
+        /// checks submit canvas manager inputs and returns a bool indicating if values are valid
+        /// </summary>
+        /// <returns>bool representing validity of inputs</returns>
         public bool ValidateValues()
         {
             SetValues();
@@ -57,15 +75,15 @@ namespace UI.Submit
         }
 
 
-
+        /// <summary>
+        /// Checks if the local _date field strings is a valid data
+        /// </summary>
+        /// <returns>bool of date validity</returns>
         public bool IsDateValid()
         {
-            /*        SetDate(canvasManager.DayDrop.options[canvasManager.DayDrop.value].text,
-                       canvasManager.MonthDrop.options[canvasManager.MonthDrop.value].text,
-                       canvasManager.YearDrop.options[canvasManager.YearDrop.value].text);*/
             try
             {
-                DateTime datetime = DateTime.Parse(date);
+                DateTime datetime = DateTime.Parse(_date);
                 DateTime local = DateTime.Now;
                 int result = DateTime.Compare(datetime, local);
                 if (result > 0)
@@ -76,11 +94,14 @@ namespace UI.Submit
             }
             catch (Exception e)
             {
-                Debug.Log(e);
-                Debug.Log("Date Check failed");
+                Debug.Log("Date Check failed: "+e.StackTrace);
                 return false;
             }
         }
+        /// <summary>
+        /// Checks passed date  string is a valid data
+        /// </summary>
+        /// <returns>bool of date validity</returns>
         public bool IsDateValid(String date)
         {
             try
@@ -96,11 +117,15 @@ namespace UI.Submit
             }
             catch (Exception e)
             {
-                Debug.Log(e);
-                Debug.Log("Date Check failed");
+
+                Debug.Log("Date Check failed: " + e.StackTrace);
+
                 return false;
             }
         }
+        /// <summary>
+        /// Sets the local string values to the canvas manager inputs
+        /// </summary>
         private void SetValues()
         {
 
@@ -112,14 +137,18 @@ namespace UI.Submit
             SetLocationToCanvas();
             SetDateToCanvas();
         }
+        /// <summary>
+        /// Checks missing values and returns a bool to notify is missing values present
+        /// if missing values present activate a pop with missing value details
+        /// </summary>
+        /// <returns></returns>
         private bool IsValuesComplete()
         {
             String missingValues = MissingValues();
 
             if (!missingValues.Equals(""))
             {
-                //    missingValues = ("<b>Incorrect Input Format: </b>\n\n" + missingValues);
-                canvasManager.MissingValuePopup(missingValues);
+                _canvasManager.MissingValuePopup(missingValues);
                 return false;
             }
             else
@@ -128,6 +157,11 @@ namespace UI.Submit
             }
         }
 
+        /// <summary>
+        /// Checks each local string field for missing values and
+        /// populates a string with the details of the missing values
+        /// </summary>
+        /// <returns>the missing values string</returns>
         private String MissingValues()
         {
             String missing = "";
@@ -143,7 +177,12 @@ namespace UI.Submit
             }
             return missing;
         }
-
+        /// <summary>
+        /// If the _date field is not a valid date, modifies the missing values string before
+        /// returing the string
+        /// </summary>
+        /// <param name="missingValues">the string to modify</param>
+        /// <returns></returns>
         private String MissingDate(String missingValues)
         {
             if (!IsDateValid())
@@ -152,135 +191,202 @@ namespace UI.Submit
             }
             return missingValues;
         }
+        /// <summary>
+        /// if name field is null, modifies the  passed missing value string
+        /// 
+        /// returns the missing value string
+        /// </summary>
+        /// <param name="missingValues"></param>
+        /// <returns></returns>
         private String MissingName(String missingValues)
         {
-            if (_nameString == null)
+            if (_name == null)
             {
                 missingValues += "Please enter a name\n";
             }
             return missingValues;
         }
+        /// <summary>
+        /// if company field is null, modifies the  passed missing value string
+        /// 
+        /// returns the missing value string
+        /// </summary>
+        /// <param name="missingValues"></param>
+        /// <returns></returns>
         private String MissingCompany(String missingValues)
         {
-            if (_companyString == null)
+            if (_company == null)
             {
                 missingValues += "Please enter a company name\n";
             }
             return missingValues;
         }
+        /// <summary>
+        /// if specied field is null, modifies the  passed missing value string
+        /// 
+        /// returns the missing value string
+        /// </summary>
+        /// <param name="missingValues"></param>
+        /// <returns></returns>
         private String MissingSpecies(String missingValues)
         {
-            if (_speciesString == null)
+            if (_species == null)
             {
                 missingValues += "Please enter the shellfish species\n";
             }
             return missingValues;
         }
+        /// <summary>
+        /// if no ices string and location string are both null 
+        /// or
+        /// if both are not null
+        ///modifies the  passed missing value string with error details
+        /// 
+        /// returns the missing value string
+        /// </summary>
+        /// <param name="missingValues"></param>
+        /// <returns></returns>
         private String MissingOrDualLocation(String missingValues)
         {
-            if (((_icesString == null) && (_locationString == null)) || ((_icesString != null) && (_locationString != null)))
+            if (((_icesRectangle == null) && (_location == null)) || ((_icesRectangle != null) && (_location != null)))
             {
                 missingValues += "You must enter <i>either</i> a Sample Location Date or an Ices Rectangle No.\n";
             }
             return missingValues;
         }
+        /// <summary>
+        /// if _canvasManager.ProductionWk.value is not set, modifies the  passed missing value string
+        /// 
+        /// returns the missing value string
+        /// </summary>
+        /// <param name="missingValues"></param>
+        /// <returns></returns>
         private String MissingProductionWeek(String missingValues)
         {
-            if (canvasManager.ProductionWk.value == 0)
+            if (_canvasManager.ProductionWk.value == 0)
             {
                 missingValues += "Please enter the production week\n";
             }
             return missingValues;
         }
-
+        /// <summary>
+        /// Sets the _date string with details of passed params
+        /// </summary>
+        /// <param name="day">string representing day</param>
+        /// <param name="month">string representing month</param>
+        /// <param name="year">string representing year</param>
         private void SetDate(String day, String month, String year)
         {
-            date = year + "-" + month + "-" + day;
+            _date = year + "-" + month + "-" + day;
         }
-        private void SetDate(String date)
-        {
-            this.date = date;
-        }
+        /// <summary>
+        /// Sets the name to canvas input if value isnt empty
+        /// or sets the name to null
+        /// </summary>
         private void SetNameToCanvas()
         {
-            if (canvasManager.Name.text != "")
+            if (_canvasManager.Name.text != "")
             {
-                this._nameString = (canvasManager.Name.text);
+                this._name = (_canvasManager.Name.text);
             }
             else
             {
-                this._nameString = (null);
+                this._name = (null);
             }
         }
+        /// <summary>
+        /// Sets the Company to canvas input if value isnt empty
+        /// or sets the Company to null
+        /// </summary>
         private void SetCompanyToCanvas()
         {
-            if (canvasManager.Company.text != "")
+            if (_canvasManager.Company.text != "")
             {
-                this._companyString = (canvasManager.Company.text);
+                this._company = (_canvasManager.Company.text);
             }
             else
             {
-                this._companyString = (null);
+                this._company = (null);
             }
         }
+        /// <summary>
+        /// Sets the Comment to canvas input if value isnt empty
+        /// or sets the Comment to null
+        /// </summary>
         private void SetCommentToCanvas()
         {
-            if (canvasManager.Comments.text != null)
+            if (_canvasManager.Comments.text != null)
             {
-                this._commentsString = (canvasManager.Comments.text);
+                this._comments = (_canvasManager.Comments.text);
             }
             else
             {
-                this._commentsString = (null);
+                this._comments = (null);
             }
 
         }
+        /// <summary>
+        /// Sets the Species to canvas input if value isnt empty
+        /// or sets the Species to null
+        /// </summary>
         private void SetSpeciesToCanvas()
         {
-            if (canvasManager.Species.value != 0)
+            if (_canvasManager.Species.value != 0)
             {
-                this._speciesString = (canvasManager.Species.options[canvasManager.Species.value].text);
+                this._species = (_canvasManager.Species.options[_canvasManager.Species.value].text);
             }
             else
             {
-                this._speciesString = (null);
+                this._species = (null);
             }
         }
+        /// <summary>
+        /// Sets the IceRectangle to canvas input if value isnt empty
+        /// or sets the IceRectangle to null
+        /// </summary>
         private void SetIcesRectangleToCanvas()
         {
-            if (canvasManager.IceRectangle.value != 0)
+            if (_canvasManager.IceRectangle.value != 0)
             {
-                this._icesString = (canvasManager.IceRectangle.options[canvasManager.IceRectangle.value].text);
+                this._icesRectangle = (_canvasManager.IceRectangle.options[_canvasManager.IceRectangle.value].text);
             }
             else
             {
-                this._icesString = (null);
+                this._icesRectangle = (null);
             }
         }
+        /// <summary>
+        /// Sets the Date to the day, month and year  canvas inputs if values arent empty
+        /// or sets the _date to null
+        /// </summary>
         private void SetDateToCanvas()
         {
-            if ((canvasManager.DayDrop.value != 0)
-                && (canvasManager.MonthDrop.value != 0)
-                && (canvasManager.YearDrop.value != 0))
+            if ((_canvasManager.DayDrop.value != 0)
+                && (_canvasManager.MonthDrop.value != 0)
+                && (_canvasManager.YearDrop.value != 0))
             {
-                SetDate(canvasManager.DayDrop.options[canvasManager.DayDrop.value].text,
-         canvasManager.MonthDrop.options[canvasManager.MonthDrop.value].text,
-         canvasManager.YearDrop.options[canvasManager.YearDrop.value].text);
+                SetDate(_canvasManager.DayDrop.options[_canvasManager.DayDrop.value].text,
+         _canvasManager.MonthDrop.options[_canvasManager.MonthDrop.value].text,
+         _canvasManager.YearDrop.options[_canvasManager.YearDrop.value].text);
             }
             else
             {
-                SetDate(null);
+                this._date=null;
             }
         }
+        /// <summary>
+        /// Sets the SampleLocationName to canvas input if value isnt empty
+        /// or sets the SampleLocationName to null
+        /// </summary>
         private void SetLocationToCanvas()
         {
-            if (canvasManager.SampleLocationName.value != 0)
+            if (_canvasManager.SampleLocationName.value != 0)
             {
-                this._locationString = (canvasManager.SampleLocationName.options[canvasManager.SampleLocationName.value].text);
+                this._location = (_canvasManager.SampleLocationName.options[_canvasManager.SampleLocationName.value].text);
             }
             else
             {
-                this._locationString = (null);
+                this._location = (null);
             }
         }
     }

@@ -5,6 +5,9 @@ using UnityEngine;
  REVIEW THIS -ADD THE LOGIN CORROUTINES
 https://www.youtube.com/watch?v=NsAUEyA2TRo
  */
+/// <summary>
+/// The class initialises Firebase and monitor Auth State Changes
+/// </summary>
 public class FirebaseInit : MonoBehaviour
 {
     private FirebaseApp _app;
@@ -12,7 +15,20 @@ public class FirebaseInit : MonoBehaviour
     private Firebase.Auth.FirebaseUser _user;
     // Handle initialization of the necessary firebase modules:
     /// <summary>
+    /// Thi sis called when the script is attached to a game object in scene
+    /// calls the CheckAndFixFBDependencies method
+    /// </summary>
+    private void Start()
+    {
+        CheckAndFixFBDependencies();
+    }
+
+
+    /// <summary>
     /// why have this twice --- is firebasestate changed class as well
+    /// </summary>
+    /// <summary>
+    /// Initilizes firebase
     /// </summary>
     void InitializeFirebase()
     {
@@ -21,6 +37,11 @@ public class FirebaseInit : MonoBehaviour
         AuthStateChanged(this, null);
     }
     // Track state changes of the auth object.
+    /// <summary>
+    /// Tracks state changes of the auth object.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="eventArgs"></param>
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
         if (_auth.CurrentUser != _user)
@@ -28,15 +49,17 @@ public class FirebaseInit : MonoBehaviour
             _user = _auth.CurrentUser;
         }
     }
+    /// <summary>
+    /// -----------------------------------------------------------
+    /// </summary>
     void OnDestroy()
     {
         _auth.StateChanged -= AuthStateChanged;
         _auth = null;
     }
-    void Start()
-    {
-        CheckAndFixFBDependencies();
-    }
+    /// <summary>
+    /// -----------------------------------------------------------
+    /// </summary>
     private void CheckAndFixFBDependencies()
     {
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {

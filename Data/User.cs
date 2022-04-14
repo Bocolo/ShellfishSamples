@@ -1,4 +1,9 @@
 using Firebase.Firestore;
+/// <summary>
+/// The User struct which lists the User properties
+/// these are set as firestore properties in order to upload 
+/// the firestore data to the firestore
+/// </summary>
 [FirestoreData]
 [System.Serializable]
 public struct User

@@ -1,11 +1,13 @@
 using Firebase.Auth;
+using Save.Manager;
 using TMPro;
 using UnityEngine;
-using Save.Manager;
-using System;
 
 namespace UI.Profile
 {
+    /// <summary>
+    /// Manages the UI of the Profile page
+    /// </summary>
     public class ProfileUI : MonoBehaviour
     {
         [SerializeField] private TMP_Text _profileText;
@@ -13,13 +15,22 @@ namespace UI.Profile
         [SerializeField] private TMP_InputField _companyInput;
         [SerializeField] private GameObject _updateProfileButton;
         [SerializeField] private GameObject _saveProfileButton;
-        private User user;
+        private User _user;
  
+        /// <summary>
+        /// calls load user and set profile text on start
+        /// </summary>
         public void Start()
         {
             LoadUser();
             SetProfileText();
         }
+        /// <summary>
+        /// if no "/userSave.dat" file exits, calls create profile
+        /// other wise calles update profile
+        /// 
+        /// Then show the profile view and sets the profile text
+        /// </summary>
         public void SaveProfile()
         {
             string filepath = Application.persistentDataPath + "/userSave.dat";
@@ -35,12 +46,18 @@ namespace UI.Profile
             SetProfileText();
         }
      
+        /// <summary>
+        /// sets the user name and company to the name and company input texts
+        /// </summary>
         private void SetUserDetailsForUpdate()
         {
-            _userNameInput.text = user.Name;
-            _companyInput.text = user.Company;
+            _userNameInput.text = _user.Name;
+            _companyInput.text = _user.Company;
         }
-
+        /// <summary>
+        /// sets the update profile page inputs
+        /// activates the game objects for the update profile page
+        /// </summary>
         public void GoToUpdateProfile()
         {
             SetUserDetailsForUpdate();
@@ -50,36 +67,45 @@ namespace UI.Profile
             _userNameInput.gameObject.SetActive(true);
             _companyInput.gameObject.SetActive(true);
         }
+        /// <summary>
+        /// activates the game objects for the view profile page
+        /// </summary>
         private void GoToViewProfile()
         {
             _profileText.gameObject.SetActive(true);
             _updateProfileButton.SetActive(true);
-            //remove addintioal save prod button here?
             _saveProfileButton.SetActive(false);
             _userNameInput.gameObject.SetActive(false);
             _companyInput.gameObject.SetActive(false);
         }
+        /// <summary>
+        /// Sets the profile text with user details
+        /// adds additional details if firebase user is logged in
+        /// </summary>
         private void SetProfileText()
         {
-            //neeed to laod the user submitted sample stored
-            //maybe do if protext not nulll - in order to correctly execute testing
-            string profileText = "<b>Name : </b>" + user.Name
-                 + "\n\n<b>Company: </b>" + user.Company
+            string profileText = "<b>Name : </b>" + _user.Name
+                 + "\n\n<b>Company: </b>" + _user.Company
                  + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.UsersStoredSamples.Count
                  + "\n\n<b>No of Submitted Samples from this Device: </b>" + SaveData.Instance.UsersSubmittedSamples.Count;
             //Can fic theis by making stores submitted samples equal to the upd.ssc
             //then no need for if else
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)
             {
-                profileText += "\n\n<b>No of Submitted Samples from logged in user: </b>" + user.SubmittedSamplesCount;
+                profileText += "\n\n<b>No of Submitted Samples from logged in user: </b>" + _user.SubmittedSamplesCount;
             }
             _profileText.text = profileText;
         }
+        /// <summary>
+        /// sets the _user to the loaded user from the Save Data instance
+        /// </summary>
         private void LoadUser()
         {
-            user = SaveData.Instance.LoadUserProfile();
+            _user = SaveData.Instance.LoadUserProfile();
         }
-  
+  /// <summary>
+  /// creates a new user and saves that user profile
+  /// </summary>
         private void CreateProfile()
         {
             User newUser = new User
@@ -90,23 +116,30 @@ namespace UI.Profile
             SaveData.Instance.SaveUserProfile(newUser);
         }
         //https://www.youtube.com/watch?v=52yUcKLMKX0
+        /// <summary>
+        /// Loads a user, updates the name and company details and saves user profile
+        /// </summary>
         private void UpdateProfile()
         {
             LoadUser();
-            user.Name = _userNameInput.text;
-            user.Company = _companyInput.text;
+            _user.Name = _userNameInput.text;
+            _user.Company = _companyInput.text;
             SaveUserProfile();
      
         }
+        /// <summary>
+        /// call the  SaveData.Instance.SaveUserProfile passeing user and if a firebase users is logged in
+        /// passing the firebase user
+        /// </summary>
         private void SaveUserProfile()
         {
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)
             {
-                SaveData.Instance.SaveUserProfile(user, FirebaseAuth.DefaultInstance.CurrentUser);
+                SaveData.Instance.SaveUserProfile(_user, FirebaseAuth.DefaultInstance.CurrentUser);
             }
             else
             {
-                SaveData.Instance.SaveUserProfile(user);
+                SaveData.Instance.SaveUserProfile(_user);
             }
         }
 #if UNITY_INCLUDE_TESTS
@@ -121,9 +154,9 @@ namespace UI.Profile
            }*/
         public User GetUser()
         {
-            return this.user;
+            return this._user;
         }
-        public void SetUser(User user) => user = this.user;
+        public void SetUser(User user) => user = this._user;
         public void SetTexts()
         {
             _userNameInput.text = "Test Name";

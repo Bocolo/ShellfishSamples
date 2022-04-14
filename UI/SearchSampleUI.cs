@@ -3,47 +3,53 @@ using TMPro;
 using UnityEngine;
 namespace UI.Retrieve
 {
+    /// <summary>
+    /// Manages the DatabaseSearch page
+    /// </summary>
     public class SearchSampleUI : MonoBehaviour
     {
-        [SerializeField] private TMP_Dropdown searchDropdown;
-        [SerializeField] private TMP_InputField searchInput;
-        [SerializeField] private TMP_InputField searchLimit;
+        [SerializeField] private TMP_Dropdown _searchDropdown;
+        [SerializeField] private TMP_InputField _searchInput;
+        [SerializeField] private TMP_InputField _searchLimit;
         public string SearchFieldSelection { get; private set; } = "";
         public string SearchNameSelection { get; private set; } = "";
         public int SearchLimitSelection { get; private set; } = 0;
    
-
+        /// <summary>
+        /// Sets the search values: name, field and limit
+        /// </summary>
         public void SetSearchValues()
         {
-            SetSearchFieldValue(searchDropdown.value);
-            SetSearchNameSelection();
+            SetSearchFieldValue(_searchDropdown.value);
+            SearchNameSelection = _searchInput.text;
+//            SetSearchNameSelection();
             SetSearchLimitSelection();
         }
-        private void SetSearchNameSelection()
-        {
-            SearchNameSelection = searchInput.text;
-        }
+
+        /// <summary>
+        /// sets the SearchLimitSelection to search limit input
+        /// </summary>
         private void SetSearchLimitSelection()
         {
-            if (!searchLimit.text.Equals(""))
+            if (!_searchLimit.text.Equals(""))
             {
-                //try  catch not necessary as the ui prevent letter input
                 try {
-                    SearchLimitSelection = int.Parse(searchLimit.text);
+                    SearchLimitSelection = int.Parse(_searchLimit.text);
                 }
                 catch(FormatException e)
                 {
+                    Debug.LogError("SetSearchLimitSelection: Format Exception: " + e.StackTrace);
                     SearchLimitSelection = 0;
                 }
                
             }
         }
-   
+        /// <summary>
+        /// Sets the SearchFieldSelection based on the passed dropdownValues
+        /// </summary>
+        /// <param name="dropdownValue"></param>
         private void SetSearchFieldValue(int dropdownValue)
         {
-            /*   Debug.Log("Search Drop value : " + searchDropdown.value);
-               switch (searchDropdown.value)*/
-            Debug.Log("Search Drop value : " + dropdownValue);
             switch (dropdownValue)
             {
                 case 0:
@@ -64,6 +70,7 @@ namespace UI.Retrieve
                 case 5:
                     SearchFieldSelection = "Date";
                     break;
+
             }
         }
     
@@ -73,27 +80,27 @@ namespace UI.Retrieve
             GameObject go1 = new GameObject();
             GameObject go3 = new GameObject();
             GameObject go4 = new GameObject();
-            searchDropdown = go1.AddComponent<TMP_Dropdown>();
-            searchInput = go3.AddComponent<TMP_InputField>();
-            searchLimit = go4.AddComponent<TMP_InputField>();
+            _searchDropdown = go1.AddComponent<TMP_Dropdown>();
+            _searchInput = go3.AddComponent<TMP_InputField>();
+            _searchLimit = go4.AddComponent<TMP_InputField>();
         }
   
         public string GetSearchInputText()
         {
-            return searchInput.text;
+            return _searchInput.text;
         }
         public void SetSearchInputText(string text)
         {
-            searchInput.text = text;
+            _searchInput.text = text;
         }
        
         public string GetSearchLimitText()
         {
-            return searchLimit.text;
+            return _searchLimit.text;
         }
         public void SetSearchLimitText(string text)
         {
-            searchLimit.text = text;
+            _searchLimit.text = text;
         }
         /// <summary>
         /// fix all of this too

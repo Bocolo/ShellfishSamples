@@ -6,11 +6,11 @@ namespace App.Setup
 {
     public class PopulateDatabase 
     {
-        [SerializeField] private string fileLocation;//"C:\\Users\\brona\\OneDrive\\Documents\\Bronagh_programming\\College_work\\IndustrialProject\\SQL\\FD_SQL_Test_c.csv"
+        [SerializeField] private string _fileLocation;//"C:\\Users\\brona\\OneDrive\\Documents\\Bronagh_programming\\College_work\\IndustrialProject\\SQL\\FD_SQL_Test_c.csv"
 
         public List<Data> SaveToList()
         {
-            List<Data> values = File.ReadAllLines(fileLocation)
+            List<Data> values = File.ReadAllLines(_fileLocation)
                 .Skip(1)
                 .Select(v => Data.ExtractFromFile(v))
                 .ToList();

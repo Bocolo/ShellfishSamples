@@ -1,87 +1,124 @@
-using Firebase.Auth;
-using System.Collections.Generic;
-using UnityEngine;
-using UI.SampleDisplay;
 using Data.Access;
+using Firebase.Auth;
 using Save.Manager;
-using UI.Retrieve;
+using System.Collections.Generic;
 using UI.Popup;
-using System.Collections;
-using System;
+using UI.Retrieve;
+using UI.SampleDisplay;
+using UnityEngine;
 
 namespace Data.Display
 
 {
+    /// <summary>
+    /// Manages buttons actions for disaplying samples
+    /// </summary>
     public class ShowSamplesUI : MonoBehaviour
     {
         //https://www.youtube.com/watch?v=b5h1bVGhuRk&t=276s
-        private List<Sample> collectionSamples = new List<Sample>();
-        private SampleDAO sampleDAO;
-        private SampleUI sampleUI;
-        private SearchSampleUI searchSampleUI;
+        private List<Sample> _collectionSamples = new List<Sample>();
+        private SampleDAO _sampleDAO;
+        private SampleUI _sampleUI;
+        private SearchSampleUI _searchSampleUI;
+        /// <summary>
+        /// set _sampleUI,_searchSampleUI and _sampleDAO on awake
+        /// </summary>
         private void Awake()
         {
-            sampleUI = GetComponent<SampleUI>();
-            searchSampleUI = GetComponent<SearchSampleUI>();
-            sampleDAO = new SampleDAO();
+            _sampleUI = GetComponent<SampleUI>();
+            _searchSampleUI = GetComponent<SearchSampleUI>();
+            _sampleDAO = new SampleDAO();
         }
+        /// <summary>
+        /// Loads and displays stored samples,
+        /// if there are no stored samples activate the pop up with the passed text
+        /// </summary>
+        /// <param name="popUp">pop up to use in if case</param>
         public void ShowStoredSamples(PopUp popUp)
         {
-            sampleUI.AddTextAndPrefab(SaveData.Instance.LoadAndGetStoredSamples());
-            if (SaveData.Instance.UsersStoredSamples.Count == 0)
+            List<Sample> loadedSamples = SaveData.Instance.LoadAndGetStoredSamples();
+      
+            if (loadedSamples.Count == 0)
             {
                 popUp.SetPopUpText("There are no stored samples");
 
             }
+            else
+            {
+                _sampleUI.AddTextAndPrefab(loadedSamples);
+            }
         }
 
-
+        /// <summary>
+        /// loads and displays Device submitted samples,
+        /// if there are no Device submitted samples activate the pop up with the passed text
+        /// </summary>
+        /// <param name="popUp">pop up to use in if case</param>
 
         public void ShowAllDeviceSubmittedSamples(PopUp popUp)
         {
-            sampleUI.AddTextAndPrefab(SaveData.Instance.LoadAndGetSubmittedSamples());
-            if (SaveData.Instance.UsersSubmittedSamples.Count == 0)
+            List<Sample> loadedSamples = SaveData.Instance.LoadAndGetSubmittedSamples();
+     
+            if (loadedSamples.Count == 0)
             {
                 popUp.SetPopUpText("No samples have been submitted");
 
             }
+            else
+            {
+                _sampleUI.AddTextAndPrefab(loadedSamples);
+            }
         }
+        /// <summary>
+        /// loads and displays Firebase user  submitted samples,
+        /// if there is no Firebase user , the pop up activates with the passed text
+        /// </summary>
+        /// <param name="popUp">pop up to use in if case</param>
+
         public async void ShowUserSubmittedSamples(PopUp popUp)
         {
-            //   sampleDAO = new SampleDAO();
             FirebaseAuth auth = FirebaseAuth.DefaultInstance;
             if (auth.CurrentUser != null)
             {
-                collectionSamples = await sampleDAO.GetAllUserSubmittedSamples(auth.CurrentUser);
-                sampleUI.AddTextAndPrefab(collectionSamples);
+                _collectionSamples = await _sampleDAO.GetAllUserSubmittedSamples(auth.CurrentUser);
+                _sampleUI.AddTextAndPrefab(_collectionSamples);
             }
             else
             {
-                //pop up with text - you need to sign in to show user submitted samples
                 popUp.SetPopUpText("You must be signed in to view these");
-                //popUp.SetActive(true);
             }
         }
+        /// <summary>
+        /// Load and displays the sample list that resuls 
+        /// from a search on the firestore database
+        /// </summary>
         public async void ShowSearchSamples()
         {
-            searchSampleUI.SetSearchValues();
-            sampleDAO = new SampleDAO();
-            //This is ugly looking
-            collectionSamples = await sampleDAO.GetSamplesBySearch(
-                sampleDAO.SetTestQuery(
-                    searchSampleUI.SearchFieldSelection,
-                    searchSampleUI.SearchNameSelection,
-                    searchSampleUI.SearchLimitSelection
+            _searchSampleUI.SetSearchValues();
+            _sampleDAO = new SampleDAO();
+            _collectionSamples = await _sampleDAO.GetSamplesBySearch(
+                _sampleDAO.SetTestQuery(
+                    _searchSampleUI.SearchFieldSelection,
+                    _searchSampleUI.SearchNameSelection,
+                    _searchSampleUI.SearchLimitSelection
                     )
                 );
-            sampleUI.AddTextAndPrefab(collectionSamples);
-            /*     collectionSamples = await sampleDAO.GetSamplesBySearch(
-                   searchSampleUI.GetSearchFieldSelection(),
-                   searchSampleUI.GetSearchNameSelection(),
-                   searchSampleUI.GetSearchLimitSelection());
-                 sampleUI.AddTextAndPrefab(collectionSamples);*/
+            _sampleUI.AddTextAndPrefab(_collectionSamples);
+
         }
 
+
+#if UNITY_INCLUDE_TESTS
+        public void SetUpTestVariables()
+        {
+            _sampleUI = this.gameObject.AddComponent<SampleUI>();
+            _searchSampleUI = GetComponent<SearchSampleUI>();
+            _searchSampleUI.SetUpTestVariables();
+        }
+#endif
+    }
+}
+/*
         public void LoadAndLogAllSamples()
         {
             SaveData.Instance.LoadFullData();
@@ -90,18 +127,7 @@ namespace Data.Display
             {
                 Debug.Log(allsamples[i].Name);
             }
-        }
- 
-#if UNITY_INCLUDE_TESTS
-        public void SetUpTestVariables()
-        {
-            sampleUI = this.gameObject.AddComponent<SampleUI>();
-            searchSampleUI = GetComponent<SearchSampleUI>();
-            searchSampleUI.SetUpTestVariables();
-        }
-#endif
-    }
-}
+        }*/
 /*       public void AddSamplesFromLoadedList(int start)
         {
             int end = (start + 100);

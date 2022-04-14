@@ -1,4 +1,9 @@
 using Firebase.Firestore;
+/// <summary>
+/// The Sample struct which lists the sample properties
+/// these are set as firestore properties in order to upload 
+/// the firestore data to the firestore
+/// </summary>
 [FirestoreData]
 [System.Serializable]
 public struct Sample 

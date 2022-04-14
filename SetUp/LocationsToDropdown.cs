@@ -12,16 +12,16 @@ namespace App.Setup
     public class LocationsToDropdown : MonoBehaviour
     {
         //variable - SerializeField variables can be accessed in the Unity Editor and set from there
-        [SerializeField] private string fileLocation;
-        [SerializeField]private bool isWeek = false;
-        private Dropdown dropdown;
-        private TMP_Dropdown tmpDropdown;
+        [SerializeField] private string _fileLocation;
+        [SerializeField]private bool _isWeek = false;
+        private Dropdown _dropdown;
+        private TMP_Dropdown _tmpDropdown;
         //Simple script to populate dropdown Options using a text file (when is week is false)
         void Start()
         {
             //access the dropdown UI component from the gameObject
-            tmpDropdown = GetComponent<TMP_Dropdown>();
-            PopulateDropdown(isWeek);
+            _tmpDropdown = GetComponent<TMP_Dropdown>();
+            PopulateDropdown(_isWeek);
             /*
              * FOR ORDINARY DROP DOWN
                     //access the dropdown UI component from the gameObject
@@ -50,11 +50,11 @@ namespace App.Setup
             else
             {
                 //Populate dropdown with 1-52 instead for production week 
-                tmpDropdown.options.Clear();
-                tmpDropdown.options.Add(new TMP_Dropdown.OptionData("- Select -"));
+                _tmpDropdown.options.Clear();
+                _tmpDropdown.options.Add(new TMP_Dropdown.OptionData("- Select -"));
                 for (int i = 1; i <= 52; i++)
                 {
-                    tmpDropdown.options.Add(new TMP_Dropdown.OptionData(i.ToString()));
+                    _tmpDropdown.options.Add(new TMP_Dropdown.OptionData(i.ToString()));
                 }
             }
         }
@@ -62,20 +62,20 @@ namespace App.Setup
         //text file locations are added in the unity Editor
         private void SetDropdownOptions()
         {
-            tmpDropdown.options.Clear();
-            string[] lines = System.IO.File.ReadAllLines(fileLocation);
+            _tmpDropdown.options.Clear();
+            string[] lines = System.IO.File.ReadAllLines(_fileLocation);
             foreach (string line in lines)
             {
-                dropdown.options.Add(new Dropdown.OptionData(line));
+                _dropdown.options.Add(new Dropdown.OptionData(line));
             }
         }
         private void SetTMPDropdownOptions()
         {
-            tmpDropdown.options.Clear();
-            string[] lines = System.IO.File.ReadAllLines(fileLocation);
+            _tmpDropdown.options.Clear();
+            string[] lines = System.IO.File.ReadAllLines(_fileLocation);
             foreach (string line in lines)
             {
-                tmpDropdown.options.Add(new TMP_Dropdown.OptionData(line));
+                _tmpDropdown.options.Add(new TMP_Dropdown.OptionData(line));
             }
         }
     }

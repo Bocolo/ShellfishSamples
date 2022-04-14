@@ -5,7 +5,10 @@ using UnityEngine;
 using UI.Popup;
 using Data.Access;
 using Save.Manager;
-
+/// <summary>
+/// This class managed the firebase authenticatioon : login, sign ups
+/// and validation
+/// </summary>
 public class FirebaseAuthentication : MonoBehaviour
 {
     // protected FirebaseUser user;
@@ -20,12 +23,21 @@ public class FirebaseAuthentication : MonoBehaviour
 
     private bool _isSuccessfulLogin = false;
     private bool _isSuccessfulSignUp = false;
+
+    /// <summary>
+    /// Start is called when the script is in the scene
+    /// sets the _auth and _userDao
+    /// </summary>
     public void Start()
     {
         _auth = FirebaseAuth.DefaultInstance;
         _userDAO = new UserDAO();
     }
-
+    /// <summary>
+    /// Attempt to set up new authentication if the user name and company
+    /// name fields are not empty
+    /// otherwise set the _isSuccessfullSignUp bool to false
+    /// </summary>
     public async void SignUp()
     {
         if (!_userNameInput.text.Equals("") && !_companyInput.text.Equals(""))
@@ -38,16 +50,27 @@ public class FirebaseAuthentication : MonoBehaviour
         }
         SuccessfulSignUp(_isSuccessfulSignUp);
     }
-
+    /// <summary>
+    /// Calls the ValidateAuthenticationLogin with the email and password input
+    /// calls the successfull login method with the _isSuccessfulLogin bool
+    /// </summary>
     public async void LogIn()
     {
         await ValidateAuthenticationLogin(_email.text, _password.text);
         SuccessfulLogin(_isSuccessfulLogin);
 
     }
-    private void SuccessfulLogin(bool isSuccesful)
+    /// <summary>
+    /// Manages behaviour dependent on the success of a login attempt
+    /// calls the pop up unsuccessfull login if the passed bool is false
+    /// calls the pop up successfull login if the passed bool is true
+    /// calls the userDao getUser if the passed bool is true
+    /// 
+    /// </summary>
+    /// <param name="isSuccessful">bool representing if a login has been successful</param>
+    private void SuccessfulLogin(bool isSuccessful)
     {
-        if (isSuccesful)
+        if (isSuccessful)
         {
             _popUp.SuccessfulLogin();
             _userDAO.GetUser();
@@ -57,6 +80,11 @@ public class FirebaseAuthentication : MonoBehaviour
             _popUp.UnSuccessfulLogin();
         }
     }
+    /// <summary>
+    /// Creates a new user based on the input texts and, using the userDao
+    /// add the user to the firestore collection
+    /// saves the new users profile
+    /// </summary>
     private void SaveNewUser()
     {
         User user = new User
@@ -73,6 +101,14 @@ public class FirebaseAuthentication : MonoBehaviour
         ///////////////////////
         SaveData.Instance.SaveUserProfile(user, _auth.CurrentUser);
     }
+    /// <summary>
+    /// Manages behaviour dependent on the success of a sign up attempt
+    /// calls the pop up UnSuccessfulSignUp if the passed bool is false
+    /// calls the pop up SuccessfulSignUp if the passed bool is true
+    /// calls SaveNewUser if the passed bool is true
+    /// 
+    /// </summary>
+    /// <param name="isSuccessful">bool representing if a login has been successful</param>
     private void SuccessfulSignUp(bool isSuccessful)
     {
         if (isSuccessful)
@@ -86,7 +122,13 @@ public class FirebaseAuthentication : MonoBehaviour
             _popUp.UnSuccessfulSignUp();
         }
     }
-
+    /// <summary>
+    /// Attempts to validate a firebase user login using the email and password params
+    /// sets the _isSuccessfulLogin bool based on the sign attempts success
+    /// </summary>
+    /// <param name="email">represents the login email</param>
+    /// <param name="password">representd the login password</param>
+    /// <returns></returns>
     private async Task ValidateAuthenticationLogin(string email, string password)
     {
         await _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
@@ -105,6 +147,15 @@ public class FirebaseAuthentication : MonoBehaviour
             _isSuccessfulLogin = true;
         });
     }
+    /// <summary>
+    /// Attempts to set up a firebase user auth account using the email, password and name params
+    /// sets the _isSuccessfulSignUp bool based on the sign up attempts success
+    /// sets the new account display name if successful
+    /// </summary>
+    /// <param name="email">represents the login email</param>
+    /// <param name="password">representd the login password</param>
+    /// <param name="name"></param>
+    /// <returns></returns>
     private async Task SetUpAuthentication(string email, string password, string name)
     {
         await _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
@@ -126,6 +177,8 @@ public class FirebaseAuthentication : MonoBehaviour
             {
                 DisplayName = name,
             });
+            Debug.Log("current user " + _auth.CurrentUser.DisplayName);
+
             _isSuccessfulSignUp = true;
             return;
         });
