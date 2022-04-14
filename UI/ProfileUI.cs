@@ -2,7 +2,6 @@ using Firebase.Auth;
 using Save.Manager;
 using TMPro;
 using UnityEngine;
-
 namespace UI.Profile
 {
     /// <summary>
@@ -16,7 +15,6 @@ namespace UI.Profile
         [SerializeField] private GameObject _updateProfileButton;
         [SerializeField] private GameObject _saveProfileButton;
         private User _user;
- 
         /// <summary>
         /// calls load user and set profile text on start
         /// </summary>
@@ -45,7 +43,6 @@ namespace UI.Profile
             GoToViewProfile();
             SetProfileText();
         }
-     
         /// <summary>
         /// sets the user name and company to the name and company input texts
         /// </summary>
@@ -103,9 +100,9 @@ namespace UI.Profile
         {
             _user = SaveData.Instance.LoadUserProfile();
         }
-  /// <summary>
-  /// creates a new user and saves that user profile
-  /// </summary>
+        /// <summary>
+        /// creates a new user and saves that user profile
+        /// </summary>
         private void CreateProfile()
         {
             User newUser = new User
@@ -125,7 +122,6 @@ namespace UI.Profile
             _user.Name = _userNameInput.text;
             _user.Company = _companyInput.text;
             SaveUserProfile();
-     
         }
         /// <summary>
         /// call the  SaveData.Instance.SaveUserProfile passeing user and if a firebase users is logged in
@@ -157,7 +153,7 @@ namespace UI.Profile
             return this._user;
         }
         public void SetUser(User user) => user = this._user;
-        public void SetTexts()
+        public void SetNameAndCompanyTexts()
         {
             _userNameInput.text = "Test Name";
             _companyInput.text = "Test Company";

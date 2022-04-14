@@ -39,7 +39,6 @@ namespace Data.Submit
             {
                 SubmitStoredSamples();
                 SaveData.Instance.UpdateSubmittedStoredSamples();
-
             }
             catch (Exception e)
             {
@@ -70,13 +69,10 @@ namespace Data.Submit
             {
                 var sample = _sampleValidator.NewSample();
                 _sampleDAO.AddSample(sample);
-
                 SaveData.Instance.AddAndSaveSubmittedSample(sample);
                 _submitCanvasManager.CompleteSubmission();
-
                 UpdateFirebaseUserSample(sample);
             }
-
         }
         /// <summary>
         /// Loads stored sample from the device and upload them to the firestore sample
@@ -89,9 +85,7 @@ namespace Data.Submit
         private void SubmitStoredSamples()
         {
             FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
-
             List<Sample> storedSamples = SaveData.Instance.UsersStoredSamples;
-
             UploadStoredSamples(user, storedSamples);
             if (user != null)
             {
@@ -134,7 +128,5 @@ namespace Data.Submit
                 }
             }
         }
-
-
     }
 }

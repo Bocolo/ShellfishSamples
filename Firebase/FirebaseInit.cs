@@ -22,8 +22,6 @@ public class FirebaseInit : MonoBehaviour
     {
         CheckAndFixFBDependencies();
     }
-
-
     /// <summary>
     /// why have this twice --- is firebasestate changed class as well
     /// </summary>

@@ -17,13 +17,10 @@ public class FirebaseAuthentication : MonoBehaviour
     [SerializeField] private TMP_InputField _userNameInput;
     [SerializeField] private TMP_InputField _companyInput;
     [SerializeField] private PopUp _popUp;
-
     private UserDAO _userDAO;
     private FirebaseAuth _auth;
-
     private bool _isSuccessfulLogin = false;
     private bool _isSuccessfulSignUp = false;
-
     /// <summary>
     /// Start is called when the script is in the scene
     /// sets the _auth and _userDao
@@ -58,7 +55,6 @@ public class FirebaseAuthentication : MonoBehaviour
     {
         await ValidateAuthenticationLogin(_email.text, _password.text);
         SuccessfulLogin(_isSuccessfulLogin);
-
     }
     /// <summary>
     /// Manages behaviour dependent on the success of a login attempt
@@ -115,7 +111,6 @@ public class FirebaseAuthentication : MonoBehaviour
         {
             _popUp.SuccessfulSignUp();
             SaveNewUser();
-
         }
         else
         {
@@ -143,7 +138,6 @@ public class FirebaseAuthentication : MonoBehaviour
                 _isSuccessfulLogin = false;
                 return;
             }
-
             _isSuccessfulLogin = true;
         });
     }
@@ -178,12 +172,10 @@ public class FirebaseAuthentication : MonoBehaviour
                 DisplayName = name,
             });
             Debug.Log("current user " + _auth.CurrentUser.DisplayName);
-
             _isSuccessfulSignUp = true;
             return;
         });
     }
-
 #if UNITY_INCLUDE_TESTS
     public async Task AuthenticationTest(string email, string password, string name)
     {
@@ -191,7 +183,6 @@ public class FirebaseAuthentication : MonoBehaviour
     }
 #endif
 }
-
 /*private void ConvertDocSnapshotToUserData(DocumentReference docRef)
 {
     docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>

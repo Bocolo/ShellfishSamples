@@ -22,7 +22,6 @@ namespace UI.SampleDisplay
             GameObject panel = Instantiate(_redPanelPrefab);
             SetPanelParent(panel);
             SetPanelText(panel, sample);
-
         }
         /// <summary>
         /// removes all children on the content parent
@@ -60,7 +59,6 @@ namespace UI.SampleDisplay
         /// <returns></returns>
         private String FullSampleToString(Sample sample)
         {
-
             if (sample.SampleLocationName == null)
             {
                 return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
@@ -74,7 +72,6 @@ namespace UI.SampleDisplay
                 + "\nComment: " + sample.Comment);
             }
         }
-      
         /// <summary>
         /// sets the parent of the passed game object to the _contentParent
         /// sets the passed game object scale
@@ -119,7 +116,6 @@ namespace UI.SampleDisplay
                 if (i % 2 == 0)
                 {
                     panel = Instantiate(_redPanelPrefab);
-                    
                 }
                 else
                 {
@@ -127,7 +123,6 @@ namespace UI.SampleDisplay
                 }
                 SetPanelParent(panel);
                 SetPanelText(panel, sampleList[i]);
-
             }
         }
 #if UNITY_INCLUDE_TESTS
@@ -149,7 +144,6 @@ namespace UI.SampleDisplay
         {
             return this._contentParent;
         }
-   
 #endif
     }
 }

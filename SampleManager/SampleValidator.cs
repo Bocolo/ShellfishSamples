@@ -1,4 +1,3 @@
-
 using System;
 using UnityEngine;
 namespace UI.Submit
@@ -22,10 +21,7 @@ namespace UI.Submit
         /// SAMPLEDETAILS
         /// </summary>
         //  private string missingValues = "";
-
         ///
-
-
         /// <summary>
         /// Called on awake.  Sets the submitcanvasManager
         /// </summary>
@@ -73,8 +69,6 @@ namespace UI.Submit
             SetValues();
             return IsValuesComplete();
         }
-
-
         /// <summary>
         /// Checks if the local _date field strings is a valid data
         /// </summary>
@@ -117,9 +111,7 @@ namespace UI.Submit
             }
             catch (Exception e)
             {
-
                 Debug.Log("Date Check failed: " + e.StackTrace);
-
                 return false;
             }
         }
@@ -128,7 +120,6 @@ namespace UI.Submit
         /// </summary>
         private void SetValues()
         {
-
             SetNameToCanvas();
             SetCompanyToCanvas();
             SetCommentToCanvas();
@@ -145,7 +136,6 @@ namespace UI.Submit
         private bool IsValuesComplete()
         {
             String missingValues = MissingValues();
-
             if (!missingValues.Equals(""))
             {
                 _canvasManager.MissingValuePopup(missingValues);
@@ -156,7 +146,6 @@ namespace UI.Submit
                 return true;
             }
         }
-
         /// <summary>
         /// Checks each local string field for missing values and
         /// populates a string with the details of the missing values
@@ -323,7 +312,6 @@ namespace UI.Submit
             {
                 this._comments = (null);
             }
-
         }
         /// <summary>
         /// Sets the Species to canvas input if value isnt empty

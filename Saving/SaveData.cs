@@ -20,12 +20,9 @@ namespace Save.Manager
         /*
          FIX INSTANCE BS -= SMLLA LARG PRIVATE PUBLIC
          */
-        //private static SaveData _instance;
         public static SaveData Instance { get; private set; }
         public List<Sample> UsersSubmittedSamples { get; private set; } = new List<Sample>();
         public List<Sample> UsersStoredSamples { get; private set; } = new List<Sample>();
-        //  private List<Sample> usersStoredSamples = new List<Sample>();
-
         /// <summary>
         /// Sets instance on awake
         /// 
@@ -39,96 +36,28 @@ namespace Save.Manager
             else
             {
                 Instance = this;
-               // DontDestroyOnLoad(this.gameObject);//this needs to be fixed? m\ybe dont need this
             }
-            //we need to check teh file path exists first
-            //Loads submitted and stored samples on awake if the file path exists
-                  string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";///////////////what
-                  if (File.Exists(filepath))
-                  {
-                      LoadSubmittedSamples();
-                      LoadStoredSamples();
-                  }///review the add and save methods
         }
-
-
-
-
-
-
-
+        #region "Samples"
         /// <summary>
-        /// Loads and returns stored samples
+        ///  Loads the stored samples from local storage and saves to the UsersStoredSamples lisr
+        ///  returns stored samples
         /// </summary>
         /// <returns></returns>
         public List<Sample> LoadAndGetStoredSamples()
         {
-            LoadStoredSamples();
+            UsersStoredSamples = LoadSamples("/storedSamplesSave.dat");
             return this.UsersStoredSamples;
         }
         /// <summary>
-        /// Loads and returns stubmitted samples
+        /// Loads the submitted samples from local storage and saves to the UsersSubmittedSamples list
+        ///  returns stubmitted samples
         /// </summary>
         /// <returns></returns>
         public List<Sample> LoadAndGetSubmittedSamples()
         {
-            LoadSubmittedSamples();
+            UsersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
             return this.UsersSubmittedSamples;
-        }
-     /// <summary>
-     /// Saves the passed user to local storage
-     /// </summary>
-     /// <param name="user">user to save</param>
-        public void SaveUserProfile(User user)
-        {
-            string filepath = Application.persistentDataPath + "/userSave.dat";
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, user);
-            }
-        }
-        /// <summary>
-        /// aves the passed user to local storage
-        /// if the firebase user is not null, adds the user to the firestore Users collection
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="firebaseUser"></param>
-        public void SaveUserProfile(User user, FirebaseUser firebaseUser)
-        {
-            string filepath = Application.persistentDataPath + "/userSave.dat";
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, user);
-            }
-            if (firebaseUser != null)
-            {
-                var firestore = FirebaseFirestore.DefaultInstance;
-                firestore.Collection("Users").Document(user.Email).SetAsync(user);///userdao? //set or updates
-            }
-           
-        }
-        /// <summary>
-        /// clears the submitted samples list and saves it to local storage
-        /// </summary>
-        public void DeleteSubmittedSamplesFromDevice()
-        {
-            ClearSubmittedSamplesList();
-            SaveSubmittedSamples();
-        }
-        /// <summary>
-        /// Loads and return a USer from local storage file
-        /// </summary>
-        /// <returns></returns>
-        public User LoadUserProfile()
-        {
-            string filepath = Application.persistentDataPath + "/userSave.dat";
-            //string filepath = Application.persistentDataPath + "/save.dat";
-            using (FileStream file = File.Open(filepath, FileMode.Open))
-            {
-                object loadedData = new BinaryFormatter().Deserialize(file);
-                User userData = (User)loadedData;
-                return userData;
-            }
         }
         /// <summary>
         /// add a sample to the submitted samples list and saves the list to local storage
@@ -149,17 +78,6 @@ namespace Save.Manager
             SaveStoredSamples();
         }
         /// <summary>
-        /// clears the stored samples and saves to local storage
-        /// save submitted samples to local storage
-        /// </summary>
-        public void UpdateSubmittedStoredSamples()
-        {
-            ClearStoredSamplesList();
-            SaveStoredSamples();
-            SaveSubmittedSamples();
-        }
-        //Could seperate into own scripts
-        /// <summary>
         /// Adds a sample to UsersSubmittedSamples
         /// </summary>
         /// <param name="sample">sample to add</param>
@@ -176,6 +94,24 @@ namespace Save.Manager
             UsersStoredSamples.Add(sample);
         }
         /// <summary>
+        /// clears the stored samples and saves to local storage
+        /// save submitted samples to local storage
+        /// </summary>
+        public void UpdateSubmittedStoredSamples()
+        {
+            ClearStoredSamplesList();
+            SaveStoredSamples();
+            SaveSubmittedSamples();
+        }
+        /// <summary>
+        /// clears the submitted samples list and saves it to local storage
+        /// </summary>
+        public void DeleteSubmittedSamplesFromDevice()
+        {
+            ClearSubmittedSamplesList();
+            SaveSubmittedSamples();
+        }
+        /// <summary>
         /// clears the UsersStoredSamples list
         /// </summary>
         public void ClearStoredSamplesList()
@@ -189,71 +125,62 @@ namespace Save.Manager
         {
             UsersSubmittedSamples.Clear();
         }
-
-
-        /// <summary>
-        /// Loads the submitted samples from local storage and saves to the UsersSubmittedSamples lisr
-        /// </summary>
-        private void LoadSubmittedSamples()
-        {
-            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
-            //string filepath = Application.persistentDataPath + "/save.dat";
-            try
-            {
-                using (FileStream file = File.Open(filepath, FileMode.Open))
-                {
-                    object loadedData = new BinaryFormatter().Deserialize(file);
-                    List<Sample> saveData = (List<Sample>)loadedData;
-                    UsersSubmittedSamples = saveData;
-                    //abbove could be more direct
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("LoadSubmittedSamples: " + e.StackTrace);
-            }
-            //    usersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
-        }
         /// <summary>
         /// saves the UsersSubmittedSamples to local storage
         /// </summary>
         private void SaveSubmittedSamples()
         {
-            string filepath = Application.persistentDataPath + "/submittedSamplesSave.dat";
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, UsersSubmittedSamples);
-            }
-            //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
+            SaveSamples("/submittedSamplesSave.dat", UsersSubmittedSamples);
         }
         /// <summary>
-        /// Loads the stored samples from local storage and saves to the UsersStoredSamples lisr
+        /// saves the UsersStoredSamples list to local storage
         /// </summary>
-        private void LoadStoredSamples()
+        private void SaveStoredSamples()
         {
-            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
-            //string filepath = Application.persistentDataPath + "/save.dat";
-            try
-            {
-                using (FileStream file = File.Open(filepath, FileMode.Open))
-                {
-                    object loadedData = new BinaryFormatter().Deserialize(file);
-                    List<Sample> saveData = (List<Sample>)loadedData;
-                    UsersStoredSamples = saveData;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("LoadStoredSamples: " + e.StackTrace);
-
-            }
-            //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
+            SaveSamples("/storedSamplesSave.dat", UsersStoredSamples);
         }
-
-
-
-
-
+        #endregion
+        #region "Profile"
+        /// <summary>
+        /// Saves the passed user to local storage
+        /// </summary>
+        /// <param name="user">user to save</param>
+        public void SaveUserProfile(User user)
+        {
+            SaveUser("/userSave.dat", user);
+        }
+        /// <summary>
+        /// aves the passed user to local storage
+        /// if the firebase user is not null, adds the user to the firestore Users collection
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="firebaseUser"></param>
+        public void SaveUserProfile(User user, FirebaseUser firebaseUser)
+        {
+            SaveUser("/userSave.dat", user);
+            if (firebaseUser != null)
+            {
+                var firestore = FirebaseFirestore.DefaultInstance;
+                firestore.Collection("Users").Document(user.Email).SetAsync(user);///userdao? //set or updates
+            }
+        }
+        /// <summary>
+        /// Loads and return a USer from local storage file
+        /// </summary>
+        /// <returns></returns>
+        public User LoadUserProfile()
+        {
+            string filepath = Application.persistentDataPath + "/userSave.dat";
+            //string filepath = Application.persistentDataPath + "/save.dat";
+            using (FileStream file = File.Open(filepath, FileMode.Open))
+            {
+                object loadedData = new BinaryFormatter().Deserialize(file);
+                User userData = (User)loadedData;
+                return userData;
+            }
+        }
+        #endregion
+        #region "Generic"
         /// <summary>
         /// loads and returns a list of samples from the passed filename
         /// </summary>
@@ -275,8 +202,7 @@ namespace Save.Manager
             catch (Exception e)
             {
                 Debug.LogError("LoadSamples: " + e.StackTrace);
-
-                return null;
+                return new List<Sample>(); 
             }
         }
         /// <summary>
@@ -293,23 +219,11 @@ namespace Save.Manager
             }
         }
         /// <summary>
-        /// saves the UsersStoredSamples list to local storage
-        /// </summary>
-        private void SaveStoredSamples()
-        {
-            string filepath = Application.persistentDataPath + "/storedSamplesSave.dat";
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, UsersStoredSamples);
-            }
-            //   SaveSamples("/storedSamplesSave.dat", usersStoredSamples);
-        }
-        /// <summary>
         /// saves the passedd User to local storage. the save location is the passed filename
         /// </summary>
         /// <param name="filename">location to save</param>
         /// <param name="user">user to save</param>
-        private void SaveProfile(String filename, User user)
+        private void SaveUser(String filename, User user)
         {
             string filepath = Application.persistentDataPath + filename;
             using (FileStream file = File.Create(filepath))
@@ -317,8 +231,19 @@ namespace Save.Manager
                 new BinaryFormatter().Serialize(file, user);
             }
         }
+        #endregion
     }
 }
+/*     string filepath = Application.persistentDataPath + "/userSave.dat";
+            using (FileStream file = File.Create(filepath))
+            {
+                new BinaryFormatter().Serialize(file, user);
+            }*/
+/*    string filepath = Application.persistentDataPath + "/userSave.dat";
+        using (FileStream file = File.Create(filepath))
+        {
+            new BinaryFormatter().Serialize(file, user);
+        }*/
 /*
 /// <summary>
 /// ////////

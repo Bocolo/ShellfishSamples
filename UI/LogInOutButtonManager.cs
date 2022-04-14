@@ -17,13 +17,13 @@ namespace UI.Authentication
         /// </summary>
         private void Start()
         {
-            _isLoggedIn =FirebaseAuth.DefaultInstance.CurrentUser != null;
+            _isLoggedIn = FirebaseAuth.DefaultInstance.CurrentUser != null;
             SetLogInOutButtonInteractable(_isLoggedIn);
         }
-  /// <summary>
-  /// Sets the interactability of the login and signout button based on the isLoggedIn bool
-  /// </summary>
-  /// <param name="isLoggedIn">bool used in if else, represents if a user id logged in</param>
+        /// <summary>
+        /// Sets the interactability of the login and signout button based on the isLoggedIn bool
+        /// </summary>
+        /// <param name="isLoggedIn">bool used in if else, represents if a user id logged in</param>
         private void SetLogInOutButtonInteractable(bool isLoggedIn)
         {
             if (isLoggedIn)

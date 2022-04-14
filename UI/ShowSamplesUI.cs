@@ -6,9 +6,7 @@ using UI.Popup;
 using UI.Retrieve;
 using UI.SampleDisplay;
 using UnityEngine;
-
 namespace Data.Display
-
 {
     /// <summary>
     /// Manages buttons actions for disaplying samples
@@ -37,32 +35,26 @@ namespace Data.Display
         public void ShowStoredSamples(PopUp popUp)
         {
             List<Sample> loadedSamples = SaveData.Instance.LoadAndGetStoredSamples();
-      
             if (loadedSamples.Count == 0)
             {
                 popUp.SetPopUpText("There are no stored samples");
-
             }
             else
             {
                 _sampleUI.AddTextAndPrefab(loadedSamples);
             }
         }
-
         /// <summary>
         /// loads and displays Device submitted samples,
         /// if there are no Device submitted samples activate the pop up with the passed text
         /// </summary>
         /// <param name="popUp">pop up to use in if case</param>
-
         public void ShowAllDeviceSubmittedSamples(PopUp popUp)
         {
             List<Sample> loadedSamples = SaveData.Instance.LoadAndGetSubmittedSamples();
-     
             if (loadedSamples.Count == 0)
             {
                 popUp.SetPopUpText("No samples have been submitted");
-
             }
             else
             {
@@ -74,7 +66,6 @@ namespace Data.Display
         /// if there is no Firebase user , the pop up activates with the passed text
         /// </summary>
         /// <param name="popUp">pop up to use in if case</param>
-
         public async void ShowUserSubmittedSamples(PopUp popUp)
         {
             FirebaseAuth auth = FirebaseAuth.DefaultInstance;
@@ -104,10 +95,7 @@ namespace Data.Display
                     )
                 );
             _sampleUI.AddTextAndPrefab(_collectionSamples);
-
         }
-
-
 #if UNITY_INCLUDE_TESTS
         public void SetUpTestVariables()
         {

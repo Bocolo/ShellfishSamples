@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace App.Setup
 {//names file
-
-
     // Scroll Video for review
     //https://www.google.com/search?q=unity+add+scroll+inpout+page&rlz=1C1CHZN_enIE969IE969&sxsrf=APq-WBvFEfjM_-fX0mbZZFIZab7gxdrl0w%3A1644015553917&ei=wa_9Yb-sN_qGhbIP5o-HwAw&oq=unity+add+scroll+inpout+page&gs_lcp=ChNtb2JpbGUtZ3dzLXdpei1zZXJwEAMyBwghEAoQoAEyBwghEAoQoAE6BwgAEEcQsAM6BAgeEAo6BQghEKABOggIIRAWEB0QHjoGCAAQFhAeOgQIIRAVSgQIQRgAUN8fWMNLYLtNaAFwAXgAgAG-BIgBhBuSAQswLjMuNy4yLjAuMZgBAKABAcgBCMABAQ&sclient=mobile-gws-wiz-serp#kpvalbx=_NbD9YbPlCofVgQa68oGADQ29
     //This script is only used once on 4 dropdown UI's to populate the options list

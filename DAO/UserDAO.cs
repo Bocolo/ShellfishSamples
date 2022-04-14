@@ -4,7 +4,6 @@ using Firebase.Firestore;
 using Save.Manager;
 using System;
 using UnityEngine;
-
 namespace Data.Access
 {
     /// <summary>
@@ -61,7 +60,6 @@ namespace Data.Access
         /// </summary>
         /// <param name="firebaseUser"></param>
         /// 
-
         /// <summary>
         /// Incremenets the firebaseUsers submitted sample count by one
         /// </summary>

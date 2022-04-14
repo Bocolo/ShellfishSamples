@@ -14,7 +14,6 @@ namespace UI.Retrieve
         public string SearchFieldSelection { get; private set; } = "";
         public string SearchNameSelection { get; private set; } = "";
         public int SearchLimitSelection { get; private set; } = 0;
-   
         /// <summary>
         /// Sets the search values: name, field and limit
         /// </summary>
@@ -25,7 +24,6 @@ namespace UI.Retrieve
 //            SetSearchNameSelection();
             SetSearchLimitSelection();
         }
-
         /// <summary>
         /// sets the SearchLimitSelection to search limit input
         /// </summary>
@@ -41,7 +39,6 @@ namespace UI.Retrieve
                     Debug.LogError("SetSearchLimitSelection: Format Exception: " + e.StackTrace);
                     SearchLimitSelection = 0;
                 }
-               
             }
         }
         /// <summary>
@@ -70,10 +67,8 @@ namespace UI.Retrieve
                 case 5:
                     SearchFieldSelection = "Date";
                     break;
-
             }
         }
-    
 #if UNITY_INCLUDE_TESTS
         public void SetUpTestVariables()
         {
@@ -84,7 +79,6 @@ namespace UI.Retrieve
             _searchInput = go3.AddComponent<TMP_InputField>();
             _searchLimit = go4.AddComponent<TMP_InputField>();
         }
-  
         public string GetSearchInputText()
         {
             return _searchInput.text;
@@ -93,7 +87,6 @@ namespace UI.Retrieve
         {
             _searchInput.text = text;
         }
-       
         public string GetSearchLimitText()
         {
             return _searchLimit.text;
@@ -111,7 +104,6 @@ namespace UI.Retrieve
             Debug.Log("DDV: " + dropdownValue);
             SetSearchFieldValue(dropdownValue);
         }
-
 #endif
     }
 }

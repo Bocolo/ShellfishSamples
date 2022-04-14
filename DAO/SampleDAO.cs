@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
-
 namespace Data.Access
 {
     /// <summary>
@@ -23,8 +22,6 @@ namespace Data.Access
         {
             _firestore = FirebaseFirestore.DefaultInstance;
         }
-
-
         /// <summary>
         /// Adds a sample to the firestore Sample collection
         /// </summary>
@@ -111,7 +108,6 @@ namespace Data.Access
         /// <returns>the firestore query</returns>
         private Query SetQuerySearchParamaters(string searchField, string searchName)
         {
-
             Query testQuery = _firestore.Collection(_collectionPath);
             if (searchField.Equals("ProductionWeekNo"))
             {
@@ -122,8 +118,6 @@ namespace Data.Access
                 catch (FormatException formatException)
                 {
                     Debug.LogError("SetQuerySearchParamaters: failed to parse limit: " + formatException.StackTrace);
-
-
                 }
             }
             else if ((!searchName.Equals("")) && (!searchField.Equals("")))
@@ -184,6 +178,5 @@ namespace Data.Access
             });
             return collectionSamples;
         }
-
     }
 }

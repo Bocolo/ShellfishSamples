@@ -2,7 +2,6 @@ using Save.Manager;
 using System;
 using TMPro;
 using UnityEngine;
-
 using UI.Popup;
 namespace UI.Submit
 {
@@ -13,7 +12,6 @@ namespace UI.Submit
     /// </summary>
     public class SubmitCanvasManager : MonoBehaviour
     {
-   
         public TMP_InputField Name { get; private set; }
         public TMP_InputField Company { get; private set; }
         public TMP_InputField Comments { get; private set; }
@@ -28,7 +26,6 @@ namespace UI.Submit
         public TMP_Dropdown SampleLocationName { get; private set; }
         //SMALL CANVAS
         [SerializeField] private GameObject _smallCanvas;
-
         [SerializeField] private TMP_InputField _nameSmall;
         [SerializeField] private TMP_InputField _companySmall;
         [SerializeField] private TMP_InputField _commentsSmall;
@@ -41,10 +38,8 @@ namespace UI.Submit
         [SerializeField] private TMP_Dropdown _yearDropSmall;
         [SerializeField] private TMP_Dropdown _iceRectangleSmall;
         [SerializeField] private TMP_Dropdown _sampleLocationNameSmall;
-
         //LARGE CANVAS
         [SerializeField] private GameObject _largeCanvas;
-
         [SerializeField] private TMP_InputField _nameLarge;
         [SerializeField] private TMP_InputField _companyLarge;
         [SerializeField] private PopUp _missingValuesPopUpLarge;
@@ -57,7 +52,6 @@ namespace UI.Submit
         [SerializeField] private TMP_Dropdown _yearDropLarge;
         [SerializeField] private TMP_Dropdown _iceRectangleLarge;
         [SerializeField] private TMP_Dropdown _sampleLocationNameLarge;
-       
         /// <summary>
         /// On start: Activates the canvas based user prefs
         /// Sets the name and company field with profile details
@@ -86,7 +80,6 @@ namespace UI.Submit
         {
             MissingValuesPopUp.SetPopUpText(missingValues);
         }
-
         /// <summary>
         /// Resets all of the active canvas fields
         /// sets the name and company fields to profile details
@@ -111,7 +104,6 @@ namespace UI.Submit
         {
             OnSubmitResetFields();
             SubmissionPopUp.SuccessfulSubmission();
-
         }
         /// <summary>
         ///  Resets all of the active canvas fields
@@ -121,7 +113,6 @@ namespace UI.Submit
         {
             OnSubmitResetFields();
             SubmissionPopUp.SuccessfulStorage();
-
         }
         /// <summary>
         /// 
@@ -138,7 +129,6 @@ namespace UI.Submit
             {
                 SetCanvasSmall(true);
                 UserPrefs.SetPreferredCanvas("Small");
-
             }
         }
         /// <summary>
@@ -187,7 +177,6 @@ namespace UI.Submit
                 Comments = _commentsLarge;
                 MissingValuesPopUp = _missingValuesPopUpLarge;
                 SubmissionPopUp = _submissionPopUpLarge;
-
             }
         }
         /// <summary>
@@ -213,7 +202,6 @@ namespace UI.Submit
                 IceRectangle.value = _iceRectangleSmall.value;
                 SampleLocationName.value = _sampleLocationNameSmall.value;
                 Comments.text = _commentsSmall.text;
-               
             }
             else
             {
@@ -227,8 +215,6 @@ namespace UI.Submit
                 IceRectangle.value = _iceRectangleLarge.value;
                 SampleLocationName.value = _sampleLocationNameLarge.value;
                 Comments.text = _commentsLarge.text;
-
-
             }
         }
         /// <summary>
@@ -240,8 +226,6 @@ namespace UI.Submit
         {
             _largeCanvas.SetActive(!isSmall);
             _smallCanvas.SetActive(isSmall);
-
-
             SwitchInputFields(isSmall);
             SwicthInputValues(isSmall);
         }

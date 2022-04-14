@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UI.Popup;
 using Save.Manager;
-
 namespace UI.Navigation
 {
     /// <summary>

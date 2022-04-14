@@ -73,7 +73,6 @@ namespace UI.Popup
         {
             _popUpText = this.gameObject.AddComponent<TextMeshPro>();
         }
-
         public string GetPopUpText()
         {
             return _popUpText.text;
