@@ -51,14 +51,30 @@ namespace UI.Submit
         public PopUp SubmissionPopUp { get; private set; }
         private void Awake()
         {
-            SetCanvasSmall(false);
+            if (UserPrefs.GetPreferredCanvas().Equals("Small"))
+            {
+                SetCanvasSmall(true);
+                Debug.Log("Seeting small");
+            }
+            else if (UserPrefs.GetPreferredCanvas().Equals("Large"))
+            {
+                SetCanvasSmall(false);
+                Debug.Log("Seeting large");
+
+            }
+            else
+            {
+                SetCanvasSmall(false);
+                Debug.Log("Seeting");
+
+            }
             SetNameAndCompanyFromProfile();
         }
         public void MissingValuePopup(String missingValues)
         {
             MissingValuesPopUp.SetPopUpText(missingValues);
         }
-     
+
         private void OnSubmitResetFields()
         {
             Comments.text = "";
@@ -74,7 +90,7 @@ namespace UI.Submit
         public void CompleteSubmission()
         {
             OnSubmitResetFields();
-           // DisplaySubmissionPopUp();
+            // DisplaySubmissionPopUp();
             SubmissionPopUp.SuccessfulSubmission();
 
         }
@@ -85,18 +101,21 @@ namespace UI.Submit
             SubmissionPopUp.SuccessfulStorage();
 
         }
-   
+
         public void SwitchCanvas()
         {
             if (SmallCanvas.activeInHierarchy)
             {
                 SetCanvasSmall(false);
+                UserPrefs.SetPreferredCanvas("Large");
             }
             else
             {
                 SetCanvasSmall(true);
+                UserPrefs.SetPreferredCanvas("Small");
+
             }
-            SetNameAndCompanyFromProfile();
+          //  SetNameAndCompanyFromProfile();
         }
         private void SetNameAndCompanyFromProfile()
         {
@@ -139,6 +158,39 @@ namespace UI.Submit
 
             }
         }
+
+        private void SwicthInputValues(bool isSmall)
+        {
+            if (!isSmall)
+            {
+                Name.text = _name_sml.text;
+                Company.text = _company_sml.text;
+                ProductionWk.value = _productionWk_sml.value;
+                Species.value = _species_sml.value;
+                DayDrop.value = DayDrop_sml.value;
+                MonthDrop.value = MonthDrop_sml.value;
+                YearDrop.value = YearDrop_sml.value;
+                IceRectangle.value = _iceRectangle_sml.value;
+                SampleLocationName.value = _sampleLocationName_sml.value;
+                Comments.text = _comments_sml.text;
+               
+            }
+            else
+            {
+                Name.text = _name_lrg.text;
+                Company.text = _company_lrg.text;
+                ProductionWk.value = _productionWk_lrg.value;
+                Species.value = _species_lrg.value;
+                DayDrop.value = DayDrop_lrg.value;
+                MonthDrop.value = MonthDrop_lrg.value;
+                YearDrop.value = YearDrop_lrg.value;
+                IceRectangle.value = _iceRectangle_lrg.value;
+                SampleLocationName.value = _sampleLocationName_lrg.value;
+                Comments.text = _comments_lrg.text;
+
+
+            }
+        }
         private void SetCanvasSmall(bool isSmall)
         {
             LargeCanvas.SetActive(!isSmall);
@@ -146,114 +198,7 @@ namespace UI.Submit
 
 
             SwitchInputFields(isSmall);
-
+            SwicthInputValues(isSmall);
         }
-/*
-#if UNITY_INCLUDE_TESTS
-        public void SetSmallCanvasTest()
-        {
-        }
-        public void SetUp()
-        {
-            GameObject go1 = new GameObject();
-            GameObject go2 = new GameObject();
-            GameObject go3 = new GameObject();
-            GameObject go4 = new GameObject();
-            GameObject go5 = new GameObject();
-            GameObject go6 = new GameObject();
-            GameObject go7 = new GameObject();
-            GameObject go8 = new GameObject();
-            GameObject go9 = new GameObject();
-            GameObject go10 = new GameObject();
-
-
-         //   MissingValuesPopUp = this.gameObject.AddComponent<TMP_InputField>();
-            Comments = go1.AddComponent<TMP_InputField>();
-            Name = go2.AddComponent<TMP_InputField>();
-            Company = go3.AddComponent<TMP_InputField>();
-
-            IceRectangle = go4.AddComponent<TMP_Dropdown>();
-            DayDrop = go5.AddComponent<TMP_Dropdown>();
-            MonthDrop = go6.AddComponent<TMP_Dropdown>();
-            Species = go7.AddComponent<TMP_Dropdown>();
-            ProductionWk = go8.AddComponent<TMP_Dropdown>();
-            SampleLocationName = go9.AddComponent<TMP_Dropdown>();
-            YearDrop = go10.AddComponent<TMP_Dropdown>();
-        }
-        public GameObject GetSmallCanvas()
-        {
-            return this.SmallCanvas;
-        }
-        public GameObject GetLargeCanvas()
-        {
-            return this.LargeCanvas;
-        }
-#endif*/
     }
 }
-
-/* if (isSmall)
- {
-
-     _name = _name_sml;
-     _company = _company_sml;
-     _productionWk = _productionWk_sml;
-     _species = _species_sml;
-     DayDrop = DayDrop_sml;
-     MonthDrop = MonthDrop_sml;
-     YearDrop = YearDrop_sml;
-     _iceRectangle = _iceRectangle_sml;
-     _sampleLocationName = _sampleLocationName_sml;
-     _comments = _comments_sml;
-     _submitButton = _submitButton_sml;
-     _pop_up = _pop_up_sml;
- }*/
-/*   SmallCanvas.SetActive(isSmall);
-   LargeCanvas.SetActive(!isSmall);
-   if (isSmall)
-   {
-       _name = _name_sml;
-       _company = _company_sml;
-       _productionWk = _productionWk_sml;
-       _species = _species_sml;
-       DayDrop = DayDrop_sml;
-       MonthDrop = MonthDrop_sml;
-       YearDrop = YearDrop_sml;
-       _iceRectangle = _iceRectangle_sml;
-       _sampleLocationName = _sampleLocationName_sml;
-       _comments = _comments_sml;
-       _submitButton = _submitButton_sml;
-       _pop_up = _pop_up_sml;
-   }
-   else
-   {
-       _name = _name_lrg;
-       _company = _company_lrg;
-       _productionWk = _productionWk_lrg;
-       _species = _species_lrg;
-       DayDrop = DayDrop_lrg;
-       MonthDrop = MonthDrop_lrg;
-       YearDrop = YearDrop_lrg;
-       _iceRectangle = _iceRectangle_lrg;
-       _sampleLocationName = _sampleLocationName_lrg;
-       _comments = _comments_lrg;
-       _submitButton = _submitButton_lrg;
-       _pop_up = _pop_up_lrg;
-   }*/
-/*   if (!isSmall)
-         {
-
-
-             _name = _name_lrg;
-             _company = _company_lrg;
-             _productionWk = _productionWk_lrg;
-             _species = _species_lrg;
-             DayDrop = DayDrop_lrg;
-             MonthDrop = MonthDrop_lrg;
-             YearDrop = YearDrop_lrg;
-             _iceRectangle = _iceRectangle_lrg;
-             _sampleLocationName = _sampleLocationName_lrg;
-             _comments = _comments_lrg;
-             _submitButton = _submitButton_lrg;
-             _pop_up = _pop_up_lrg;
-         }*/

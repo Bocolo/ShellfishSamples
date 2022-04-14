@@ -42,6 +42,7 @@ namespace Save.Manager
                 LoadStoredSamples();
             }
         }
+      
         public List<Sample> LoadAndGetStoredSamples()
         {
             LoadStoredSamples();
@@ -52,7 +53,7 @@ namespace Save.Manager
             LoadSubmittedSamples();
             return this.UsersSubmittedSamples;
         }
-
+     
         public void SaveUserProfile(User user)
         {
             string filepath = Application.persistentDataPath + "/userSave.dat";
@@ -224,3 +225,44 @@ namespace Save.Manager
         }
     }
 }
+/*
+/// <summary>
+/// ////////
+/// </summary>
+/// <returns></returns>
+public List<Sample> AllSamples { get; private set; } = new List<Sample>();
+/// 
+public void SaveFullData()
+{
+    string filepath = Application.persistentDataPath + "/allSamples.dat";
+    using (FileStream file = File.Create(filepath))
+    {
+        new BinaryFormatter().Serialize(file, AllSamples);
+        Debug.Log("saved");
+    }
+    //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
+}
+public void LoadFullData()
+{
+    string filepath = Application.persistentDataPath + "/allSamples.dat";
+    //string filepath = Application.persistentDataPath + "/save.dat";
+    try
+    {
+        using (FileStream file = File.Open(filepath, FileMode.Open))
+        {
+            object loadedData = new BinaryFormatter().Deserialize(file);
+            List<Sample> saveData = (List<Sample>)loadedData;
+            AllSamples = saveData;
+        }
+    }
+    catch (Exception e)
+    {
+    }
+    //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
+}
+public void AddToFullSamples(Sample sample)
+{
+    AllSamples.Add(sample);
+}
+//////////
+///*/

@@ -8,52 +8,53 @@ using Save.Manager;
 
 public class FirebaseAuthentication : MonoBehaviour
 {
-   // protected FirebaseUser user;
-    [SerializeField] private TMP_InputField email;
-    [SerializeField] private TMP_InputField password;
+    // protected FirebaseUser user;
+    [SerializeField] private TMP_InputField _email;
+    [SerializeField] private TMP_InputField _password;
     [SerializeField] private TMP_InputField _userNameInput;
     [SerializeField] private TMP_InputField _companyInput;
- 
-    [SerializeField] private GameObject popUpObject;
-    private UserDAO userDAO;
-    private FirebaseAuth auth;
+    [SerializeField] private PopUp _popUp;
 
-    private bool isSuccessfulLogin = false;
-    private bool isSuccessfulSignUp = false;
+    private UserDAO _userDAO;
+    private FirebaseAuth _auth;
+
+    private bool _isSuccessfulLogin = false;
+    private bool _isSuccessfulSignUp = false;
     public void Start()
     {
-        auth = FirebaseAuth.DefaultInstance;
-        userDAO = new UserDAO();
+        _auth = FirebaseAuth.DefaultInstance;
+        _userDAO = new UserDAO();
     }
+
     public async void SignUp()
     {
         if (!_userNameInput.text.Equals("") && !_companyInput.text.Equals(""))
         {
-            await SetUpAuthentication(email.text, password.text, _userNameInput.text);
+            await SetUpAuthentication(_email.text, _password.text, _userNameInput.text);
         }
         else
         {
-            isSuccessfulSignUp = false;
+            _isSuccessfulSignUp = false;
         }
-        SuccessfulSignUp(isSuccessfulSignUp);
+        SuccessfulSignUp(_isSuccessfulSignUp);
     }
 
     public async void LogIn()
     {
-        await ValidateAuthenticationLogin(email.text, password.text);
-        SuccessfulLogin(isSuccessfulLogin);
-   
+        await ValidateAuthenticationLogin(_email.text, _password.text);
+        SuccessfulLogin(_isSuccessfulLogin);
+
     }
     private void SuccessfulLogin(bool isSuccesful)
     {
         if (isSuccesful)
         {
-            popUpObject.GetComponent<PopUp>().SuccessfulLogin();
-            userDAO.GetUser();
+            _popUp.SuccessfulLogin();
+            _userDAO.GetUser();
         }
         else
         {
-            popUpObject.GetComponent<PopUp>().UnSuccessfulLogin();
+            _popUp.UnSuccessfulLogin();
         }
     }
     private void SaveNewUser()
@@ -62,82 +63,78 @@ public class FirebaseAuthentication : MonoBehaviour
         {
             Name = _userNameInput.text,
             Company = _companyInput.text,
-            Email = email.text.ToLower(),
+            Email = _email.text.ToLower(),
             SubmittedSamplesCount = 0,
         };
         ///review use od this block
-        userDAO = new UserDAO();
-        userDAO.AddUser(user);
+        //////check if unblocking this affected anything
+       // _userDAO = new UserDAO();
+        _userDAO.AddUser(user);
         ///////////////////////
-        SaveData.Instance.SaveUserProfile(user, auth.CurrentUser);
+        SaveData.Instance.SaveUserProfile(user, _auth.CurrentUser);
     }
     private void SuccessfulSignUp(bool isSuccessful)
     {
         if (isSuccessful)
         {
-            popUpObject.GetComponent<PopUp>().SuccessfulSignUp();
+            _popUp.SuccessfulSignUp();
             SaveNewUser();
-    
+
         }
         else
         {
-            popUpObject.GetComponent<PopUp>().UnSuccessfulSignUp();
+            _popUp.UnSuccessfulSignUp();
         }
     }
 
     private async Task ValidateAuthenticationLogin(string email, string password)
     {
-        await auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
+        await _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
             if (task.IsCanceled)
-            { 
-                isSuccessfulLogin = false;
+            {
+                _isSuccessfulLogin = false;
                 return;
             }
             if (task.IsFaulted)
             {
-                isSuccessfulLogin = false;
+                _isSuccessfulLogin = false;
                 return;
             }
-         
-            isSuccessfulLogin = true;
+
+            _isSuccessfulLogin = true;
         });
     }
     private async Task SetUpAuthentication(string email, string password, string name)
     {
-       // auth = FirebaseAuth.DefaultInstance;//?
-        await auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
+        await _auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
             if (task.IsCanceled)
             {
-                isSuccessfulSignUp = false;
+                _isSuccessfulSignUp = false;
                 return;
             }
             if (task.IsFaulted)
             {
-                isSuccessfulSignUp = false;
+                _isSuccessfulSignUp = false;
                 return;
             }
-      /*      FirebaseUser user = task.Result;
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                user.DisplayName, user.UserId);*/
-            auth.CurrentUser.UpdateUserProfileAsync(new UserProfile
+            /*      FirebaseUser user = task.Result;
+                  Debug.LogFormat("Firebase user created successfully: {0} ({1})",
+                      user.DisplayName, user.UserId);*/
+            _auth.CurrentUser.UpdateUserProfileAsync(new UserProfile
             {
                 DisplayName = name,
             });
-            isSuccessfulSignUp = true;
+            _isSuccessfulSignUp = true;
             return;
         });
     }
-/*    private void UpdateFirebaseProfile()
-    {
-
-    }*/
 
 #if UNITY_INCLUDE_TESTS
     public async Task AuthenticationTest(string email, string password, string name)
     {
-         await SetUpAuthentication( email,  password,  name);
+        await SetUpAuthentication(email, password, name);
     }
 #endif
 }

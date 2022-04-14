@@ -7,32 +7,31 @@ https://www.youtube.com/watch?v=NsAUEyA2TRo
  */
 public class FirebaseInit : MonoBehaviour
 {
-    private FirebaseApp app;
-    private Firebase.Auth.FirebaseAuth auth;
-    private Firebase.Auth.FirebaseUser user;
+    private FirebaseApp _app;
+    private Firebase.Auth.FirebaseAuth _auth;
+    private Firebase.Auth.FirebaseUser _user;
     // Handle initialization of the necessary firebase modules:
     /// <summary>
     /// why have this twice --- is firebasestate changed class as well
     /// </summary>
     void InitializeFirebase()
     {
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        auth.StateChanged += AuthStateChanged;
+        _auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        _auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
     }
     // Track state changes of the auth object.
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
-        Debug.Log("Auth changed firebase init");
-        if (auth.CurrentUser != user)
+        if (_auth.CurrentUser != _user)
         {
-            user = auth.CurrentUser;
+            _user = _auth.CurrentUser;
         }
     }
     void OnDestroy()
     {
-        auth.StateChanged -= AuthStateChanged;
-        auth = null;
+        _auth.StateChanged -= AuthStateChanged;
+        _auth = null;
     }
     void Start()
     {
@@ -47,7 +46,7 @@ public class FirebaseInit : MonoBehaviour
             {
                 // Create and hold a reference to your FirebaseApp,
                 // where app is a Firebase.FirebaseApp property of your application class.
-                app = FirebaseApp.DefaultInstance;
+                _app = FirebaseApp.DefaultInstance;
                 InitializeFirebase();
                 // Set a flag here to indicate whether Firebase is ready to use by your app.
             }

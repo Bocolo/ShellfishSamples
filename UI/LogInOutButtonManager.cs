@@ -5,7 +5,7 @@ namespace UI.Authentication
 {
     public class LogInOutButtonManager : MonoBehaviour
     {
-        public bool IsLoggedIn {  private get;  set; }
+        private bool IsLoggedIn; //{  private get;  set; }
         [SerializeField] private Button logInButton;
         [SerializeField] private Button signoutButton;
         private void Start()
