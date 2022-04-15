@@ -83,8 +83,8 @@ namespace UI.Profile
         {
             string profileText = "<b>Name : </b>" + _user.Name
                  + "\n\n<b>Company: </b>" + _user.Company
-                 + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.UsersStoredSamples.Count
-                 + "\n\n<b>No of Submitted Samples from this Device: </b>" + SaveData.Instance.UsersSubmittedSamples.Count;
+                 + "\n\n<b>No of Stored Samples on Device: </b>" + SaveData.Instance.LoadAndGetStoredSamples().Count
+                 + "\n\n<b>No of Submitted Samples from this Device: </b>" + SaveData.Instance.LoadAndGetSubmittedSamples().Count;
             //Can fic theis by making stores submitted samples equal to the upd.ssc
             //then no need for if else
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)

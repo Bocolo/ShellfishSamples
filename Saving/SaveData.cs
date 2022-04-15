@@ -23,9 +23,12 @@ namespace Save.Manager
         public static SaveData Instance { get; private set; }
         public List<Sample> UsersSubmittedSamples { get; private set; } = new List<Sample>();
         public List<Sample> UsersStoredSamples { get; private set; } = new List<Sample>();
+        private string _storedSampleLocation = "/storedSamplesSave.dat";
+        private string _submittedSampleLocation = "/submittedSamplesSave.dat";
+        private string _userLocation = "/userSave.dat";
         /// <summary>
         /// Sets instance on awake
-        /// 
+        /// Set stored and submitted samples lists
         /// </summary>
         private void Awake()
         {
@@ -37,6 +40,8 @@ namespace Save.Manager
             {
                 Instance = this;
             }
+            UsersStoredSamples = LoadSamples(_storedSampleLocation);
+            UsersSubmittedSamples = LoadSamples(_submittedSampleLocation);
         }
         #region "Samples"
         /// <summary>
@@ -46,7 +51,7 @@ namespace Save.Manager
         /// <returns></returns>
         public List<Sample> LoadAndGetStoredSamples()
         {
-            UsersStoredSamples = LoadSamples("/storedSamplesSave.dat");
+            UsersStoredSamples = LoadSamples(_storedSampleLocation);
             return this.UsersStoredSamples;
         }
         /// <summary>
@@ -56,7 +61,7 @@ namespace Save.Manager
         /// <returns></returns>
         public List<Sample> LoadAndGetSubmittedSamples()
         {
-            UsersSubmittedSamples = LoadSamples("/submittedSamplesSave.dat");
+            UsersSubmittedSamples = LoadSamples(_submittedSampleLocation);
             return this.UsersSubmittedSamples;
         }
         /// <summary>
@@ -130,14 +135,15 @@ namespace Save.Manager
         /// </summary>
         private void SaveSubmittedSamples()
         {
-            SaveSamples("/submittedSamplesSave.dat", UsersSubmittedSamples);
+            Debug.Log("Submitted asamples count " + UsersSubmittedSamples.Count);
+            SaveSamples(_submittedSampleLocation, UsersSubmittedSamples);
         }
         /// <summary>
         /// saves the UsersStoredSamples list to local storage
         /// </summary>
         private void SaveStoredSamples()
         {
-            SaveSamples("/storedSamplesSave.dat", UsersStoredSamples);
+            SaveSamples(_storedSampleLocation, UsersStoredSamples);
         }
         #endregion
         #region "Profile"
@@ -147,7 +153,7 @@ namespace Save.Manager
         /// <param name="user">user to save</param>
         public void SaveUserProfile(User user)
         {
-            SaveUser("/userSave.dat", user);
+            SaveUser(_userLocation, user);
         }
         /// <summary>
         /// aves the passed user to local storage
@@ -157,7 +163,7 @@ namespace Save.Manager
         /// <param name="firebaseUser"></param>
         public void SaveUserProfile(User user, FirebaseUser firebaseUser)
         {
-            SaveUser("/userSave.dat", user);
+            SaveUser(_userLocation, user);
             if (firebaseUser != null)
             {
                 var firestore = FirebaseFirestore.DefaultInstance;
@@ -170,7 +176,7 @@ namespace Save.Manager
         /// <returns></returns>
         public User LoadUserProfile()
         {
-            string filepath = Application.persistentDataPath + "/userSave.dat";
+            string filepath = Application.persistentDataPath + _userLocation;
             //string filepath = Application.persistentDataPath + "/save.dat";
             using (FileStream file = File.Open(filepath, FileMode.Open))
             {
@@ -234,12 +240,12 @@ namespace Save.Manager
         #endregion
     }
 }
-/*     string filepath = Application.persistentDataPath + "/userSave.dat";
+/*     string filepath = Application.persistentDataPath + _userLocation;
             using (FileStream file = File.Create(filepath))
             {
                 new BinaryFormatter().Serialize(file, user);
             }*/
-/*    string filepath = Application.persistentDataPath + "/userSave.dat";
+/*    string filepath = Application.persistentDataPath + _userLocation;
         using (FileStream file = File.Create(filepath))
         {
             new BinaryFormatter().Serialize(file, user);
@@ -259,7 +265,7 @@ public void SaveFullData()
         new BinaryFormatter().Serialize(file, AllSamples);
         Debug.Log("saved");
     }
-    //    SaveSamples("/submittedSamplesSave.dat", usersSubmittedSamples);
+    //    SaveSamples(_submittedSampleLocation, usersSubmittedSamples);
 }
 public void LoadFullData()
 {
@@ -277,7 +283,7 @@ public void LoadFullData()
     catch (Exception e)
     {
     }
-    //   usersStoredSamples = LoadSamples("/storedSamplesSave.dat");
+    //   usersStoredSamples = LoadSamples(_storedSampleLocation);
 }
 public void AddToFullSamples(Sample sample)
 {

@@ -20,6 +20,10 @@ namespace UI.Authentication
             _isLoggedIn = FirebaseAuth.DefaultInstance.CurrentUser != null;
             SetLogInOutButtonInteractable(_isLoggedIn);
         }
+        public void SignOut()
+        {
+            SetLogInOutButtonInteractable(FirebaseAuth.DefaultInstance.CurrentUser != null);
+        }
         /// <summary>
         /// Sets the interactability of the login and signout button based on the isLoggedIn bool
         /// </summary>

@@ -38,6 +38,8 @@ namespace Data.Display
             if (loadedSamples.Count == 0)
             {
                 popUp.SetPopUpText("There are no stored samples");
+                _sampleUI.DestroyParentChildren();
+
             }
             else
             {
@@ -55,9 +57,11 @@ namespace Data.Display
             if (loadedSamples.Count == 0)
             {
                 popUp.SetPopUpText("No samples have been submitted");
+                _sampleUI.DestroyParentChildren();
             }
             else
             {
+                Debug.Log("Loaded in show all devices count is " + loadedSamples.Count);
                 _sampleUI.AddTextAndPrefab(loadedSamples);
             }
         }
@@ -77,6 +81,8 @@ namespace Data.Display
             else
             {
                 popUp.SetPopUpText("You must be signed in to view these");
+                _sampleUI.DestroyParentChildren();
+
             }
         }
         /// <summary>

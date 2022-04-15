@@ -85,10 +85,13 @@ namespace Data.Submit
         private void SubmitStoredSamples()
         {
             FirebaseUser user = FirebaseAuth.DefaultInstance.CurrentUser;
+            Debug.Log("User is null / not null " + user);
             List<Sample> storedSamples = SaveData.Instance.UsersStoredSamples;
             UploadStoredSamples(user, storedSamples);
             if (user != null)
             {
+                Debug.Log("User is not null " + user);
+
                 _userDAO.UpdateUserSampleCount(user, storedSamples.Count);
             }
             SaveData.Instance.UpdateSubmittedStoredSamples();
@@ -122,6 +125,7 @@ namespace Data.Submit
             {
                 _sampleDAO.AddSample(storedSamples[i]);
                 SaveData.Instance.AddToSubmittedSamples(storedSamples[i]);
+                Debug.Log("adding to submitt");
                 if (user != null)
                 {
                     _sampleDAO.AddSampleToUserCollection(user, storedSamples[i]);

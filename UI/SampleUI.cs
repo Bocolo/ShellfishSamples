@@ -93,10 +93,19 @@ namespace UI.SampleDisplay
             panelText.text = FullSampleToString(sample);
         }
         /// <summary>
-        /// Destroys the children of _contentParent
+        /// Destroys the children of _contentParent passed param
         /// </summary>
         /// <param name="_contentParent"></param>
         public void DestroyParentChildren(Transform _contentParent)
+        {
+            foreach (Transform child in _contentParent)
+            {
+                Destroy(child.gameObject);
+            }
+        }    /// <summary>
+             /// Destroys the children of _contentParent
+             /// </summary>
+        public void DestroyParentChildren( )
         {
             foreach (Transform child in _contentParent)
             {
