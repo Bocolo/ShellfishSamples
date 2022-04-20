@@ -13,6 +13,7 @@ namespace UI.Navigation
         public void ReturnToMenu()
         {
             SceneManager.LoadScene(0);
+           // Debug.Log("Back to menu");
         }
     }
 }

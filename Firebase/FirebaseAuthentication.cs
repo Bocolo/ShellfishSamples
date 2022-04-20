@@ -5,6 +5,8 @@ using UnityEngine;
 using UI.Popup;
 using Data.Access;
 using Save.Manager;
+using System.Collections;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// This class managed the firebase authenticatioon : login, sign ups
 /// and validation
@@ -68,14 +70,24 @@ public class FirebaseAuthentication : MonoBehaviour
     {
         if (isSuccessful)
         {
-            _popUp.SuccessfulLogin();
             _userDAO.GetUser();
+            //instead login manager ->
+            //find back to menu
+
+            UserPrefs.SetLoginSuccessful("yes");
+            UserPrefs.SetLoginComplete("no");
+            SceneManager.LoadScene(0);
+
         }
         else
         {
+            UserPrefs.SetLoginSuccessful("no");
+            UserPrefs.SetLoginComplete("yes");
+
             _popUp.UnSuccessfulLogin();
         }
     }
+
     /// <summary>
     /// Creates a new user based on the input texts and, using the userDao
     /// add the user to the firestore collection
@@ -109,11 +121,16 @@ public class FirebaseAuthentication : MonoBehaviour
     {
         if (isSuccessful)
         {
-            _popUp.SuccessfulSignUp();
+      //      _popUp.SuccessfulSignUp();
             SaveNewUser();
+            UserPrefs.SetSignUpSuccessful("yes");
+            UserPrefs.SetSignUpComplete("no");
+            SceneManager.LoadScene(0);
         }
         else
         {
+            UserPrefs.SetSignUpSuccessful("no");
+            UserPrefs.SetSignUpComplete("yes");
             _popUp.UnSuccessfulSignUp();
         }
     }

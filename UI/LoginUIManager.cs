@@ -1,4 +1,5 @@
 using Firebase.Auth;
+using UI.Popup;
 using UnityEngine;
 using UnityEngine.UI;
 namespace UI.Authentication
@@ -6,11 +7,13 @@ namespace UI.Authentication
     /// <summary>
     /// Manages Log in and Sign out buttons
     /// </summary>
-    public class LogInOutButtonManager : MonoBehaviour
+    public class LoginUIManager : MonoBehaviour
     {
         private bool _isLoggedIn; //{  private get;  set; }
         [SerializeField] private Button _logInButton;
         [SerializeField] private Button _signoutButton;
+        [SerializeField] private PopUp _popUp;
+
         /// <summary>
         /// sets the loggedIn bool based on whether a firestore user is logegd in
         /// calls SetLogInOutButtonInteractable passing the isLoggedIn bool
@@ -19,6 +22,26 @@ namespace UI.Authentication
         {
             _isLoggedIn = FirebaseAuth.DefaultInstance.CurrentUser != null;
             SetLogInOutButtonInteractable(_isLoggedIn);
+            if ((UserPrefs.GetSignUpSuccessful().Equals("yes")) && (UserPrefs.GetLoginComplete().Equals("no")))
+            {
+                SuccessfulLoginPopup();
+            }
+            if ((UserPrefs.GetSignUpSuccessful().Equals("yes")) && (UserPrefs.GetSignupComplete().Equals("no")))
+            {
+                SuccessfulSignUpPopup();
+            }
+        }
+        private void SuccessfulLoginPopup()
+        {
+            _popUp.SuccessfulLogin();
+            UserPrefs.SetLoginComplete("yes");
+
+        }
+ 
+        private void SuccessfulSignUpPopup()
+        {
+            _popUp.SuccessfulSignUpPopup();
+            UserPrefs.SetSignUpComplete("yes");
         }
         public void SignOut()
         {
