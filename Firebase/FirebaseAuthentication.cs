@@ -55,7 +55,7 @@ public class FirebaseAuthentication : MonoBehaviour
     /// </summary>
     public async void LogIn()
     {
-        await ValidateAuthenticationLogin(_email.text, _password.text);
+        await ValidateAuthentication(_email.text, _password.text);
         SuccessfulLogin(_isSuccessfulLogin);
     }
     /// <summary>
@@ -71,9 +71,6 @@ public class FirebaseAuthentication : MonoBehaviour
         if (isSuccessful)
         {
             _userDAO.GetUser();
-            //instead login manager ->
-            //find back to menu
-
             UserPrefs.SetLoginSuccessful("yes");
             UserPrefs.SetLoginComplete("no");
             SceneManager.LoadScene(0);
@@ -83,7 +80,6 @@ public class FirebaseAuthentication : MonoBehaviour
         {
             UserPrefs.SetLoginSuccessful("no");
             UserPrefs.SetLoginComplete("yes");
-
             _popUp.UnSuccessfulLogin();
         }
     }
@@ -121,7 +117,6 @@ public class FirebaseAuthentication : MonoBehaviour
     {
         if (isSuccessful)
         {
-      //      _popUp.SuccessfulSignUp();
             SaveNewUser();
             UserPrefs.SetSignUpSuccessful("yes");
             UserPrefs.SetSignUpComplete("no");
@@ -141,7 +136,7 @@ public class FirebaseAuthentication : MonoBehaviour
     /// <param name="email">represents the login email</param>
     /// <param name="password">representd the login password</param>
     /// <returns></returns>
-    private async Task ValidateAuthenticationLogin(string email, string password)
+    private async Task ValidateAuthentication(string email, string password)
     {
         await _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
         {
@@ -181,18 +176,18 @@ public class FirebaseAuthentication : MonoBehaviour
                 _isSuccessfulSignUp = false;
                 return;
             }
-            /*      FirebaseUser user = task.Result;
-                  Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                      user.DisplayName, user.UserId);*/
             _auth.CurrentUser.UpdateUserProfileAsync(new UserProfile
             {
                 DisplayName = name,
             });
-            Debug.Log("current user " + _auth.CurrentUser.DisplayName);
+            Debug.Log("Sign Up Succeeded. Current User: " + _auth.CurrentUser.DisplayName);
             _isSuccessfulSignUp = true;
             return;
         });
     }
+    /*      FirebaseUser user = task.Result;
+      Debug.LogFormat("Firebase user created successfully: {0} ({1})",
+          user.DisplayName, user.UserId);*/
 #if UNITY_INCLUDE_TESTS
     public async Task AuthenticationTest(string email, string password, string name)
     {

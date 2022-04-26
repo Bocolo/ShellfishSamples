@@ -36,7 +36,7 @@ namespace UI.Popup
         /// <summary>
         /// calls SetPopUpText with sign up text
         /// </summary>
-        public void SuccessfulSignUpPopup()
+        public void SuccessfulSignUp()
         {
             SetPopUpText("Sign Up Successful");
         }

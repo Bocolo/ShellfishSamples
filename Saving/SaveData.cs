@@ -167,7 +167,7 @@ namespace Save.Manager
             if (firebaseUser != null)
             {
                 var firestore = FirebaseFirestore.DefaultInstance;
-                firestore.Collection("Users").Document(user.Email).SetAsync(user);///userdao? //set or updates
+                firestore.Collection("Users").Document(user.Email).SetAsync(user);                      ///userdao? //set or updates
             }
         }
         /// <summary>
@@ -177,7 +177,7 @@ namespace Save.Manager
         public User LoadUserProfile()
         {
             string filepath = Application.persistentDataPath + _userLocation;
-            //string filepath = Application.persistentDataPath + "/save.dat";
+                                                                                                //string filepath = Application.persistentDataPath + "/save.dat";
             using (FileStream file = File.Open(filepath, FileMode.Open))
             {
                 object loadedData = new BinaryFormatter().Deserialize(file);
@@ -192,10 +192,9 @@ namespace Save.Manager
         /// </summary>
         /// <param name="filename">location to load sammples from </param>
         /// <returns></returns>
-        private List<Sample> LoadSamples(String filename)//?? would this updatethisinstancesampels
+        private List<Sample> LoadSamples(String filename)                                   //?? would this updatethisinstancesampels
         {
             string filepath = Application.persistentDataPath + filename;
-            //string filepath = Application.persistentDataPath + "/save.dat";
             try
             {
                 using (FileStream file = File.Open(filepath, FileMode.Open))
@@ -207,7 +206,7 @@ namespace Save.Manager
             }
             catch (Exception e)
             {
-                Debug.LogError("LoadSamples: " + e.StackTrace);
+                Debug.LogError("LoadSamples Error: " + e.StackTrace);
                 return new List<Sample>(); 
             }
         }

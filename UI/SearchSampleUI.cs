@@ -13,7 +13,7 @@ namespace UI.Retrieve
         [SerializeField] private TMP_InputField _searchLimit;
         public string SearchFieldSelection { get; private set; } = "";
         public string SearchNameSelection { get; private set; } = "";
-        public int SearchLimitSelection { get; private set; } = 0;
+        public int SearchLimitSelection { get; private set; } = 100;
         /// <summary>
         /// Sets the search values: name, field and limit
         /// </summary>
@@ -21,7 +21,6 @@ namespace UI.Retrieve
         {
             SetSearchFieldValue(_searchDropdown.value);
             SearchNameSelection = _searchInput.text;
-//            SetSearchNameSelection();
             SetSearchLimitSelection();
         }
         /// <summary>
@@ -29,17 +28,18 @@ namespace UI.Retrieve
         /// </summary>
         private void SetSearchLimitSelection()
         {
-            if (!_searchLimit.text.Equals(""))
-            {
+            //this is wrong 
+     /*       if (!_searchLimit.text.Equals(""))
+            {*/
                 try {
                     SearchLimitSelection = int.Parse(_searchLimit.text);
                 }
                 catch(FormatException e)
                 {
-                    Debug.LogError("SetSearchLimitSelection: Format Exception: " + e.StackTrace);
-                    SearchLimitSelection = 0;
+                    Debug.Log("SetSearchLimitSelection: Format Exception: " + e.StackTrace);
+                    SearchLimitSelection = 100;
                 }
-            }
+           // }
         }
         /// <summary>
         /// Sets the SearchFieldSelection based on the passed dropdownValues
@@ -87,6 +87,10 @@ namespace UI.Retrieve
         {
             _searchInput.text = text;
         }
+        public void SetDropdownValue(int dropdownValue)
+        {
+            _searchDropdown.value = dropdownValue;
+        }
         public string GetSearchLimitText()
         {
             return _searchLimit.text;
@@ -101,7 +105,6 @@ namespace UI.Retrieve
         /// <param name="dropdownValue"></param>
         public void SetSeachFieldTest(int dropdownValue)
         {
-            Debug.Log("DDV: " + dropdownValue);
             SetSearchFieldValue(dropdownValue);
         }
 #endif

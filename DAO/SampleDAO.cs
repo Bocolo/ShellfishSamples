@@ -14,7 +14,9 @@ namespace Data.Access
     public class SampleDAO
     {
         private readonly FirebaseFirestore _firestore;
-        private readonly string _collectionPath = "AllSampleDB";
+        private readonly string _sampleCollection = "AllSampleDB";
+        private readonly string _usersCollection= "Users";
+        private readonly string _userSamplesCollection = "UserSamples";
         /// <summary>
         /// Constructor: sets the firestore instance
         /// </summary>
@@ -28,7 +30,7 @@ namespace Data.Access
         /// <param name="sample">the sample to add</param>
         public void AddSample(Sample sample)
         {
-            _firestore.Collection(_collectionPath).Document().SetAsync(sample);
+            _firestore.Collection(_sampleCollection).Document().SetAsync(sample);
         }
         /// <summary>
         /// adds a sample to the firestore userSamples collection 
@@ -40,19 +42,18 @@ namespace Data.Access
         /// <param name="sample">the sample to upoload</param>
         public void AddSampleToUserCollection(FirebaseUser currentUser, Sample sample)
         {
-            //should this be in user dao??
-            _firestore.Collection("Users").Document(currentUser.Email).Collection("UserSamples").Document().SetAsync(sample);
+            _firestore.Collection(_usersCollection).Document(currentUser.Email).Collection(_userSamplesCollection).Document().SetAsync(sample);
         }
         /// <summary>
         /// Retrieves a sample from firestore document located at the passed _path
         /// returns the retrieved sample
         /// </summary>
-        /// <param name="_path">the path to retrieve the sample from</param>
+        /// <param name="path">the path to retrieve the sample from</param>
         /// <returns>The returned sample</returns>
-        public async Task<Sample> GetSample(string _path)
+        public async Task<Sample> GetSample(string path)
         {
             Sample sample = new Sample();
-            await _firestore.Document(_path).GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            await _firestore.Document(path).GetSnapshotAsync().ContinueWithOnMainThread(task =>
            {
                Assert.IsNull(task.Exception);
                sample = task.Result.ConvertTo<Sample>();
@@ -67,7 +68,8 @@ namespace Data.Access
         public async Task<List<Sample>> GetAllUserSubmittedSamples(FirebaseUser currentuser)
         {
             List<Sample> collectionSamples = new List<Sample>();
-            CollectionReference userSampleCollection = _firestore.Collection("Users").Document(currentuser.Email).Collection("UserSamples");
+            CollectionReference userSampleCollection = _firestore.Collection(_usersCollection)
+                .Document(currentuser.Email).Collection(_userSamplesCollection);
             await userSampleCollection.GetSnapshotAsync().ContinueWithOnMainThread(task =>
              {
                  Assert.IsNull(task.Exception);
@@ -94,10 +96,10 @@ namespace Data.Access
         /// <param name="searchName">the name of search</param>
         /// <param name="searchLimit">the limit of results</param>
         /// <returns>the firestore query</returns>
-        public Query SetTestQuery(string searchField, string searchName, int searchLimit)
+        public Query SetQuery(string searchField, string searchName, int searchLimit)
         {
             Query testQuery = SetQuerySearchParamaters(searchField, searchName);
-            testQuery = SetTestQueryLimit(testQuery, searchLimit);
+            testQuery = testQuery.Limit(searchLimit);
             return testQuery;
         }
         /// <summary>
@@ -108,7 +110,7 @@ namespace Data.Access
         /// <returns>the firestore query</returns>
         private Query SetQuerySearchParamaters(string searchField, string searchName)
         {
-            Query testQuery = _firestore.Collection(_collectionPath);
+            Query testQuery = _firestore.Collection(_sampleCollection);
             if (searchField.Equals("ProductionWeekNo"))
             {
                 try
@@ -122,7 +124,10 @@ namespace Data.Access
             }
             else if ((!searchName.Equals("")) && (!searchField.Equals("")))
             {
-                testQuery = testQuery.WhereEqualTo(searchField, searchName);
+                testQuery =
+                testQuery.WhereGreaterThanOrEqualTo(searchField, searchName)
+                   .WhereLessThanOrEqualTo(searchField, searchName+ '\uf8ff');
+  
             }
             return testQuery;
         }
@@ -134,14 +139,14 @@ namespace Data.Access
         /// <returns>the modified query</returns>
         private Query SetTestQueryLimit(Query testQuery, int searchLimit)
         {
-            if (searchLimit > 0)
-            {
+          /*  if (searchLimit > 0)
+            {*/
                 testQuery = testQuery.Limit(searchLimit);
-            }
+         /*   }
             else
             {
                 testQuery = testQuery.Limit(100);
-            }
+            }*/
             return testQuery;
         }
         /// <summary>
@@ -154,8 +159,8 @@ namespace Data.Access
             List<Sample> collectionSamples = new List<Sample>();
             await query.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
-                try
-                {
+          /*      try
+                {*/
                     Assert.IsNull(task.Exception);
                     QuerySnapshot collectionSnapshot = task.Result;
                     foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
@@ -170,11 +175,11 @@ namespace Data.Access
                             Debug.Log("GetSamplesBySearch: failed to convert to Sample: " + e.StackTrace);
                         }
                     }
-                }
+          /*      }
                 catch (Exception e)
                 {
                     Debug.Log("GetSamplesBySearch: " + e.StackTrace);
-                }
+                }*/
             });
             return collectionSamples;
         }

@@ -24,8 +24,9 @@ namespace UI.Submit
         public TMP_Dropdown YearDrop { get; private set; }
         public TMP_Dropdown IceRectangle { get; private set; }
         public TMP_Dropdown SampleLocationName { get; private set; }
+        
         //SMALL CANVAS
-        [SerializeField] private GameObject _smallCanvas;
+        [SerializeField] public GameObject _smallCanvas;
         [SerializeField] private TMP_InputField _nameSmall;
         [SerializeField] private TMP_InputField _companySmall;
         [SerializeField] private TMP_InputField _commentsSmall;
@@ -62,16 +63,16 @@ namespace UI.Submit
             {
                 SetCanvasSmall(true);
             }
-    /*        else if (UserPrefs.GetPreferredCanvas().Equals("Large"))
-            {
-                SetCanvasSmall(false);
-            }*/
             else
             {
                 SetCanvasSmall(false);
             }
             SetNameAndCompanyFromProfile();
         }
+        /*        else if (UserPrefs.GetPreferredCanvas().Equals("Large"))
+         {
+             SetCanvasSmall(false);
+         }*/
         /// <summary>
         /// activates the missing value pop up with the passed tect
         /// </summary>
@@ -228,6 +229,14 @@ namespace UI.Submit
             _smallCanvas.SetActive(isSmall);
             SwitchInputFields(isSmall);
             SwicthInputValues(isSmall);
+        }
+        public GameObject GetSmallCanvas()
+        {
+            return _smallCanvas;
+        }
+        public GameObject GetLargeCanvas()
+        {
+            return _largeCanvas;
         }
     }
 }

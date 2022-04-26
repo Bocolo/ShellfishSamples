@@ -40,7 +40,7 @@ namespace UI.Authentication
  
         private void SuccessfulSignUpPopup()
         {
-            _popUp.SuccessfulSignUpPopup();
+            _popUp.SuccessfulSignUp();
             UserPrefs.SetSignUpComplete("yes");
         }
         public void SignOut()

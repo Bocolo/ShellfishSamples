@@ -8,7 +8,7 @@ using Firebase.Firestore;
 [System.Serializable]
 public struct Sample 
 {
-   [FirestoreProperty]
+    [FirestoreProperty]
     public string Species { get; set; }
     [FirestoreProperty]
     public int ProductionWeekNo { get; set; }

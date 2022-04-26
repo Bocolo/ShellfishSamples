@@ -11,7 +11,7 @@ namespace Data.Display
     /// <summary>
     /// Manages buttons actions for disaplying samples
     /// </summary>
-    public class ShowSamplesUI : MonoBehaviour
+    public class ShowSamplesManager : MonoBehaviour
     {
         //https://www.youtube.com/watch?v=b5h1bVGhuRk&t=276s
         private List<Sample> _collectionSamples = new List<Sample>();
@@ -61,7 +61,7 @@ namespace Data.Display
             }
             else
             {
-                Debug.Log("Loaded in show all devices count is " + loadedSamples.Count);
+                Debug.Log("Loaded in show all devices. Sample count is " + loadedSamples.Count);
                 _sampleUI.AddTextAndPrefab(loadedSamples);
             }
         }
@@ -80,7 +80,7 @@ namespace Data.Display
             }
             else
             {
-                popUp.SetPopUpText("You must be signed in to view these");
+                popUp.SetPopUpText("You Must be Signed In to View These");
                 _sampleUI.DestroyParentChildren();
 
             }
@@ -92,9 +92,8 @@ namespace Data.Display
         public async void ShowSearchSamples()
         {
             _searchSampleUI.SetSearchValues();
-            _sampleDAO = new SampleDAO();
             _collectionSamples = await _sampleDAO.GetSamplesBySearch(
-                _sampleDAO.SetTestQuery(
+                _sampleDAO.SetQuery(
                     _searchSampleUI.SearchFieldSelection,
                     _searchSampleUI.SearchNameSelection,
                     _searchSampleUI.SearchLimitSelection

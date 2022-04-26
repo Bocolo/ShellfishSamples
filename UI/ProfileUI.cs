@@ -14,6 +14,7 @@ namespace UI.Profile
         [SerializeField] private TMP_InputField _companyInput;
         [SerializeField] private GameObject _updateProfileButton;
         [SerializeField] private GameObject _saveProfileButton;
+        private string _profileFilePath= "/userSave.dat";
         private User _user;
         /// <summary>
         /// calls load user and set profile text on start
@@ -31,7 +32,7 @@ namespace UI.Profile
         /// </summary>
         public void SaveProfile()
         {
-            string filepath = Application.persistentDataPath + "/userSave.dat";
+            string filepath = Application.persistentDataPath + _profileFilePath;
             if (System.IO.File.Exists(filepath))
             {
                 UpdateProfile();
@@ -40,7 +41,7 @@ namespace UI.Profile
             {
                 CreateProfile();
             }
-            GoToViewProfile();
+            SetEditView(false);
             SetProfileText();
         }
         /// <summary>
@@ -58,22 +59,21 @@ namespace UI.Profile
         public void GoToUpdateProfile()
         {
             SetUserDetailsForUpdate();
-            _profileText.gameObject.SetActive(false);
-            _updateProfileButton.SetActive(false);
-            _saveProfileButton.SetActive(true);
-            _userNameInput.gameObject.SetActive(true);
-            _companyInput.gameObject.SetActive(true);
+            SetEditView(true);
         }
-        /// <summary>
-        /// activates the game objects for the view profile page
-        /// </summary>
-        private void GoToViewProfile()
+      /// <summary>
+      /// Uses the passed bool to activate the appropriate
+      /// game objects for profile or edif view
+      /// </summary>
+      /// <param name="isEditView"></param>
+       
+        private void SetEditView(bool isEditView)
         {
-            _profileText.gameObject.SetActive(true);
-            _updateProfileButton.SetActive(true);
-            _saveProfileButton.SetActive(false);
-            _userNameInput.gameObject.SetActive(false);
-            _companyInput.gameObject.SetActive(false);
+            _profileText.gameObject.SetActive(!isEditView);
+            _updateProfileButton.SetActive(!isEditView);
+            _saveProfileButton.SetActive(isEditView);
+            _userNameInput.gameObject.SetActive(isEditView);
+            _companyInput.gameObject.SetActive(isEditView);
         }
         /// <summary>
         /// Sets the profile text with user details
@@ -158,7 +158,7 @@ namespace UI.Profile
             _userNameInput.text = "Test Name";
             _companyInput.text = "Test Company";
         }
-        public void SetInputTextFields()
+        public void SetGameObjects()
         {
             GameObject go1 = new GameObject();
             GameObject go2 = new GameObject();

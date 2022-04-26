@@ -14,6 +14,7 @@ namespace Data.Access
         private FirebaseFirestore _firestore;
         private FirebaseAuth _auth;
         private User _user;
+        private readonly string _usersCollection = "Users";
         /// <summary>
         /// Constructor: sets the firestore instance
         /// </summary>
@@ -28,7 +29,7 @@ namespace Data.Access
         /// <param name="user">the user to add</param>
         public void AddUser(User user)
         {
-            _firestore.Collection("Users").Document(user.Email).SetAsync(user);
+            _firestore.Collection(_usersCollection).Document(user.Email).SetAsync(user);
         }
         public void UpdateUser(FirebaseUser user)
         {
@@ -40,7 +41,7 @@ namespace Data.Access
         /// </summary>
         public async void GetUser()
         {
-            DocumentReference docRef = _firestore.Collection("Users").Document(_auth.CurrentUser.Email);
+            DocumentReference docRef = _firestore.Collection(_usersCollection).Document(_auth.CurrentUser.Email);
             await docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
                 try
@@ -50,7 +51,7 @@ namespace Data.Access
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("GetUser: "+e.StackTrace);
+                    Debug.Log("Get User Failed: "+e.StackTrace);
                 }
             });
         }
@@ -66,10 +67,11 @@ namespace Data.Access
         /// <param name="firebaseUser"> the firebaseUser whose email is used as a document name</param>
         public void UpdateUserSampleCount(FirebaseUser firebaseUser)
         {
-            DocumentReference docRef = _firestore.Collection("Users").Document(firebaseUser.Email);
+            DocumentReference docRef = _firestore.Collection(_usersCollection).Document(firebaseUser.Email);
             //  docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(1))
             docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(1)).ContinueWithOnMainThread(task =>
             {
+                Debug.Log("User Sample Count has been updated, increased by 1");
             });
             User user = SaveData.Instance.LoadUserProfile();
             user.SubmittedSamplesCount++;
@@ -82,9 +84,11 @@ namespace Data.Access
         /// <param name="numberOfSamples">the number to increment</param>
         public void UpdateUserSampleCount(FirebaseUser firebaseUser, int numberOfSamples)
         {
-            DocumentReference docRef = _firestore.Collection("Users").Document(firebaseUser.Email);
-            docRef.UpdateAsync("SubmittedSamplesCount", FieldValue.Increment(numberOfSamples)).ContinueWithOnMainThread(task =>
+            DocumentReference docRef = _firestore.Collection(_usersCollection).Document(firebaseUser.Email);
+            docRef.UpdateAsync("SubmittedSamplesCount", 
+                FieldValue.Increment(numberOfSamples)).ContinueWithOnMainThread(task =>
             {
+                Debug.Log("User Sample Count has been updated, increased by "+numberOfSamples);
             });
             User user = SaveData.Instance.LoadUserProfile();
             user.SubmittedSamplesCount += numberOfSamples;
