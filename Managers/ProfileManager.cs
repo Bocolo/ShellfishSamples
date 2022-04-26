@@ -7,7 +7,7 @@ namespace UI.Profile
     /// <summary>
     /// Manages the UI of the Profile page
     /// </summary>
-    public class ProfileUI : MonoBehaviour
+    public class ProfileManager : MonoBehaviour
     {
         [SerializeField] private TMP_Text _profileText;
         [SerializeField] private TMP_InputField _userNameInput;
