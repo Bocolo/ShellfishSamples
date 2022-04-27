@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using Save.Logic;
 namespace Save.Manager
 {
     /// <summary>
@@ -21,6 +22,7 @@ namespace Save.Manager
          FIX INSTANCE BS -= SMLLA LARG PRIVATE PUBLIC
          */
         public static SaveData Instance { get; private set; }
+        private SaveDataLogic saveDataLogic;
         public List<Sample> UsersSubmittedSamples { get; private set; } = new List<Sample>();
         public List<Sample> UsersStoredSamples { get; private set; } = new List<Sample>();
         private string _storedSampleLocation = "/storedSamplesSave.dat";
@@ -40,8 +42,10 @@ namespace Save.Manager
             {
                 Instance = this;
             }
-            UsersStoredSamples = LoadSamples(_storedSampleLocation);
-            UsersSubmittedSamples = LoadSamples(_submittedSampleLocation);
+            saveDataLogic = new SaveDataLogic();
+            UsersStoredSamples = saveDataLogic.LoadSamples(_storedSampleLocation);
+            UsersSubmittedSamples = saveDataLogic.LoadSamples(_submittedSampleLocation);
+        
         }
         #region "Samples"
         /// <summary>
@@ -51,7 +55,7 @@ namespace Save.Manager
         /// <returns></returns>
         public List<Sample> LoadAndGetStoredSamples()
         {
-            UsersStoredSamples = LoadSamples(_storedSampleLocation);
+            UsersStoredSamples = saveDataLogic.LoadSamples(_storedSampleLocation);
             return this.UsersStoredSamples;
         }
         /// <summary>
@@ -61,7 +65,7 @@ namespace Save.Manager
         /// <returns></returns>
         public List<Sample> LoadAndGetSubmittedSamples()
         {
-            UsersSubmittedSamples = LoadSamples(_submittedSampleLocation);
+            UsersSubmittedSamples = saveDataLogic.LoadSamples(_submittedSampleLocation);
             return this.UsersSubmittedSamples;
         }
         /// <summary>
@@ -83,22 +87,6 @@ namespace Save.Manager
             SaveStoredSamples();
         }
         /// <summary>
-        /// Adds a sample to UsersSubmittedSamples
-        /// </summary>
-        /// <param name="sample">sample to add</param>
-        public void AddToSubmittedSamples(Sample sample)
-        {
-            UsersSubmittedSamples.Add(sample);
-        }
-        /// <summary>
-        /// Adds a sample to UsersStoredSamples
-        /// </summary>
-        /// <param name="sample">sample to add</param>
-        public void AddToStoredSamples(Sample sample)
-        {
-            UsersStoredSamples.Add(sample);
-        }
-        /// <summary>
         /// clears the stored samples and saves to local storage
         /// save submitted samples to local storage
         /// </summary>
@@ -116,6 +104,24 @@ namespace Save.Manager
             ClearSubmittedSamplesList();
             SaveSubmittedSamples();
         }
+
+        /// <summary>
+        /// Adds a sample to UsersSubmittedSamples
+        /// </summary>
+        /// <param name="sample">sample to add</param>
+        public void AddToSubmittedSamples(Sample sample)
+        {
+            UsersSubmittedSamples.Add(sample);
+        }
+        /// <summary>
+        /// Adds a sample to UsersStoredSamples
+        /// </summary>
+        /// <param name="sample">sample to add</param>
+        public void AddToStoredSamples(Sample sample)
+        {
+            UsersStoredSamples.Add(sample);
+        }
+   
         /// <summary>
         /// clears the UsersStoredSamples list
         /// </summary>
@@ -130,21 +136,22 @@ namespace Save.Manager
         {
             UsersSubmittedSamples.Clear();
         }
+
         /// <summary>
         /// saves the UsersSubmittedSamples to local storage
         /// </summary>
         private void SaveSubmittedSamples()
         {
-            Debug.Log("Submitted asamples count " + UsersSubmittedSamples.Count);
-            SaveSamples(_submittedSampleLocation, UsersSubmittedSamples);
+            saveDataLogic.SaveSamples(_submittedSampleLocation, UsersSubmittedSamples);
         }
         /// <summary>
         /// saves the UsersStoredSamples list to local storage
         /// </summary>
         private void SaveStoredSamples()
         {
-            SaveSamples(_storedSampleLocation, UsersStoredSamples);
+            saveDataLogic.SaveSamples(_storedSampleLocation, UsersStoredSamples);
         }
+
         #endregion
         #region "Profile"
         /// <summary>
@@ -153,7 +160,7 @@ namespace Save.Manager
         /// <param name="user">user to save</param>
         public void SaveUserProfile(User user)
         {
-            SaveUser(_userLocation, user);
+            saveDataLogic.SaveUser(_userLocation, user);
         }
         /// <summary>
         /// aves the passed user to local storage
@@ -163,12 +170,8 @@ namespace Save.Manager
         /// <param name="firebaseUser"></param>
         public void SaveUserProfile(User user, FirebaseUser firebaseUser)
         {
-            SaveUser(_userLocation, user);
-            if (firebaseUser != null)
-            {
-                var firestore = FirebaseFirestore.DefaultInstance;
-                firestore.Collection("Users").Document(user.Email).SetAsync(user);                      ///userdao? //set or updates
-            }
+            saveDataLogic.SaveUserProfile(_userLocation, user,firebaseUser);
+        
         }
         /// <summary>
         /// Loads and return a USer from local storage file
@@ -176,117 +179,10 @@ namespace Save.Manager
         /// <returns></returns>
         public User LoadUserProfile()
         {
-            string filepath = Application.persistentDataPath + _userLocation;
-                                                                                                //string filepath = Application.persistentDataPath + "/save.dat";
-            using (FileStream file = File.Open(filepath, FileMode.Open))
-            {
-                object loadedData = new BinaryFormatter().Deserialize(file);
-                User userData = (User)loadedData;
-                return userData;
-            }
+           return saveDataLogic.LoadUserProfile(_userLocation);
+         
         }
-        #endregion
-        #region "Generic"
-        /// <summary>
-        /// loads and returns a list of samples from the passed filename
-        /// </summary>
-        /// <param name="filename">location to load sammples from </param>
-        /// <returns></returns>
-        private List<Sample> LoadSamples(String filename)                                   //?? would this updatethisinstancesampels
-        {
-            string filepath = Application.persistentDataPath + filename;
-            try
-            {
-                using (FileStream file = File.Open(filepath, FileMode.Open))
-                {
-                    object loadedData = new BinaryFormatter().Deserialize(file);
-                    List<Sample> saveData = (List<Sample>)loadedData;
-                    return saveData;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("LoadSamples Error: " + e.StackTrace);
-                return new List<Sample>(); 
-            }
-        }
-        /// <summary>
-        /// saves a list of samples to local storage at the passed filename location
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="samples"></param>
-        private void SaveSamples(String filename, List<Sample> samples)
-        {
-            string filepath = Application.persistentDataPath + filename;
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, samples);
-            }
-        }
-        /// <summary>
-        /// saves the passedd User to local storage. the save location is the passed filename
-        /// </summary>
-        /// <param name="filename">location to save</param>
-        /// <param name="user">user to save</param>
-        private void SaveUser(String filename, User user)
-        {
-            string filepath = Application.persistentDataPath + filename;
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, user);
-            }
-        }
+      
         #endregion
     }
 }
-/*     string filepath = Application.persistentDataPath + _userLocation;
-            using (FileStream file = File.Create(filepath))
-            {
-                new BinaryFormatter().Serialize(file, user);
-            }*/
-/*    string filepath = Application.persistentDataPath + _userLocation;
-        using (FileStream file = File.Create(filepath))
-        {
-            new BinaryFormatter().Serialize(file, user);
-        }*/
-/*
-/// <summary>
-/// ////////
-/// </summary>
-/// <returns></returns>
-public List<Sample> AllSamples { get; private set; } = new List<Sample>();
-/// 
-public void SaveFullData()
-{
-    string filepath = Application.persistentDataPath + "/allSamples.dat";
-    using (FileStream file = File.Create(filepath))
-    {
-        new BinaryFormatter().Serialize(file, AllSamples);
-        Debug.Log("saved");
-    }
-    //    SaveSamples(_submittedSampleLocation, usersSubmittedSamples);
-}
-public void LoadFullData()
-{
-    string filepath = Application.persistentDataPath + "/allSamples.dat";
-    //string filepath = Application.persistentDataPath + "/save.dat";
-    try
-    {
-        using (FileStream file = File.Open(filepath, FileMode.Open))
-        {
-            object loadedData = new BinaryFormatter().Deserialize(file);
-            List<Sample> saveData = (List<Sample>)loadedData;
-            AllSamples = saveData;
-        }
-    }
-    catch (Exception e)
-    {
-    }
-    //   usersStoredSamples = LoadSamples(_storedSampleLocation);
-}
-public void AddToFullSamples(Sample sample)
-{
-    AllSamples.Add(sample);
-}
-//////////
-///*/

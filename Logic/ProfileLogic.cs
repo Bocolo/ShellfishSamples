@@ -2,7 +2,7 @@ using Firebase.Auth;
 using Save.Manager;
 using UnityEngine;
 namespace Profile.Logic { 
-    public class ProfileLogicSample
+    public class ProfileLogic
     {
         public string GetProfileText(User user, int storedSamplesCount,int submittedSamplesCount)
         {

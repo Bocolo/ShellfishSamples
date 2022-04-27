@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Samples.Logic;
 namespace UI.Submit
 {
     /// <summary>
@@ -15,6 +16,8 @@ namespace UI.Submit
         private string _icesRectangle = null;
         private string _location = null;
         private string _date = null;
+
+        private SampleDetailsLogic sampleDetails;
     
         /// <summary>
         /// Called on awake.  Sets the submitcanvasManager
@@ -22,6 +25,7 @@ namespace UI.Submit
         private void Awake()
         {
             _canvasManager = GetComponent<SubmitCanvasManager>();
+            sampleDetails = new SampleDetailsLogic();
         }
  
         /// <summary>
@@ -52,52 +56,7 @@ namespace UI.Submit
             SetValues();
             return IsValuesComplete();
         }
-        /// <summary>
-        /// Checks if the local _date field strings is a valid data
-        /// </summary>
-        /// <returns>bool of date validity</returns>
-        public bool IsDateValid()
-        {
-            try
-            {
-                DateTime datetime = DateTime.Parse(_date);
-                DateTime local = DateTime.Now;
-                int result = DateTime.Compare(datetime, local);
-                if (result > 0)
-                {
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.Log("Date Check failed: "+e.StackTrace);
-                return false;
-            }
-        }
-        /// <summary>
-        /// Checks passed date  string is a valid data
-        /// </summary>
-        /// <returns>bool of date validity</returns>
-        public bool IsDateValid(String date)
-        {
-            try
-            {
-                DateTime datetime = DateTime.Parse(date);
-                DateTime local = DateTime.Now;
-                int result = DateTime.Compare(datetime, local);
-                if (result > 0)
-                {
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.Log("Date Check failed: " + e.StackTrace);
-                return false;
-            }
-        }
+      
         /// <summary>
         /// Sets the local string values to the canvas manager inputs
         /// </summary>
@@ -137,120 +96,20 @@ namespace UI.Submit
         private String MissingValues()
         {
             String missing = "";
-            missing = MissingCompany(missing);
-            missing = MissingName(missing);
-            missing = MissingSpecies(missing);
-            missing = MissingOrDualLocation(missing);
-            missing = MissingDate(missing);
-            missing = MissingProductionWeek(missing);
+            missing = sampleDetails.MissingCompany(missing, _company);
+            missing = sampleDetails.MissingName(missing, _name);
+            missing = sampleDetails.MissingSpecies(missing, _species);
+            missing = sampleDetails.MissingOrDualLocation(missing,_icesRectangle,_location);
+            missing = sampleDetails.MissingDate(missing,_date);
+            missing = sampleDetails.MissingProductionWeek(missing, _canvasManager.ProductionWk.value);
             if (!missing.Equals(""))
             {
                 missing = ("<b>Incorrect Input Format: </b>\n\n" + missing);
             }
             return missing;
         }
-        /// <summary>
-        /// If the _date field is not a valid date, modifies the missing values string before
-        /// returing the string
-        /// </summary>
-        /// <param name="missingValues">the string to modify</param>
-        /// <returns></returns>
-        private String MissingDate(String missingValues)
-        {
-            if (!IsDateValid())
-            {
-                missingValues += "Please enter a valid date\n";
-            }
-            return missingValues;
-        }
-        /// <summary>
-        /// if name field is null, modifies the  passed missing value string
-        /// 
-        /// returns the missing value string
-        /// </summary>
-        /// <param name="missingValues"></param>
-        /// <returns></returns>
-        private String MissingName(String missingValues)
-        {
-            if (_name == null)
-            {
-                missingValues += "Please enter a name\n";
-            }
-            return missingValues;
-        }
-        /// <summary>
-        /// if company field is null, modifies the  passed missing value string
-        /// 
-        /// returns the missing value string
-        /// </summary>
-        /// <param name="missingValues"></param>
-        /// <returns></returns>
-        private String MissingCompany(String missingValues)
-        {
-            if (_company == null)
-            {
-                missingValues += "Please enter a company name\n";
-            }
-            return missingValues;
-        }
-        /// <summary>
-        /// if specied field is null, modifies the  passed missing value string
-        /// 
-        /// returns the missing value string
-        /// </summary>
-        /// <param name="missingValues"></param>
-        /// <returns></returns>
-        private String MissingSpecies(String missingValues)
-        {
-            if (_species == null)
-            {
-                missingValues += "Please enter the shellfish species\n";
-            }
-            return missingValues;
-        }
-        /// <summary>
-        /// if no ices string and location string are both null 
-        /// or
-        /// if both are not null
-        ///modifies the  passed missing value string with error details
-        /// 
-        /// returns the missing value string
-        /// </summary>
-        /// <param name="missingValues"></param>
-        /// <returns></returns>
-        private String MissingOrDualLocation(String missingValues)
-        {
-            if (((_icesRectangle == null) && (_location == null)) || ((_icesRectangle != null) && (_location != null)))
-            {
-                missingValues += "You must enter <i>either</i> a Sample Location Date or an Ices Rectangle No.\n";
-            }
-            return missingValues;
-        }
-        /// <summary>
-        /// if _canvasManager.ProductionWk.value is not set, modifies the  passed missing value string
-        /// 
-        /// returns the missing value string
-        /// </summary>
-        /// <param name="missingValues"></param>
-        /// <returns></returns>
-        private String MissingProductionWeek(String missingValues)
-        {
-            if (_canvasManager.ProductionWk.value == 0)
-            {
-                missingValues += "Please enter the production week\n";
-            }
-            return missingValues;
-        }
-        /// <summary>
-        /// Sets the _date string with details of passed params
-        /// </summary>
-        /// <param name="day">string representing day</param>
-        /// <param name="month">string representing month</param>
-        /// <param name="year">string representing year</param>
-        private void SetDate(String day, String month, String year)
-        {
-            _date = year + "-" + month + "-" + day;
-        }
+    
+  
         /// <summary>
         /// Sets the name to canvas input if value isnt empty
         /// or sets the name to null
@@ -336,7 +195,8 @@ namespace UI.Submit
                 && (_canvasManager.MonthDrop.value != 0)
                 && (_canvasManager.YearDrop.value != 0))
             {
-                SetDate(_canvasManager.DayDrop.options[_canvasManager.DayDrop.value].text,
+                this._date = sampleDetails.GetDate(
+                    _canvasManager.DayDrop.options[_canvasManager.DayDrop.value].text,
          _canvasManager.MonthDrop.options[_canvasManager.MonthDrop.value].text,
          _canvasManager.YearDrop.options[_canvasManager.YearDrop.value].text);
             }

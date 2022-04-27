@@ -19,11 +19,11 @@ namespace UI.Profile
         private User _user;
 
         /// An example of seperation of Logic
-        private ProfileLogicSample profileLogicSample;
+        private ProfileLogic profileLogic;
 
         private void Awake()
         {
-            profileLogicSample = new ProfileLogicSample();
+            profileLogic = new ProfileLogic();
         }
         /// <summary>
         /// calls load user and set profile text on start
@@ -31,7 +31,7 @@ namespace UI.Profile
         public void Start()
         {
             _user = SaveData.Instance.LoadUserProfile();
-            _profileText.text = profileLogicSample.GetProfileText(_user,
+            _profileText.text = profileLogic.GetProfileText(_user,
                 SaveData.Instance.LoadAndGetStoredSamples().Count,
                  SaveData.Instance.LoadAndGetSubmittedSamples().Count);
         }
@@ -43,14 +43,14 @@ namespace UI.Profile
         /// </summary>
         public void SaveProfile()
         {
-            profileLogicSample.UpdateCreateProfile(_userNameInput.text,
+            profileLogic.UpdateCreateProfile(_userNameInput.text,
                 _companyInput.text, _profileFilePath);
             _user = SaveData.Instance.LoadUserProfile();
             SetEditView(false);
-            string profileText = profileLogicSample.GetProfileText(_user,
+            string profileText = profileLogic.GetProfileText(_user,
                 SaveData.Instance.LoadAndGetStoredSamples().Count,
                  SaveData.Instance.LoadAndGetSubmittedSamples().Count);
-            profileText = profileLogicSample.GetFirebaseUserProfileText(_user, profileText);
+            profileText = profileLogic.GetFirebaseUserProfileText(_user, profileText);
             _profileText.text = profileText;
         }
 

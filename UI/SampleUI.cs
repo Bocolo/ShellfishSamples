@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Samples.Logic;
 namespace UI.SampleDisplay
 {
     /// <summary>
@@ -13,6 +14,12 @@ namespace UI.SampleDisplay
      
         [SerializeField] private List<GameObject> _samplePanelPrefabs;
         [SerializeField] private Transform _contentParent;
+        private SampleDetailsLogic sampleDetails;
+
+        private void Awake()
+        {
+            sampleDetails = new SampleDetailsLogic();
+        }
         /// <summary>
         /// Loads and displays a prefab with the details of the passed sample
         /// </summary>
@@ -61,15 +68,11 @@ namespace UI.SampleDisplay
         {
             if (sample.SampleLocationName == null)
             {
-                return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
-               + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
-               + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date + "\nComment: " + sample.Comment);
+                return sampleDetails.SampleWithIcesToString(sample);
             }
             else
             {
-                return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
-                + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date
-                + "\nComment: " + sample.Comment);
+                return sampleDetails.SampleWithLocationToString(sample);
             }
         }
         /// <summary>
