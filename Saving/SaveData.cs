@@ -75,7 +75,7 @@ namespace Save.Manager
         public void AddAndSaveSubmittedSample(Sample sample)
         {
             AddToSubmittedSamples(sample);
-            SaveSubmittedSamples();
+            saveDataLogic.SaveSamples(_submittedSampleLocation, UsersSubmittedSamples);
         }
         /// <summary>
         /// add a sample to the stored samples list and saves the list to local storage
@@ -84,7 +84,7 @@ namespace Save.Manager
         public void AddAndSaveStoredSample(Sample sample)
         {
             AddToStoredSamples(sample);
-            SaveStoredSamples();
+            saveDataLogic.SaveSamples(_storedSampleLocation, UsersStoredSamples);
         }
         /// <summary>
         /// clears the stored samples and saves to local storage
@@ -93,8 +93,8 @@ namespace Save.Manager
         public void UpdateSubmittedStoredSamples()
         {
             ClearStoredSamplesList();
-            SaveStoredSamples();
-            SaveSubmittedSamples();
+            saveDataLogic.SaveSamples(_storedSampleLocation, UsersStoredSamples);
+            saveDataLogic.SaveSamples(_submittedSampleLocation, UsersSubmittedSamples);
         }
         /// <summary>
         /// clears the submitted samples list and saves it to local storage
@@ -102,7 +102,7 @@ namespace Save.Manager
         public void DeleteSubmittedSamplesFromDevice()
         {
             ClearSubmittedSamplesList();
-            SaveSubmittedSamples();
+            saveDataLogic.SaveSamples(_submittedSampleLocation, UsersSubmittedSamples);
         }
 
         /// <summary>
@@ -137,20 +137,6 @@ namespace Save.Manager
             UsersSubmittedSamples.Clear();
         }
 
-        /// <summary>
-        /// saves the UsersSubmittedSamples to local storage
-        /// </summary>
-        private void SaveSubmittedSamples()
-        {
-            saveDataLogic.SaveSamples(_submittedSampleLocation, UsersSubmittedSamples);
-        }
-        /// <summary>
-        /// saves the UsersStoredSamples list to local storage
-        /// </summary>
-        private void SaveStoredSamples()
-        {
-            saveDataLogic.SaveSamples(_storedSampleLocation, UsersStoredSamples);
-        }
 
         #endregion
         #region "Profile"

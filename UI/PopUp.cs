@@ -68,15 +68,6 @@ namespace UI.Popup
         {
             SetPopUpText("Sample Successfully Stored");
         }
-#if UNITY_INCLUDE_TESTS
-        public void SetPopUp()
-        {
-            _popUpText = this.gameObject.AddComponent<TextMeshPro>();
-        }
-        public string GetPopUpText()
-        {
-            return _popUpText.text;
-        }
-#endif
+
     }
 }

@@ -101,57 +101,6 @@ namespace Data.Display
                 );
             _sampleUI.AddTextAndPrefab(_collectionSamples);
         }
-#if UNITY_INCLUDE_TESTS
-        public void SetUpTestVariables()
-        {
-            _sampleUI = this.gameObject.AddComponent<SampleUI>();
-            _searchSampleUI = GetComponent<SearchSampleUI>();
-            _searchSampleUI.SetUpTestVariables();
-        }
-#endif
+
     }
 }
-/*
-        public void LoadAndLogAllSamples()
-        {
-            SaveData.Instance.LoadFullData();
-            List<Sample> allsamples = SaveData.Instance.AllSamples;
-            for (int i = 0; i < allsamples.Count; i++)
-            {
-                Debug.Log(allsamples[i].Name);
-            }
-        }*/
-/*       public void AddSamplesFromLoadedList(int start)
-        {
-            int end = (start + 100);
-            Debug.Log("End is: "+end);
-            if (end > 2316)
-            {
-                end = 2316;
-            }
-            sampleDAO = new SampleDAO();
-            SaveData.Instance.LoadFullData();
-            List<Sample> allsamples = SaveData.Instance.AllSamples;
-            for (int i = start; i < end; i++)
-            {
-                Debug.Log(allsamples[i].Name);
-                sampleDAO.AddSampleStripped(allsamples[i]);
-                Debug.Log("Added to all samples Stripped -");
-            }
-        }
-  */
-/*        public void AddSampleStripped(Sample sample)
-        {
-            Debug.Log("adding");
-            //  firestore.Document(_samplePath).SetAsync(sample); //,SetOptions.MergeAll);
-            firestore.Collection("AllSampleDB").Document().SetAsync(sample).ContinueWithOnMainThread(task => {
-                Debug.Log("Added data to the AllSampleDB in the sampldb collection.");
-            }); ;
-            Debug.Log("added");
-        }*/
-/*        public void TerminateFB()
-        {
-            sampleDAO = new SampleDAO();
-            sampleDAO.Term();
-            Debug.Log("Terminated fb");
-        }*/
