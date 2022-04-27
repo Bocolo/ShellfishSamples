@@ -11,7 +11,7 @@ namespace UI.SampleDisplay
     /// </summary>
     public class SampleUI : MonoBehaviour
     {
-     
+
         [SerializeField] private List<GameObject> _samplePanelPrefabs;
         [SerializeField] private Transform _contentParent;
         private SampleDetailsLogic sampleDetails;
@@ -40,41 +40,7 @@ namespace UI.SampleDisplay
             DestroyParentChildren(_contentParent);
             CreatePanelChildren(sampleList);
         }
-        /// <summary>
-        /// sets and  returns the string of the sample details, restricting some information
-        /// </summary>
-        /// <param name="sample"></param>
-        /// <returns></returns>
-        private String RestrictedSampleToString(Sample sample)
-        {
-            if (sample.SampleLocationName == null)
-            {
-                return ("\nSpecies: " + sample.Species
-               + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
-               + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
-            }
-            else
-            {
-                return ("\nSpecies: " + sample.Species
-                + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
-            }
-        }
-        /// <summary>
-        /// sets and returns the string of the sample details
-        /// </summary>
-        /// <param name="sample"></param>
-        /// <returns></returns>
-        private String SampleToString(Sample sample)
-        {
-            if (sample.SampleLocationName == null)
-            {
-                return sampleDetails.SampleWithIcesToString(sample);
-            }
-            else
-            {
-                return sampleDetails.SampleWithLocationToString(sample);
-            }
-        }
+
         /// <summary>
         /// sets the parent of the passed game object to the _contentParent
         /// sets the passed game object scale
@@ -93,7 +59,7 @@ namespace UI.SampleDisplay
         private void SetPanelText(GameObject panel, Sample sample)
         {
             Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
-            panelText.text = SampleToString(sample);
+            panelText.text = sampleDetails.SampleToString(sample);
         }
         /// <summary>
         /// Destroys the children of _contentParent passed param
@@ -108,7 +74,7 @@ namespace UI.SampleDisplay
         }    /// <summary>
              /// Destroys the children of _contentParent
              /// </summary>
-        public void DestroyParentChildren( )
+        public void DestroyParentChildren()
         {
             foreach (Transform child in _contentParent)
             {
@@ -129,33 +95,12 @@ namespace UI.SampleDisplay
                 {
                     prefabCount = _samplePanelPrefabs.Count;
                 }
-                GameObject panel = Instantiate(_samplePanelPrefabs[prefabCount-1]);
+                GameObject panel = Instantiate(_samplePanelPrefabs[prefabCount - 1]);
                 prefabCount -= 1;
                 Debug.Log("the panel being used: " + (prefabCount));
                 SetPanelParent(panel);
                 SetPanelText(panel, sampleList[i]);
             }
         }
-#if UNITY_INCLUDE_TESTS
-        public void SetUpTestVariables()
-        {
-            GameObject go = new GameObject();
-            _contentParent = go.GetComponent<Transform>();
-            GameObject blueChild = new GameObject();
-            GameObject redChild = new GameObject();
-            _samplePanelPrefabs = new List<GameObject>();
-            _samplePanelPrefabs.Add(new GameObject());
-            _samplePanelPrefabs.Add(new GameObject());
-            redChild.AddComponent<Text>();
-            blueChild.AddComponent<Text>();
-        //    _redPanelPrefab.AddComponent<Text>();
-            blueChild.transform.SetParent(_samplePanelPrefabs[0].transform);
-            redChild.transform.SetParent(_samplePanelPrefabs[1].transform);
-        }
-        public Transform GetContentParent()
-        {
-            return this._contentParent;
-        }
-#endif
     }
 }

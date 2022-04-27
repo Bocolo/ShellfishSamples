@@ -17,7 +17,49 @@ namespace Samples.Logic {
                    + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date
                    + "\nComment: " + sample.Comment);
         }
-
+        public string RestrictedSampleWithIcesToString(Sample sample)
+        {
+            return ("\nSpecies: " + sample.Species
+      + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
+      + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
+        }
+        public string RestrictedSampleWithLocationToString(Sample sample)
+        {
+            return ("\nSpecies: " + sample.Species
+              + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
+        }
+        /// <summary>
+        /// sets and returns the string of the sample details
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns></returns>
+        public String SampleToString(Sample sample)
+        {
+            if (sample.SampleLocationName == null)
+            {
+                return SampleWithIcesToString(sample);
+            }
+            else
+            {
+                return SampleWithLocationToString(sample);
+            }
+        }
+        /// <summary>
+        /// sets and  returns the string of the sample details, restricting some information
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns></returns>
+        public String RestrictedSampleToString(Sample sample)
+        {
+            if (sample.SampleLocationName == null)
+            {
+                return RestrictedSampleWithIcesToString(sample);
+            }
+            else
+            {
+                return RestrictedSampleWithLocationToString(sample);
+            }
+        }
         /// <summary>
         /// Checks passed date  string is a valid data
         /// </summary>

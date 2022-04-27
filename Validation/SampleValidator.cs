@@ -222,34 +222,3 @@ namespace UI.Submit
         }
     }
 }
-/* "";
-missingValues += MissingCompany(missingValues);
-missingValues += MissingName(missingValues);
-missingValues += MissingSpecies(missingValues);
-missingValues += MissingOrDualLocation(missingValues);
-missingValues += MissingDate(missingValues);
-missingValues += MissingProductionWeek(missingValues);*/
-/*     if (_nameString == null)
-     {
-         missingValues += "Please enter a name\n";
-     }
-     if (_companyString == null)
-     {
-         missingValues += "Please enter a company name\n";
-     }
-     if (_speciesString == null)
-     {
-         missingValues += "Please enter the shellfish species\n";
-     }
-     if (((_icesString == null) && (_locationString == null)) || ((_icesString != null) && (_locationString != null)))
-     {
-         missingValues += "You must enter <i>either</i> a Sample Location Date or an Ices Rectangle No.\n";
-     }
-     if (canvasManager._productionWk.value == 0)
-     {
-         missingValues += "Please enter the production week\n";
-     }
-     if (!IsDateValid())
-     {
-         missingValues += "Please enter a valid date\n";
-     }*/

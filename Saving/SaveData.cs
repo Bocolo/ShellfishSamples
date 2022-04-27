@@ -182,7 +182,14 @@ namespace Save.Manager
            return saveDataLogic.LoadUserProfile(_userLocation);
          
         }
-      
+
         #endregion
+
+#if UNITY_INCLUDE_TESTS
+        public void SetSaveDataLogic()
+        {
+            saveDataLogic = new SaveDataLogic();
+        }
+#endif
     }
 }
