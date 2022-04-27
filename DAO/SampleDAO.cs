@@ -119,7 +119,8 @@ namespace Data.Access
                 }
                 catch (FormatException formatException)
                 {
-                    Debug.LogError("SetQuerySearchParamaters: failed to parse limit: " + formatException.StackTrace);
+                    Debug.Log("SetQuerySearchParamaters: failed to parse limit: " + formatException.StackTrace);
+                    testQuery = testQuery.WhereEqualTo(searchField, 53);
                 }
             }
             else if ((!searchName.Equals("")) && (!searchField.Equals("")))

@@ -15,13 +15,7 @@ namespace UI.Submit
         private string _icesRectangle = null;
         private string _location = null;
         private string _date = null;
-        /// <summary>
-        /// /SERPERATE ALL THIS, ALL STRING GET AND SET IN OWN CLASS
-        /// 
-        /// SAMPLEDETAILS
-        /// </summary>
-        //  private string missingValues = "";
-        ///
+    
         /// <summary>
         /// Called on awake.  Sets the submitcanvasManager
         /// </summary>
@@ -29,22 +23,11 @@ namespace UI.Submit
         {
             _canvasManager = GetComponent<SubmitCanvasManager>();
         }
-        //maybe a smaller pop up
-        //also should this be here
-/*        public void CompleteSubmission()
-        {
-            canvasManager.OnSubmitResetFields();
-            canvasManager.DisplayPopUP("\n\nSuccessfully Submitted Sample");
-        }
-        public void CompleteStore()
-        {
-            canvasManager.OnSubmitResetFields();
-            canvasManager.DisplayPopUP("\n\nSuccessfully Stored Sample");
-        }*/
-/// <summary>
-/// Creates and returns a new samples using the submit canvas manager inputs
-/// </summary>
-/// <returns></returns>
+ 
+        /// <summary>
+        /// Creates and returns a new samples using the submit canvas manager inputs
+        /// </summary>
+        /// <returns></returns>
         public Sample NewSample()
         {
             Sample sample = new Sample

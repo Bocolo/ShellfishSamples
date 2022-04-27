@@ -2,11 +2,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 namespace App.Setup
-{//names file
-    // Scroll Video for review
-    //https://www.google.com/search?q=unity+add+scroll+inpout+page&rlz=1C1CHZN_enIE969IE969&sxsrf=APq-WBvFEfjM_-fX0mbZZFIZab7gxdrl0w%3A1644015553917&ei=wa_9Yb-sN_qGhbIP5o-HwAw&oq=unity+add+scroll+inpout+page&gs_lcp=ChNtb2JpbGUtZ3dzLXdpei1zZXJwEAMyBwghEAoQoAEyBwghEAoQoAE6BwgAEEcQsAM6BAgeEAo6BQghEKABOggIIRAWEB0QHjoGCAAQFhAeOgQIIRAVSgQIQRgAUN8fWMNLYLtNaAFwAXgAgAG-BIgBhBuSAQswLjMuNy4yLjAuMZgBAKABAcgBCMABAQ&sclient=mobile-gws-wiz-serp#kpvalbx=_NbD9YbPlCofVgQa68oGADQ29
-    //This script is only used once on 4 dropdown UI's to populate the options list
-    // it is then disabled
+{
+    /// <summary>
+    /// This script was only used once on 4 dropdown UI's to populate the options list
+    // it was then disabled
+    /// </summary>
     public class LocationsToDropdown : MonoBehaviour
     {
         //variable - SerializeField variables can be accessed in the Unity Editor and set from there
@@ -20,24 +20,7 @@ namespace App.Setup
             //access the dropdown UI component from the gameObject
             _tmpDropdown = GetComponent<TMP_Dropdown>();
             PopulateDropdown(_isWeek);
-            /*
-             * FOR ORDINARY DROP DOWN
-                    //access the dropdown UI component from the gameObject
-                    dropdown = GetComponent<Dropdown>();
-                    if (isWeek == false)
-                    {
-                        SetDropdownOptions();
-                    }
-                    else
-                    {
-                        //Populate dropdown with 1-52 instead for production week 
-                        dropdown.options.Clear();
-                        dropdown.options.Add(new Dropdown.OptionData("- Select -"));
-                        for (int i = 1; i <= 52; i++)
-                        {
-                            dropdown.options.Add(new Dropdown.OptionData(i.ToString()));
-                        }
-                    }*/
+           
         }
         private void PopulateDropdown(bool isWeek)
         {
