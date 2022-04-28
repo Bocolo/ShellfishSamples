@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 namespace UI.Navigation
 {
     /// <summary>
-    /// Class to return to the Menu Scene
+    /// Class to return to the Menu Scene / scene 0
     /// </summary>
     public class BackToMenu : MonoBehaviour
     {
@@ -13,7 +13,6 @@ namespace UI.Navigation
         public void ReturnToMenu()
         {
             SceneManager.LoadScene(0);
-           // Debug.Log("Back to menu");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Search.Logic {
     public class SearchLogic 
     {
         /// <summary>
-        /// Sets the SearchFieldSelection based on the passed dropdownValues
+        /// returns the SearchField string based on the passed dropdownValues
         /// </summary>
         /// <param name="dropdownValue"></param>
         public string GetSearchField(int dropdownValue)
@@ -31,8 +31,11 @@ namespace Search.Logic {
         }
 
         /// <summary>
-        /// sets the SearchLimitSelection to search limit input
+        /// parses the passed string and return its int value
+        /// defaults to 100 if string cannot be parsed
         /// </summary>
+        /// <param name="limit"> string representing the search limit</param>
+        /// <returns></returns>
         public int GetSearchLimit(string limit)
         {
             try
@@ -41,7 +44,7 @@ namespace Search.Logic {
             }
             catch (FormatException e)
             {
-                Debug.Log("SetSearchLimitSelection: Format Exception: " + e.StackTrace);
+                Debug.Log("GetSearchLimit: Format Exception: " + e.StackTrace);
                 return 100;
             }
         }

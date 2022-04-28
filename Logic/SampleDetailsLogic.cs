@@ -1,35 +1,62 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 namespace Samples.Logic { 
+    /// <summary>
+    /// This script handles logic related to sample details
+    /// including validation and sample string generation
+    /// </summary>
     public class SampleDetailsLogic 
     {
+        #region "Sample Detail Strings"
+        /// <summary>
+        /// uses the passed sample to create a sample string with ices rectangle details
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns>sample details string</returns>
         public string SampleWithIcesToString(Sample sample)
         {
             return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
                  + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
                  + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date + "\nComment: " + sample.Comment);
         }
+        /// <summary>
+        /// uses the passed sample to create a sample string with sample location details
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns>sample details string</returns>
         public string SampleWithLocationToString(Sample sample)
         {
             return ("Name: " + sample.Name + "\nCompany: " + sample.Company + "\nSpecies: " + sample.Species
                    + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date
                    + "\nComment: " + sample.Comment);
         }
+        /// <summary>
+        /// uses the passed sample to create a restricted sample string with ices rectangle details
+        /// identifiable information is not included
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns>sample details string</returns>
         public string RestrictedSampleWithIcesToString(Sample sample)
         {
             return ("\nSpecies: " + sample.Species
       + $"\nICEs Rectangle: {sample.IcesRectangleNo}"
       + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
         }
+        /// <summary>
+        /// uses the passed sample to create a restricted sample string with sample location details
+        /// /// identifiable information is not included
+        /// </summary>
+        /// <param name="sample"></param>
+        /// <returns>sample details string</returns>
         public string RestrictedSampleWithLocationToString(Sample sample)
         {
             return ("\nSpecies: " + sample.Species
               + "\nLocation: " + sample.SampleLocationName + "\nWeek: " + sample.ProductionWeekNo + "\nDate: " + sample.Date);
         }
         /// <summary>
-        /// sets and returns the string of the sample details
+        /// sets and returns the string of the sample details based
+        /// on the sample location value
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -45,7 +72,8 @@ namespace Samples.Logic {
             }
         }
         /// <summary>
-        /// sets and  returns the string of the sample details, restricting some information
+        /// sets and  returns the string of the sample details based
+        /// on the sample location value, restricting some personal information
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
@@ -60,6 +88,9 @@ namespace Samples.Logic {
                 return RestrictedSampleWithLocationToString(sample);
             }
         }
+        #endregion
+        #region "Date Logic"
+
         /// <summary>
         /// Checks passed date  string is a valid data
         /// </summary>
@@ -93,9 +124,8 @@ namespace Samples.Logic {
         {
             return (year + "-" + month + "-" + day);
         }
-
-
-
+        #endregion
+        #region "Missing Value Strings"
         /// <summary>
         /// If the _date field is not a valid date, modifies the missing values string before
         /// returing the string
@@ -188,6 +218,6 @@ namespace Samples.Logic {
             }
             return missingValues;
         }
-    
+        #endregion
     }
 }

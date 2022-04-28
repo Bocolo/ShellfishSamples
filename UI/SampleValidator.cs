@@ -8,7 +8,7 @@ namespace UI.Submit
     /// </summary>
     public class SampleValidator : MonoBehaviour
     {
-        private SubmitCanvasManager _canvasManager;
+      
         private string _name = null;
         private string _company = null;
         private string _comments = null;
@@ -16,7 +16,7 @@ namespace UI.Submit
         private string _icesRectangle = null;
         private string _location = null;
         private string _date = null;
-
+        private SubmitCanvasManager _canvasManager;
         private SampleDetailsLogic sampleDetails;
     
         /// <summary>
@@ -27,7 +27,7 @@ namespace UI.Submit
             _canvasManager = GetComponent<SubmitCanvasManager>();
             sampleDetails = new SampleDetailsLogic();
         }
- 
+        #region "Sample generator"
         /// <summary>
         /// Creates and returns a new samples using the submit canvas manager inputs
         /// </summary>
@@ -47,6 +47,8 @@ namespace UI.Submit
             };
             return sample;
         }
+        #endregion
+        #region "Sample Value Validation"
         /// <summary>
         /// checks submit canvas manager inputs and returns a bool indicating if values are valid
         /// </summary>
@@ -57,19 +59,7 @@ namespace UI.Submit
             return IsValuesComplete();
         }
       
-        /// <summary>
-        /// Sets the local string values to the canvas manager inputs
-        /// </summary>
-        private void SetValues()
-        {
-            SetNameToCanvas();
-            SetCompanyToCanvas();
-            SetCommentToCanvas();
-            SetSpeciesToCanvas();
-            SetIcesRectangleToCanvas();
-            SetLocationToCanvas();
-            SetDateToCanvas();
-        }
+
         /// <summary>
         /// Checks missing values and returns a bool to notify is missing values present
         /// if missing values present activate a pop with missing value details
@@ -108,8 +98,21 @@ namespace UI.Submit
             }
             return missing;
         }
-    
-  
+        #endregion
+        #region "Setting values from canvas"
+        /// <summary>
+        /// Sets the local string values to the canvas manager inputs
+        /// </summary>
+        private void SetValues()
+        {
+            SetNameToCanvas();
+            SetCompanyToCanvas();
+            SetCommentToCanvas();
+            SetSpeciesToCanvas();
+            SetIcesRectangleToCanvas();
+            SetLocationToCanvas();
+            SetDateToCanvas();
+        }
         /// <summary>
         /// Sets the name to canvas input if value isnt empty
         /// or sets the name to null
@@ -220,5 +223,6 @@ namespace UI.Submit
                 this._location = (null);
             }
         }
+        #endregion
     }
 }

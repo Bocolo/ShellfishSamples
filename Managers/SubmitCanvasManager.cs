@@ -8,10 +8,11 @@ namespace UI.Submit
     /// <summary>
     /// 
     /// Manages the Canvas' on the submission page :
-    /// controlling which is active and extracting the input
+    /// controlling which game objects are active and extracting their input
     /// </summary>
     public class SubmitCanvasManager : MonoBehaviour
     {
+        #region "Variables"
         public TMP_InputField Name { get; private set; }
         public TMP_InputField Company { get; private set; }
         public TMP_InputField Comments { get; private set; }
@@ -53,6 +54,8 @@ namespace UI.Submit
         [SerializeField] private TMP_Dropdown _yearDropLarge;
         [SerializeField] private TMP_Dropdown _iceRectangleLarge;
         [SerializeField] private TMP_Dropdown _sampleLocationNameLarge;
+
+        #endregion
         /// <summary>
         /// On start: Activates the canvas based user prefs
         /// Sets the name and company field with profile details
@@ -69,18 +72,9 @@ namespace UI.Submit
             }
             SetNameAndCompanyFromProfile();
         }
-        /*        else if (UserPrefs.GetPreferredCanvas().Equals("Large"))
-         {
-             SetCanvasSmall(false);
-         }*/
-        /// <summary>
-        /// activates the missing value pop up with the passed tect
-        /// </summary>
-        /// <param name="missingValues">missingValue details</param>
-        public void MissingValuePopup(String missingValues)
-        {
-            MissingValuesPopUp.SetPopUpText(missingValues);
-        }
+   
+
+        #region "canvas field default settings"
         /// <summary>
         /// Resets all of the active canvas fields
         /// sets the name and company fields to profile details
@@ -97,6 +91,18 @@ namespace UI.Submit
             YearDrop.value = 0;
             SetNameAndCompanyFromProfile();
         }
+        /// <summary>
+        /// Loads the user profile and sets the canvas 
+        /// name and compnay to the profile details
+        /// </summary>
+        private void SetNameAndCompanyFromProfile()
+        {
+            User user = SaveData.Instance.LoadUserProfile();
+            Name.text = user.Name;
+            Company.text = user.Company;
+        }
+        #endregion
+        #region "sample submission functions"
         /// <summary>
         ///  Resets all of the active canvas fields
         ///  and activates the submission pop up with SuccessfulSubmission details
@@ -116,32 +122,15 @@ namespace UI.Submit
             SubmissionPopUp.SuccessfulStorage();
         }
         /// <summary>
-        /// 
-        /// Switches the active canvas and updates the canvas user prefs
+        /// activates the missing value pop up with the passed tect
         /// </summary>
-        public void SwitchCanvas()
+        /// <param name="missingValues">missingValue details</param>
+        public void MissingValuePopup(String missingValues)
         {
-            if (_smallCanvas.activeInHierarchy)
-            {
-                SetCanvasSmall(false);
-                UserPrefs.SetPreferredCanvas("Large");
-            }
-            else
-            {
-                SetCanvasSmall(true);
-                UserPrefs.SetPreferredCanvas("Small");
-            }
+            MissingValuesPopUp.SetPopUpText(missingValues);
         }
-        /// <summary>
-        /// Loads the user profile and sets the canvas 
-        /// name and compnay to the profile details
-        /// </summary>
-        private void SetNameAndCompanyFromProfile()
-        {
-            User user = SaveData.Instance.LoadUserProfile();
-            Name.text = user.Name;
-            Company.text = user.Company;
-        }
+        #endregion
+        #region "canvas input functions"
         /// <summary>
         /// Swicthes the active input fields by canvas
         /// bassed on the isSmall bool
@@ -182,7 +171,7 @@ namespace UI.Submit
         }
         /// <summary>
         /// updates the active input fields to the inactive canvas inputs
-        /// bassed on the isSmall bool
+        /// based on the isSmall bool
         /// 
         /// when a canvas swicthes, the input details of the previous canvas are 
         /// added to the new canvas. Allowing user to switch between canvas without re-entering
@@ -218,6 +207,25 @@ namespace UI.Submit
                 Comments.text = _commentsLarge.text;
             }
         }
+        #endregion
+        #region " canvas activator functions"
+        /// <summary>
+        /// 
+        /// Switches the active canvas and updates the canvas user prefs
+        /// </summary>
+        public void SwitchCanvas()
+        {
+            if (_smallCanvas.activeInHierarchy)
+            {
+                SetCanvasSmall(false);
+                UserPrefs.SetPreferredCanvas("Large");
+            }
+            else
+            {
+                SetCanvasSmall(true);
+                UserPrefs.SetPreferredCanvas("Small");
+            }
+        }
         /// <summary>
         /// Activate the appropriate canvas and updates its values
         /// based on the isSmall bool
@@ -230,13 +238,24 @@ namespace UI.Submit
             SwitchInputFields(isSmall);
             SwicthInputValues(isSmall);
         }
+        #endregion
+        #region "Canvas getters"
+        /// <summary>
+        /// small canvas getter
+        /// </summary>
+        /// <returns>the small canvas game object</returns>
         public GameObject GetSmallCanvas()
         {
             return _smallCanvas;
         }
+        /// <summary>
+        /// large canvas getter
+        /// </summary>
+        /// <returns>the large canvas game object</returns>
         public GameObject GetLargeCanvas()
         {
             return _largeCanvas;
         }
+        #endregion
     }
 }

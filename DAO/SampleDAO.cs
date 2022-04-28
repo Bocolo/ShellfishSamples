@@ -132,24 +132,7 @@ namespace Data.Access
             }
             return testQuery;
         }
-        /// <summary>
-        ///  Sets and returns a Query based on the passed params
-        /// </summary>
-        /// <param name="testQuery">The query to be modified</param>
-        /// <param name="searchLimit">the query limit to set</param>
-        /// <returns>the modified query</returns>
-        private Query SetTestQueryLimit(Query testQuery, int searchLimit)
-        {
-          /*  if (searchLimit > 0)
-            {*/
-                testQuery = testQuery.Limit(searchLimit);
-         /*   }
-            else
-            {
-                testQuery = testQuery.Limit(100);
-            }*/
-            return testQuery;
-        }
+    
         /// <summary>
         /// Retrieves a list of samples from firestore based on the passed query
         /// </summary>
@@ -160,27 +143,21 @@ namespace Data.Access
             List<Sample> collectionSamples = new List<Sample>();
             await query.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
-          /*      try
-                {*/
-                    Assert.IsNull(task.Exception);
-                    QuerySnapshot collectionSnapshot = task.Result;
-                    foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
-                    {
-                        try
-                        {
-                            Sample sample = documentSnapshot.ConvertTo<Sample>();
-                            collectionSamples.Add(sample);
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.Log("GetSamplesBySearch: failed to convert to Sample: " + e.StackTrace);
-                        }
-                    }
-          /*      }
-                catch (Exception e)
+                Assert.IsNull(task.Exception);
+                QuerySnapshot collectionSnapshot = task.Result;
+                foreach (DocumentSnapshot documentSnapshot in collectionSnapshot.Documents)
                 {
-                    Debug.Log("GetSamplesBySearch: " + e.StackTrace);
-                }*/
+                    try
+                    {
+                        Sample sample = documentSnapshot.ConvertTo<Sample>();
+                        collectionSamples.Add(sample);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("GetSamplesBySearch: failed to convert to Sample: " + e.StackTrace);
+                    }
+                }
+       
             });
             return collectionSamples;
         }

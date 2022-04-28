@@ -16,10 +16,14 @@ namespace UI.SampleDisplay
         [SerializeField] private Transform _contentParent;
         private SampleDetailsLogic sampleDetails;
 
+        /// <summary>
+        /// creates the sampleDetails object
+        /// </summary>
         private void Awake()
         {
             sampleDetails = new SampleDetailsLogic();
         }
+        #region "Add Text and Prefab methods"
         /// <summary>
         /// Loads and displays a prefab with the details of the passed sample
         /// </summary>
@@ -40,7 +44,8 @@ namespace UI.SampleDisplay
             DestroyParentChildren(_contentParent);
             CreatePanelChildren(sampleList);
         }
-
+        #endregion
+        #region "Panel Settings"
         /// <summary>
         /// sets the parent of the passed game object to the _contentParent
         /// sets the passed game object scale
@@ -61,6 +66,8 @@ namespace UI.SampleDisplay
             Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
             panelText.text = sampleDetails.SampleToString(sample);
         }
+        #endregion
+        #region "Panel children: destruction and creation"
         /// <summary>
         /// Destroys the children of _contentParent passed param
         /// </summary>
@@ -102,5 +109,6 @@ namespace UI.SampleDisplay
                 SetPanelText(panel, sampleList[i]);
             }
         }
+        #endregion
     }
 }

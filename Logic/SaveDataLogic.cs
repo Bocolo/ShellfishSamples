@@ -5,28 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-namespace Save.Logic { 
+namespace Save.Logic
+{
     public class SaveDataLogic 
     {
-
-        public List<Sample> LoadSamples(String filename)                                   //?? would this updatethisinstancesampels
-        {
-            string filepath = Application.persistentDataPath + filename;
-            try
-            {
-                using (FileStream file = File.Open(filepath, FileMode.Open))
-                {
-                    object loadedData = new BinaryFormatter().Deserialize(file);
-                    List<Sample> saveData = (List<Sample>)loadedData;
-                    return saveData;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("LoadSamples Error: " + e.StackTrace);
-                return new List<Sample>();
-            }
-        }
+        #region "Save functions"
         /// <summary>
         /// saves a list of samples to local storage at the passed filename location
         /// </summary>
@@ -54,28 +37,29 @@ namespace Save.Logic {
             }
         }
         /// <summary>
-        /// aves the passed user to local storage
+        /// saves the passed user to local storage
         /// if the firebase user is not null, adds the user to the firestore Users collection
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="firebaseUser"></param>
+        /// <param name="user">user to save</param>
+        /// <param name="firebaseUser">fire base user to save</param>
         public void SaveUserProfile(string filename,User user, FirebaseUser firebaseUser)
         {
             SaveUser(filename, user);
             if (firebaseUser != null)
             {
                 var firestore = FirebaseFirestore.DefaultInstance;
-                firestore.Collection("Users").Document(user.Email).SetAsync(user);                      ///userdao? //set or updates
+                firestore.Collection("Users").Document(user.Email).SetAsync(user);                    
             }
         }
+        #endregion
+        #region "Load functions"
         /// <summary>
-        /// Loads and return a USer from local storage file
+        /// Loads and return a User from local storage file
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the user loaded from storage</returns>
         public User LoadUserProfile(string filename)
         {
             string filepath = Application.persistentDataPath + filename;
-            //string filepath = Application.persistentDataPath + "/save.dat";
             using (FileStream file = File.Open(filepath, FileMode.Open))
             {
                 object loadedData = new BinaryFormatter().Deserialize(file);
@@ -83,5 +67,30 @@ namespace Save.Logic {
                 return userData;
             }
         }
+        /// <summary>
+        /// uses the filename location to retrieve
+        /// a list of samples from local storage 
+        /// </summary>
+        /// <param name="filename">name of the file to open</param>
+        /// <returns>a list of samples</returns>
+        public List<Sample> LoadSamples(String filename)
+        {
+            string filepath = Application.persistentDataPath + filename;
+            try
+            {
+                using (FileStream file = File.Open(filepath, FileMode.Open))
+                {
+                    object loadedData = new BinaryFormatter().Deserialize(file);
+                    List<Sample> saveData = (List<Sample>)loadedData;
+                    return saveData;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("LoadSamples Error: " + e.StackTrace);
+                return new List<Sample>();
+            }
+        }
+        #endregion
     }
 }

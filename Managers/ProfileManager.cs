@@ -1,12 +1,11 @@
-using Firebase.Auth;
+using Profile.Logic;
 using Save.Manager;
 using TMPro;
 using UnityEngine;
-using Profile.Logic;
 namespace UI.Profile
 {
     /// <summary>
-    /// Manages the UI of the Profile page
+    /// Manages the behavaiour of the Profile page
     /// </summary>
     public class ProfileManager : MonoBehaviour
     {
@@ -17,16 +16,16 @@ namespace UI.Profile
         [SerializeField] private GameObject _saveProfileButton;
         private string _profileFilePath = "/userSave.dat";
         private User _user;
-
-        /// An example of seperation of Logic
         private ProfileLogic profileLogic;
-
+        /// <summary>
+        /// creates the profile logic object
+        /// </summary>
         private void Awake()
         {
             profileLogic = new ProfileLogic();
         }
         /// <summary>
-        /// calls load user and set profile text on start
+        ///  load the user and sets profile text on start
         /// </summary>
         public void Start()
         {
@@ -36,10 +35,9 @@ namespace UI.Profile
                  SaveData.Instance.LoadAndGetSubmittedSamples().Count);
         }
         /// <summary>
-        /// if no "/userSave.dat" file exits, calls create profile
-        /// other wise calles update profile
-        /// 
-        /// Then show the profile view and sets the profile text
+        /// updates or create a user profile
+        /// loads the user profile
+        /// set the profile view and populates the profile text
         /// </summary>
         public void SaveProfile()
         {
@@ -73,7 +71,7 @@ namespace UI.Profile
         }
         /// <summary>
         /// Uses the passed bool to activate the appropriate
-        /// game objects for profile or edif view
+        /// game objects for profile or edit view
         /// </summary>
         /// <param name="isEditView"></param>
 

@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UI.Popup;
-using UnityEngine;
 using UnityEngine.UI;
-namespace Login.Logic { 
+namespace Login.Logic
+{
+    /// <summary>
+    /// This script is responsible login related to login behaviour
+    /// </summary>
     public class LoginLogic 
     {
         /// <summary>
@@ -24,14 +25,22 @@ namespace Login.Logic {
             }
         }
 
-
+        /// <summary>
+        /// calls the pop up successfull login method
+        /// and set the login player pref
+        /// </summary>
+        /// <param name="popUp">the pop to activate</param>
         public void SuccessfulLoginPopup(PopUp popUp)
         {
             popUp.SuccessfulLogin();
             UserPrefs.SetLoginComplete("yes");
 
         }
-
+        /// <summary>
+        /// calls the pop up successfull signup method
+        /// and sets the sign up player pref
+        /// </summary>
+        /// <param name="popUp">the pop to activate</param>
         public void SuccessfulSignUpPopup(PopUp popUp)
         {
             popUp.SuccessfulSignUp();

@@ -6,18 +6,19 @@ using UnityEngine.UI;
 namespace UI.Authentication
 {
     /// <summary>
-    /// Manages Log in and Sign out buttons
+    /// Manages Ui related to Log in and Sign out behaviours
     /// </summary>
     public class LoginUIManager : MonoBehaviour
     {
-        private bool _isLoggedIn; //{  private get;  set; }
+        private bool _isLoggedIn; 
         [SerializeField] private Button _logInButton;
         [SerializeField] private Button _signoutButton;
         [SerializeField] private PopUp _popUp;
         private LoginLogic loginLogic;
         /// <summary>
-        /// sets the loggedIn bool based on whether a firestore user is logegd in
-        /// calls SetLogInOutButtonInteractable passing the isLoggedIn bool
+        /// Creates the login logic object 
+        /// check for a logged in user andsets the required buttons active
+        /// Activates a pop up if the correct user pref are set 
         /// </summary>
         private void Start()
         {
@@ -35,7 +36,9 @@ namespace UI.Authentication
                 loginLogic.SuccessfulSignUpPopup(_popUp);
             }
         }
-     
+     /// <summary>
+     /// The sign out function sets the correct login/signout buttons active
+     /// </summary>
         public void SignOut()
         {
             loginLogic.SetButtonInteractable(FirebaseAuth.DefaultInstance.CurrentUser != null, _logInButton, _signoutButton);

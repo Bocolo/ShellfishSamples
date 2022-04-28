@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Data.Access
 {
     /// <summary>
-    /// Manages access to to User data in Firestore Database
+    /// Manages access to to User data in the Firestore Database
     /// </summary>
     public class UserDAO
     {
@@ -31,9 +31,7 @@ namespace Data.Access
         {
             _firestore.Collection(_usersCollection).Document(user.Email).SetAsync(user);
         }
-        public void UpdateUser(FirebaseUser user)
-        {
-        }
+     
         /// <summary>
         /// Retrieves a user from the firestore USers collection, 
         /// located in adocument named after the current firestore users email
@@ -55,12 +53,7 @@ namespace Data.Access
                 }
             });
         }
-        /// <summary>
-        /// fix with update async 
-        /// https://firebase.google.com/docs/firestore/manage-data/add-data
-        /// </summary>
-        /// <param name="firebaseUser"></param>
-        /// 
+ 
         /// <summary>
         /// Incremenets the firebaseUsers submitted sample count by one
         /// </summary>
