@@ -33,7 +33,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
-        public String SampleToString(Sample sample)
+        public string SampleToString(Sample sample)
         {
             if (sample.SampleLocationName == null)
             {
@@ -49,7 +49,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="sample"></param>
         /// <returns></returns>
-        public String RestrictedSampleToString(Sample sample)
+        public string RestrictedSampleToString(Sample sample)
         {
             if (sample.SampleLocationName == null)
             {
@@ -89,7 +89,7 @@ namespace Samples.Logic {
         /// <param name="day">string representing day</param>
         /// <param name="month">string representing month</param>
         /// <param name="year">string representing year</param>
-        public string GetDate(String day, String month, String year)
+        public string GetDate(string day, string month, string year)
         {
             return (year + "-" + month + "-" + day);
         }
@@ -102,7 +102,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="missingValues">the string to modify</param>
         /// <returns></returns>
-        public String MissingDate(String missingValues, string date)
+        public string MissingDate(string missingValues, string date)
         {
             if (!IsDateValid(date))
             {
@@ -117,7 +117,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="missingValues"></param>
         /// <returns></returns>
-        public String MissingName(String missingValues, string name)
+        public string MissingName(string missingValues, string name)
         {
             if (name == null)
             {
@@ -132,7 +132,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="missingValues"></param>
         /// <returns></returns>
-        public String MissingCompany(String missingValues, string company)
+        public string MissingCompany(string missingValues, string company)
         {
             if (company == null)
             {
@@ -147,7 +147,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="missingValues"></param>
         /// <returns></returns>
-        public String MissingSpecies(string missingValues, string species)
+        public string MissingSpecies(string missingValues, string species)
         {
             if (species == null)
             {
@@ -165,7 +165,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="missingValues"></param>
         /// <returns></returns>
-        public String MissingOrDualLocation(string missingValues, string icesRectangle, string location)
+        public string MissingOrDualLocation(string missingValues, string icesRectangle, string location)
         {
             if (((icesRectangle == null) && (location == null)) || ((icesRectangle != null) && (location != null)))
             {
@@ -180,7 +180,7 @@ namespace Samples.Logic {
         /// </summary>
         /// <param name="missingValues"></param>
         /// <returns></returns>
-        public String MissingProductionWeek(String missingValues, int productionWeek)
+        public string MissingProductionWeek(string missingValues, int productionWeek)
         {
             if (productionWeek == 0)
             {

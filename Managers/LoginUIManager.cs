@@ -24,11 +24,13 @@ namespace UI.Authentication
             loginLogic = new LoginLogic();
             _isLoggedIn = FirebaseAuth.DefaultInstance.CurrentUser != null;
             loginLogic.SetButtonInteractable(_isLoggedIn,_logInButton,_signoutButton);
-            if ((UserPrefs.GetSignUpSuccessful().Equals("yes")) && (UserPrefs.GetLoginComplete().Equals("no")))
+            if ((UserPrefs.GetSignUpSuccessful().Equals("yes")) &&
+                (UserPrefs.GetLoginComplete().Equals("no")))
             {
                 loginLogic.SuccessfulLoginPopup(_popUp);
             }
-            if ((UserPrefs.GetSignUpSuccessful().Equals("yes")) && (UserPrefs.GetSignupComplete().Equals("no")))
+            if ((UserPrefs.GetSignUpSuccessful().Equals("yes")) &&
+                (UserPrefs.GetSignupComplete().Equals("no")))
             {
                 loginLogic.SuccessfulSignUpPopup(_popUp);
             }
