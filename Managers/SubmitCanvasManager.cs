@@ -1,9 +1,12 @@
-using Save.Manager;
+using App.SaveSystem.Manager;
+using App.Settings.Prefrences;
+using App.UI;
 using System;
 using TMPro;
 using UnityEngine;
-using UI.Popup;
-namespace UI.Submit
+using Users.Data;
+
+namespace App.Samples.UI
 {
     /// <summary>
     /// 

@@ -1,8 +1,9 @@
-using Profile.Logic;
-using Save.Manager;
+using App.SaveSystem.Manager;
 using TMPro;
 using UnityEngine;
-namespace UI.Profile
+using Users.Data;
+
+namespace App.Profile.UI
 {
     /// <summary>
     /// Manages the behavaiour of the Profile page

@@ -1,13 +1,15 @@
+using App.Samples.UI;
+using App.Samples.Validation;
+using App.SaveSystem.Manager;
 using Firebase.Auth;
+using Samples.Data;
+using Samples.Data.Access;
 using System;
 using System.Collections.Generic;
-/*using UI.Submit;*/
 using UnityEngine;
-using UI.Submit;
-using Data.Access;
-using Save.Manager;
-using UI.Popup;
-namespace Data.Submit
+using Users.Data.Access;
+
+namespace App.Samples.Manager
 {
     /// <summary>
     /// Manages action related to submition, saving and uploading samples

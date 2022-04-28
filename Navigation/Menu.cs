@@ -1,9 +1,11 @@
+using App.SaveSystem.Manager;
+using App.UI;
 using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UI.Popup;
-using Save.Manager;
-namespace UI.Navigation
+using Users.Data;
+
+namespace App.Navigation
 {
     /// <summary>
     /// Manages Main menu operations

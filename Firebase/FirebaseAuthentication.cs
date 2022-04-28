@@ -1,13 +1,13 @@
+using App.Authentication;
+using App.SaveSystem.Manager;
+using App.Settings.Prefrences;
+using App.UI;
 using Firebase.Auth;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UI.Popup;
-using Data.Access;
-using Save.Manager;
-using System.Collections;
 using UnityEngine.SceneManagement;
-using Authentication.Logic;
+using Users.Data;
+using Users.Data.Access;
 /// <summary>
 /// This class managed the firebase authenticatioon : login, sign ups
 /// and validation

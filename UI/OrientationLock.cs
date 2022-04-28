@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace UI.Orientation
+namespace App.Settings.Orientation
 {
     /// <summary>
     /// Manages the orientation of scenes containing this scripts

@@ -1,8 +1,6 @@
-using System;
 using TMPro;
 using UnityEngine;
-using Search.Logic;
-namespace UI.Retrieve
+namespace App.Samples.UI
 {
     /// <summary>
     /// Manages the DatabaseSearch page

@@ -1,7 +1,7 @@
 using Firebase.Auth;
 using System.Threading.Tasks;
 using UnityEngine;
-namespace Authentication.Logic
+namespace App.Authentication
 {
     /// <summary>
     /// This script is responsible for the firebase authentication logic

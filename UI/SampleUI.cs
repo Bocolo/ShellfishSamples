@@ -1,11 +1,10 @@
-using System;
+using Samples.Data;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Samples.Logic;
-namespace UI.SampleDisplay
+namespace App.Samples.UI
 {
+
     /// <summary>
     /// Manages the UI for Displaying samples to the user
     /// </summary>
@@ -14,14 +13,14 @@ namespace UI.SampleDisplay
 
         [SerializeField] private List<GameObject> _samplePanelPrefabs;
         [SerializeField] private Transform _contentParent;
-        private SampleDetailsLogic sampleDetails;
+        private SampleDetailsLogic _sampleDetails;
 
         /// <summary>
-        /// creates the sampleDetails object
+        /// creates the _sampleDetails object
         /// </summary>
         private void Awake()
         {
-            sampleDetails = new SampleDetailsLogic();
+            _sampleDetails = new SampleDetailsLogic();
         }
         #region "Add Text and Prefab methods"
         /// <summary>
@@ -64,7 +63,7 @@ namespace UI.SampleDisplay
         private void SetPanelText(GameObject panel, Sample sample)
         {
             Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
-            panelText.text = sampleDetails.SampleToString(sample);
+            panelText.text = _sampleDetails.SampleToString(sample);
         }
         #endregion
         #region "Panel children: destruction and creation"

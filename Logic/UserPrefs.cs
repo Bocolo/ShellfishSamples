@@ -1,9 +1,11 @@
 using UnityEngine;
-/// <summary>
-/// This manages all PlayerPrefs
-/// Saves and gets playerprefs 
-/// </summary>
-public class UserPrefs
+namespace App.Settings.Prefrences
+{
+    /// <summary>
+    /// This manages all PlayerPrefs
+    /// Saves and gets playerprefs 
+    /// </summary>
+    public class UserPrefs
 {
     #region "Canvas prefs"
     /// <summary>
@@ -91,4 +93,5 @@ public class UserPrefs
         return PlayerPrefs.GetString("Completed Sign up");
     }
     #endregion
+}
 }

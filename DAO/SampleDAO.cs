@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
-namespace Data.Access
+namespace Samples.Data.Access
 {
     /// <summary>
     /// Manages access to to Sample data in Firestore Database

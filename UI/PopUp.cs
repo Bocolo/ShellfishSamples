@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-namespace UI.Popup
+namespace App.UI
 {
     /// <summary>
     /// Manages Pop up objects:

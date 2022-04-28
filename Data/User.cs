@@ -1,4 +1,5 @@
 using Firebase.Firestore;
+namespace Users.Data { 
 /// <summary>
 /// The User struct which lists the User properties
 /// these are set as firestore properties in order to upload 
@@ -16,4 +17,5 @@ public struct User
     public string Email { get; set; }
     [FirestoreProperty]
     public int SubmittedSamplesCount { get; set; }
+}
 }

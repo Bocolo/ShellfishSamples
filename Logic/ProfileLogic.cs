@@ -1,7 +1,10 @@
+using App.SaveSystem.Manager;
 using Firebase.Auth;
-using Save.Manager;
 using UnityEngine;
-namespace Profile.Logic { 
+using Users.Data;
+
+namespace App.Profile
+{
     /// <summary>
     /// Manages profile logic and behaviour
     /// </summary>

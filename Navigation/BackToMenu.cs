@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-namespace UI.Navigation
+namespace App.Navigation
 {
     /// <summary>
     /// Class to return to the Menu Scene / scene 0

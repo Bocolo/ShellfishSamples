@@ -1,10 +1,11 @@
+using App.SaveSystem.Manager;
 using Firebase.Auth;
 using Firebase.Extensions;
 using Firebase.Firestore;
-using Save.Manager;
 using System;
 using UnityEngine;
-namespace Data.Access
+
+namespace Users.Data.Access
 {
     /// <summary>
     /// Manages access to to User data in the Firestore Database

@@ -1,7 +1,9 @@
+using App.Samples.UI;
+using Samples.Data;
 using System;
 using UnityEngine;
-using Samples.Logic;
-namespace UI.Submit
+
+namespace App.Samples.Validation
 {
     /// <summary>
     /// This class is for validation of samples from the _canvasManager inputs

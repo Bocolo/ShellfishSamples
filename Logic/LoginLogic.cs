@@ -1,6 +1,7 @@
-using UI.Popup;
+using App.Settings.Prefrences;
+using App.UI;
 using UnityEngine.UI;
-namespace Login.Logic
+namespace App.Authentication.UI
 {
     /// <summary>
     /// This script is responsible login related to login behaviour

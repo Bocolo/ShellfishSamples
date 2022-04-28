@@ -1,4 +1,5 @@
 using Firebase.Firestore;
+namespace Samples.Data { 
 /// <summary>
 /// The Sample struct which lists the sample properties
 /// these are set as firestore properties in order to upload 
@@ -24,4 +25,5 @@ public struct Sample
     public string SampleLocationName { get; set; }
     [FirestoreProperty]
     public string Comment { get; set; }
+}
 }

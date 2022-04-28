@@ -1,9 +1,10 @@
+using App.Settings.Prefrences;
+using App.UI;
 using Firebase.Auth;
-using UI.Popup;
 using UnityEngine;
-using Login.Logic;
 using UnityEngine.UI;
-namespace UI.Authentication
+
+namespace App.Authentication.UI
 {
     /// <summary>
     /// Manages Ui related to Log in and Sign out behaviours
