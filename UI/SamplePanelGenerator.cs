@@ -8,7 +8,7 @@ namespace App.Samples.UI
     /// <summary>
     /// Manages the UI for Displaying samples to the user
     /// </summary>
-    public class SampleUI : MonoBehaviour
+    public class SamplePanelGenerator : MonoBehaviour
     {
 
         [SerializeField] private List<GameObject> _samplePanelPrefabs;

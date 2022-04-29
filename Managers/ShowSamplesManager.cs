@@ -17,16 +17,16 @@ namespace App.Samples.Manager
 
             private List<Sample> _collectionSamples = new List<Sample>();
             private SampleDAO _sampleDAO;
-            private SampleUI _sampleUI;
+            private SamplePanelGenerator _samplePanelGenerator;
             private SearchSampleUI _searchSampleUI;
             private ShowSampleLogic _showSample;
             /// <summary>
-            /// gets the_sampleUI,_searchSampleUI components 
+            /// gets the_samplePanelGenerator,_searchSampleUI components 
             /// creates _sampleDAO and _showSample objects 
             /// </summary>
             private void Awake()
             {
-                _sampleUI = GetComponent<SampleUI>();
+                _samplePanelGenerator = GetComponent<SamplePanelGenerator>();
                 _searchSampleUI = GetComponent<SearchSampleUI>();
                 _sampleDAO = new SampleDAO();
                 _showSample = new ShowSampleLogic();
@@ -37,7 +37,7 @@ namespace App.Samples.Manager
             /// <param name="popUp">pop up to use in if case</param>
             public void ShowStoredSamples(PopUp popUp)
             {
-                _showSample.ShowSamples(_sampleUI,
+                _showSample.ShowSamples(_samplePanelGenerator,
                     SaveData.Instance.LoadAndGetStoredSamples(),
                     popUp, "There are no stored samples");
 
@@ -48,7 +48,7 @@ namespace App.Samples.Manager
             /// <param name="popUp">pop up to use in if case</param>
             public void ShowAllDeviceSubmittedSamples(PopUp popUp)
             {
-                _showSample.ShowSamples(_sampleUI, SaveData.Instance.LoadAndGetSubmittedSamples(),
+                _showSample.ShowSamples(_samplePanelGenerator, SaveData.Instance.LoadAndGetSubmittedSamples(),
                     popUp, "No samples have been submitted");
 
             }
@@ -64,12 +64,12 @@ namespace App.Samples.Manager
                 if (auth.CurrentUser != null)
                 {
                     _collectionSamples = await _sampleDAO.GetAllUserSubmittedSamples(auth.CurrentUser);
-                    _showSample.ShowSamples(_sampleUI, _collectionSamples, popUp,
+                    _showSample.ShowSamples(_samplePanelGenerator, _collectionSamples, popUp,
                         "You have not submitted any samples");
                 }
                 else
                 {
-                    _showSample.ShowSamplesFailed(_sampleUI, popUp,
+                    _showSample.ShowSamplesFailed(_samplePanelGenerator, popUp,
                         "You Must be Signed In to View These");
 
                 }
@@ -88,7 +88,7 @@ namespace App.Samples.Manager
                         _searchSampleUI.SearchLimitSelection
                         )
                     );
-                _showSample.ShowSamples(_sampleUI, _collectionSamples, popUp,
+                _showSample.ShowSamples(_samplePanelGenerator, _collectionSamples, popUp,
                     "No matching samples found");
             }
 

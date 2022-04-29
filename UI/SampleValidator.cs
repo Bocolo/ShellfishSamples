@@ -20,6 +20,7 @@ namespace App.Samples.Validation
         private string _date = null;
         private SubmitCanvasManager _canvasManager;
         private SampleDetailsLogic sampleDetails;
+
     
         /// <summary>
         /// Called on awake.  Sets the submitcanvasManager

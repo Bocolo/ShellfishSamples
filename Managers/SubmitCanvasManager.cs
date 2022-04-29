@@ -58,6 +58,7 @@ namespace App.Samples.UI
         [SerializeField] private TMP_Dropdown _iceRectangleLarge;
         [SerializeField] private TMP_Dropdown _sampleLocationNameLarge;
 
+
         #endregion
         /// <summary>
         /// On start: Activates the canvas based user prefs

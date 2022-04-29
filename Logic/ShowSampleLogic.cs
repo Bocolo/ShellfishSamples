@@ -16,16 +16,16 @@ namespace App.Samples.UI
             /// if there are no samples,call the Show Samples Failed methos
             /// </summary>
             /// <param name="popUp">pop up to use in if case</param>
-            public void ShowSamples(SampleUI sampleUI,List<Sample> sampleList, PopUp popUp, string popupText)
+            public void ShowSamples(SamplePanelGenerator samplePanelGenerator,List<Sample> sampleList, PopUp popUp, string popupText)
             {
                 if (sampleList.Count == 0)
                 {
      
-                    ShowSamplesFailed(sampleUI, popUp,popupText);
+                    ShowSamplesFailed(samplePanelGenerator, popUp,popupText);
                 }
                 else
                 {
-                    sampleUI.AddTextAndPrefab(sampleList);
+                    samplePanelGenerator.AddTextAndPrefab(sampleList);
                 }
             }
             /// <summary>
@@ -33,10 +33,10 @@ namespace App.Samples.UI
             /// and destroys previously loaded panels
             /// </summary>
             /// <param name="popUp">pop up to use in if case</param>
-            public void ShowSamplesFailed(SampleUI sampleUI,PopUp popUp, string popupText)
+            public void ShowSamplesFailed(SamplePanelGenerator samplePanelGenerator,PopUp popUp, string popupText)
             {
                 popUp.SetPopUpText(popupText);
-                sampleUI.DestroyParentChildren();
+                samplePanelGenerator.DestroyParentChildren();
             }
         }
     }
