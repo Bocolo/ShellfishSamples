@@ -34,7 +34,7 @@ namespace App.Samples.UI
         [SerializeField] private TMP_InputField _nameSmall;
         [SerializeField] private TMP_InputField _companySmall;
         [SerializeField] private TMP_InputField _commentsSmall;
-        [SerializeField] private PopUp _submissionPopUpSmall;//{ get; private set; }
+        [SerializeField] private PopUp _submissionPopUpSmall;
         [SerializeField] private PopUp _missingValuesPopUpSmall;
         [SerializeField] private TMP_Dropdown _productionWkSmall;
         [SerializeField] private TMP_Dropdown _speciesSmall;
@@ -49,7 +49,7 @@ namespace App.Samples.UI
         [SerializeField] private TMP_InputField _companyLarge;
         [SerializeField] private PopUp _missingValuesPopUpLarge;
         [SerializeField] private TMP_InputField _commentsLarge;
-        [SerializeField] private PopUp _submissionPopUpLarge;//{ get; private set; }
+        [SerializeField] private PopUp _submissionPopUpLarge;
         [SerializeField] private TMP_Dropdown _productionWkLarge;
         [SerializeField] private TMP_Dropdown _speciesLarge;
         [SerializeField] private TMP_Dropdown _dayDropLarge;

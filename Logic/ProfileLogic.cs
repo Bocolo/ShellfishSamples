@@ -10,7 +10,7 @@ namespace App.Profile
     /// </summary>
     public class ProfileLogic
     {
-        #region "Profile String"
+        #region "Profile Strings"
         /// <summary>
         /// returns a string representing profile information
         /// uses user and sample list details to populate string

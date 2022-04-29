@@ -13,7 +13,6 @@ namespace App.SaveSystem.Manager
     /// </summary>
     public class SaveData : MonoBehaviour
     {
-
         public static SaveData Instance { get; private set; }
         public List<Sample> UsersSubmittedSamples { get; private set; } = new List<Sample>();
         public List<Sample> UsersStoredSamples { get; private set; } = new List<Sample>();
@@ -21,7 +20,6 @@ namespace App.SaveSystem.Manager
         private string _storedSampleLocation = "/storedSamplesSave.dat";
         private string _submittedSampleLocation = "/submittedSamplesSave.dat";
         private string _userLocation = "/userSave.dat";
-
         /// <summary>
         /// Sets instance on awake
         /// Set stored and submitted samples lists

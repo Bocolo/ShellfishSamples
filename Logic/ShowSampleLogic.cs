@@ -3,9 +3,6 @@ using Samples.Data;
 using System.Collections.Generic;
 namespace App.Samples.UI
 {
-
-
-
     /// <summary>
     /// Handles logic related to displaying samples
     /// </summary>

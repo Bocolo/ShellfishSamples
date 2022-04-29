@@ -20,7 +20,6 @@ namespace App.Setup
             //access the dropdown UI component from the gameObject
             _tmpDropdown = GetComponent<TMP_Dropdown>();
             PopulateDropdown(_isWeek);
-
         }
         private void PopulateDropdown(bool isWeek)
         {
@@ -50,6 +49,9 @@ namespace App.Setup
                 _dropdown.options.Add(new Dropdown.OptionData(line));
             }
         }
+        /// <summary>
+        /// populate tmp dropdowns with values from file
+        /// </summary>
         private void SetTMPDropdownOptions()
         {
             _tmpDropdown.options.Clear();

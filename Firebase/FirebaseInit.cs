@@ -1,7 +1,7 @@
 using Firebase;
 using Firebase.Analytics;
 using UnityEngine;
-
+using Firebase.Auth;
 /// <summary>
 /// The class initialises Firebase and monitors Authorisation State Changes with a listener
 /// Handle initialization of the necessary firebase modules:
@@ -9,8 +9,8 @@ using UnityEngine;
 public class FirebaseInit : MonoBehaviour
 {
     private FirebaseApp _app;
-    private Firebase.Auth.FirebaseAuth _auth;
-    private Firebase.Auth.FirebaseUser _user;
+    private FirebaseAuth _auth;
+    private FirebaseUser _user;
 
     /// <summary>
     /// calls the CheckAndFixFBDependencies method on start
@@ -25,7 +25,7 @@ public class FirebaseInit : MonoBehaviour
     /// </summary>
     void InitializeFirebase()
     {
-        _auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        _auth = FirebaseAuth.DefaultInstance;
         _auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
     }

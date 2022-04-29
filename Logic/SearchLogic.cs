@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 namespace App.Samples
 {
-
     public class SearchLogic
     {
         /// <summary>
