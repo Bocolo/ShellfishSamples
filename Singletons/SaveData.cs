@@ -17,9 +17,9 @@ namespace App.SaveSystem.Manager
         public List<Sample> UsersSubmittedSamples { get; private set; } = new List<Sample>();
         public List<Sample> UsersStoredSamples { get; private set; } = new List<Sample>();
         private SaveDataLogic saveDataLogic;
-        private string _storedSampleLocation = "/storedSamplesSave.dat";
-        private string _submittedSampleLocation = "/submittedSamplesSave.dat";
-        private string _userLocation = "/userSave.dat";
+        private readonly string _storedSampleLocation = "/storedSamplesSave.dat";
+        private readonly string _submittedSampleLocation = "/submittedSamplesSave.dat";
+        private readonly string _userLocation = "/userSave.dat";
         /// <summary>
         /// Sets instance on awake
         /// Set stored and submitted samples lists

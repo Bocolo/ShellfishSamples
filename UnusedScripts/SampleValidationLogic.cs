@@ -7,6 +7,9 @@ using System;
 using UnityEngine;
 using Users.Data;
 
+///This script would be used to take over responsibilities of the Sample Validator script
+/////However, as it requires to many changes to multiple scripts.  Time does not permit its implementation
+
 public class SampleValidationLogic 
 {
 

@@ -88,7 +88,8 @@ namespace App.Samples.Manager
                     _searchSampleUI.SearchLimitSelection
                     )
                 );
-            _showSample.ShowSamples(_samplePanelGenerator, _collectionSamples, popUp,
+            _showSample.ShowSamples(_samplePanelGenerator, 
+                _collectionSamples, popUp,
                 "No matching samples found");
         }
 

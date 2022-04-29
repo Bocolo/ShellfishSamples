@@ -30,7 +30,7 @@ namespace App.Samples.UI
         public void AddTextAndPrefab(Sample sample)
         {
             GameObject panel = Instantiate(_samplePanelPrefabs[0]);
-            SetPanelParent(panel);
+            SetPanelParent(panel, _contentParent);
             SetPanelText(panel, sample);
         }
         /// <summary>
@@ -50,9 +50,9 @@ namespace App.Samples.UI
         /// sets the passed game object scale
         /// </summary>
         /// <param name="panel"></param>
-        private void SetPanelParent(GameObject panel)
+        private void SetPanelParent(GameObject panel, Transform contentParent)
         {
-            panel.transform.SetParent(_contentParent.transform);
+            panel.transform.SetParent(contentParent.transform);
             panel.transform.localScale = new Vector3(1, 1, 1);
         }
         /// <summary>
@@ -63,26 +63,28 @@ namespace App.Samples.UI
         private void SetPanelText(GameObject panel, Sample sample)
         {
             Text panelText = panel.transform.GetChild(0).gameObject.GetComponent<Text>();
-            panelText.text = _sampleDetails.SampleToString(sample);
+            panelText.text = _sampleDetails.SampleToString(sample);//should move this as passed param
         }
         #endregion
         #region "Panel children: destruction and creation"
+      
         /// <summary>
-        /// Destroys the children of _contentParent passed param
+        /// Destroys the children of _contentParent
         /// </summary>
-        /// <param name="_contentParent"></param>
-        public void DestroyParentChildren(Transform _contentParent)
+        public void DestroyParentChildren()
         {
             foreach (Transform child in _contentParent)
             {
                 Destroy(child.gameObject);
             }
-        }    /// <summary>
-             /// Destroys the children of _contentParent
-             /// </summary>
-        public void DestroyParentChildren()
+        }
+        /// <summary>
+        /// Destroys the children of _contentParent passed param
+        /// </summary>
+        /// <param name="_contentParent"></param>
+        public void DestroyParentChildren(Transform contentParent)
         {
-            foreach (Transform child in _contentParent)
+            foreach (Transform child in contentParent)
             {
                 Destroy(child.gameObject);
             }
@@ -104,7 +106,7 @@ namespace App.Samples.UI
                 GameObject panel = Instantiate(_samplePanelPrefabs[prefabCount - 1]);
                 prefabCount -= 1;
                 Debug.Log("the panel being used: " + (prefabCount));
-                SetPanelParent(panel);
+                SetPanelParent(panel, _contentParent);
                 SetPanelText(panel, sampleList[i]);
             }
         }

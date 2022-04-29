@@ -15,7 +15,7 @@ namespace App.Profile.UI
         [SerializeField] private TMP_InputField _companyInput;
         [SerializeField] private GameObject _updateProfileButton;
         [SerializeField] private GameObject _saveProfileButton;
-        private string _profileFilePath = "/userSave.dat";
+        private readonly string _profileFilePath = "/userSave.dat";
         private User _user;
         private ProfileLogic profileLogic;
         /// <summary>
