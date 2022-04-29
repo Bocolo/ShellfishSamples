@@ -13,14 +13,14 @@ namespace App.Samples.UI
 
         [SerializeField] private List<GameObject> _samplePanelPrefabs;
         [SerializeField] private Transform _contentParent;
-        private SampleDetailsLogic _sampleDetails;
+        private SampleLogic _sampleDetails;
 
         /// <summary>
         /// creates the _sampleDetails object
         /// </summary>
         private void Awake()
         {
-            _sampleDetails = new SampleDetailsLogic();
+            _sampleDetails = new SampleLogic();
         }
         #region "Add Text and Prefab methods"
         /// <summary>

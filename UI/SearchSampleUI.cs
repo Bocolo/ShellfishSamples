@@ -10,23 +10,27 @@ namespace App.Samples.UI
         [SerializeField] private TMP_Dropdown _searchDropdown;
         [SerializeField] private TMP_InputField _searchInput;
         [SerializeField] private TMP_InputField _searchLimit;
+        private SearchLogic _searchLogic;
+
         public string SearchFieldSelection { get; private set; } = "";
         public string SearchNameSelection { get; private set; } = "";
         public int SearchLimitSelection { get; private set; } = 100;
-        private SearchLogic searchLogic;
+        /// <summary>
+        /// creates the search logic object on awake
+        /// </summary>
         void Awake()
         {
-            searchLogic = new SearchLogic();
+            _searchLogic = new SearchLogic();
         }
         /// <summary>
         /// Sets the search values: name, field and limit
         /// </summary>
         public void SetSearchValues()
         {
-            SearchFieldSelection= searchLogic.GetSearchField(_searchDropdown.value);
+            SearchFieldSelection = _searchLogic.GetSearchField(_searchDropdown.value);
             SearchNameSelection = _searchInput.text;
-            SearchLimitSelection = searchLogic.GetSearchLimit(_searchLimit.text);
+            SearchLimitSelection = _searchLogic.GetSearchLimit(_searchLimit.text);
         }
-  
+
     }
 }

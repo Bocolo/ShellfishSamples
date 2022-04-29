@@ -10,7 +10,7 @@ namespace App.Samples.Validation
     /// </summary>
     public class SampleValidator : MonoBehaviour
     {
-      
+
         private string _name = null;
         private string _company = null;
         private string _comments = null;
@@ -19,16 +19,16 @@ namespace App.Samples.Validation
         private string _location = null;
         private string _date = null;
         private SubmitCanvasManager _canvasManager;
-        private SampleDetailsLogic sampleDetails;
+        private SampleLogic _sampleLogic;
 
-    
+
         /// <summary>
         /// Called on awake.  Sets the submitcanvasManager
         /// </summary>
         private void Awake()
         {
             _canvasManager = GetComponent<SubmitCanvasManager>();
-            sampleDetails = new SampleDetailsLogic();
+            _sampleLogic = new SampleLogic();
         }
         #region "Sample generator"
         /// <summary>
@@ -61,7 +61,7 @@ namespace App.Samples.Validation
             SetValues();
             return IsValuesComplete();
         }
-      
+
 
         /// <summary>
         /// Checks missing values and returns a bool to notify is missing values present
@@ -89,12 +89,12 @@ namespace App.Samples.Validation
         private String MissingValues()
         {
             String missing = "";
-            missing = sampleDetails.MissingCompany(missing, _company);
-            missing = sampleDetails.MissingName(missing, _name);
-            missing = sampleDetails.MissingSpecies(missing, _species);
-            missing = sampleDetails.MissingOrDualLocation(missing,_icesRectangle,_location);
-            missing = sampleDetails.MissingDate(missing,_date);
-            missing = sampleDetails.MissingProductionWeek(missing, _canvasManager.ProductionWk.value);
+            missing = _sampleLogic.MissingCompany(missing, _company);
+            missing = _sampleLogic.MissingName(missing, _name);
+            missing = _sampleLogic.MissingSpecies(missing, _species);
+            missing = _sampleLogic.MissingOrDualLocation(missing, _icesRectangle, _location);
+            missing = _sampleLogic.MissingDate(missing, _date);
+            missing = _sampleLogic.MissingProductionWeek(missing, _canvasManager.ProductionWk.value);
             if (!missing.Equals(""))
             {
                 missing = ("<b>Incorrect Input Format: </b>\n\n" + missing);
@@ -201,14 +201,14 @@ namespace App.Samples.Validation
                 && (_canvasManager.MonthDrop.value != 0)
                 && (_canvasManager.YearDrop.value != 0))
             {
-                this._date = sampleDetails.GetDate(
+                this._date = _sampleLogic.GetDate(
                     _canvasManager.DayDrop.options[_canvasManager.DayDrop.value].text,
          _canvasManager.MonthDrop.options[_canvasManager.MonthDrop.value].text,
          _canvasManager.YearDrop.options[_canvasManager.YearDrop.value].text);
             }
             else
             {
-                this._date=null;
+                this._date = null;
             }
         }
         /// <summary>

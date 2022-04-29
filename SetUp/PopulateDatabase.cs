@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 namespace App.Setup
 {
-    public class PopulateDatabase 
+    public class PopulateDatabase
     {
         [SerializeField] private string _fileLocation;//"C:\\Users\\brona\\OneDrive\\Documents\\Bronagh_programming\\College_work\\IndustrialProject\\SQL\\FD_SQL_Test_c.csv"
         public List<Data> SaveToList()
@@ -15,7 +15,7 @@ namespace App.Setup
                 .ToList();
             return values;
         }
-       public class Data
+        public class Data
         {
             public string Species;
             public int ProductionWeekNo;

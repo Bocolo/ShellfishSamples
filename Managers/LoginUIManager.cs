@@ -11,7 +11,7 @@ namespace App.Authentication.UI
     /// </summary>
     public class LoginUIManager : MonoBehaviour
     {
-        private bool _isLoggedIn; 
+        private bool _isLoggedIn;
         [SerializeField] private Button _logInButton;
         [SerializeField] private Button _signoutButton;
         [SerializeField] private PopUp _popUp;
@@ -25,7 +25,7 @@ namespace App.Authentication.UI
         {
             loginLogic = new LoginLogic();
             _isLoggedIn = FirebaseAuth.DefaultInstance.CurrentUser != null;
-            loginLogic.SetButtonInteractable(_isLoggedIn,_logInButton,_signoutButton);
+            loginLogic.SetButtonInteractable(_isLoggedIn, _logInButton, _signoutButton);
             if ((UserPrefs.GetSignUpSuccessful().Equals("yes")) &&
                 (UserPrefs.GetLoginComplete().Equals("no")))
             {
@@ -37,13 +37,13 @@ namespace App.Authentication.UI
                 loginLogic.SuccessfulSignUpPopup(_popUp);
             }
         }
-     /// <summary>
-     /// The sign out function sets the correct login/signout buttons active
-     /// </summary>
+        /// <summary>
+        /// The sign out function sets the correct login/signout buttons active
+        /// </summary>
         public void SignOut()
         {
             loginLogic.SetButtonInteractable(FirebaseAuth.DefaultInstance.CurrentUser != null, _logInButton, _signoutButton);
         }
-  
+
     }
 }

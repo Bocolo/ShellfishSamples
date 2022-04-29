@@ -1,4 +1,4 @@
-using App.Samples;
+/*using App.Samples;
 using App.Samples.UI;
 using App.SaveSystem.Manager;
 using App.UI;
@@ -18,7 +18,7 @@ public class SampleValidationLogic
     private string _location = null;
     private string _date = null;
     private SubmitCanvasManager _canvasManager;
-    private SampleDetailsLogic sampleDetails;
+    private SampleLogic sampleDetails;
 
     /// <summary>
     /// SampleValidationLogic constructor
@@ -28,7 +28,7 @@ public class SampleValidationLogic
 
     public SampleValidationLogic(SubmitCanvasManager submitCanvasManager)
     {
-        sampleDetails = new SampleDetailsLogic();
+        sampleDetails = new SampleLogic();
         _canvasManager = submitCanvasManager;
 
     }
@@ -261,3 +261,4 @@ public class SampleValidationLogic
     #endregion
 
 }
+*/

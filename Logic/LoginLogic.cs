@@ -6,13 +6,13 @@ namespace App.Authentication.UI
     /// <summary>
     /// This script is responsible login related to login behaviour
     /// </summary>
-    public class LoginLogic 
+    public class LoginLogic
     {
         /// <summary>
         /// Sets the interactability of the login and signout button based on the isLoggedIn bool
         /// </summary>
         /// <param name="isLoggedIn">bool used in if else, represents if a user id logged in</param>
-        public void SetButtonInteractable(bool isLoggedIn,Button loginButton, Button logOutButton)
+        public void SetButtonInteractable(bool isLoggedIn, Button loginButton, Button logOutButton)
         {
             if (isLoggedIn)
             {

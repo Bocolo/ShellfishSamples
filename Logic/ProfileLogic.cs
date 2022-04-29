@@ -19,15 +19,15 @@ namespace App.Profile
         /// <param name="storedSamplesCount">the number of stored samples</param>
         /// <param name="submittedSamplesCount">the number of submitted sample</param>
         /// <returns></returns>
-        public string GetProfileText(User user, int storedSamplesCount,int submittedSamplesCount)
+        public string GetProfileText(User user, int storedSamplesCount, int submittedSamplesCount)
         {
             string profileText = "<b>Name : </b>" + user.Name
                     + "\n\n<b>Company: </b>" + user.Company
-                    + "\n\n<b>No of Stored Samples on Device: </b>" + 
+                    + "\n\n<b>No of Stored Samples on Device: </b>" +
                     storedSamplesCount
-                    + "\n\n<b>No of Submitted Samples from this Device: </b>" + 
+                    + "\n\n<b>No of Submitted Samples from this Device: </b>" +
                     submittedSamplesCount;
-     
+
             return profileText;
         }
         /// <summary>
@@ -88,7 +88,7 @@ namespace App.Profile
             {
                 Name = newUsername,
                 Company = newCompanyName,
-        };
+            };
             SaveData.Instance.SaveUserProfile(newUser);
         }
         /// <summary>
@@ -98,12 +98,12 @@ namespace App.Profile
         /// <param name="newUsername"></param>
         /// <param name="newCompanyName"></param>
         /// <param name="fileLocation"></param>
-        public void UpdateCreateProfile(string newUsername, string newCompanyName,string fileLocation)
+        public void UpdateCreateProfile(string newUsername, string newCompanyName, string fileLocation)
         {
             string filepath = Application.persistentDataPath + fileLocation;
             if (System.IO.File.Exists(filepath))
             {
-                UpdateProfile(newUsername,newCompanyName);
+                UpdateProfile(newUsername, newCompanyName);
             }
             else
             {

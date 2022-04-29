@@ -11,7 +11,7 @@ namespace App.Setup
     {
         //variable - SerializeField variables can be accessed in the Unity Editor and set from there
         [SerializeField] private string _fileLocation;
-        [SerializeField]private bool _isWeek = false;
+        [SerializeField] private bool _isWeek = false;
         private Dropdown _dropdown;
         private TMP_Dropdown _tmpDropdown;
         //Simple script to populate dropdown Options using a text file (when is week is false)
@@ -20,7 +20,7 @@ namespace App.Setup
             //access the dropdown UI component from the gameObject
             _tmpDropdown = GetComponent<TMP_Dropdown>();
             PopulateDropdown(_isWeek);
-           
+
         }
         private void PopulateDropdown(bool isWeek)
         {

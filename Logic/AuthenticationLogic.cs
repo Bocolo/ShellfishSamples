@@ -6,13 +6,13 @@ namespace App.Authentication
     /// <summary>
     /// This script is responsible for the firebase authentication logic
     /// </summary>
-    public class AuthenticationLogic 
+    public class AuthenticationLogic
     {
         public bool IsSuccessfulLogin { get; private set; } = false;
         public bool IsSuccessfulSignUp { get; private set; } = false;
 
 
-         /// <summary>
+        /// <summary>
         /// Attempts to set up a firebase user auth account using the email, password and name params
         /// sets the _isSuccessfulSignUp bool based on the sign up attempts success
         /// sets the new account display name if successful
