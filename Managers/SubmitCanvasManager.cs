@@ -30,7 +30,7 @@ namespace App.Samples.UI
         public TMP_Dropdown SampleLocationName { get; private set; }
         
         //SMALL CANVAS
-        [SerializeField] public GameObject _smallCanvas;
+        [SerializeField] private GameObject _smallCanvas;
         [SerializeField] private TMP_InputField _nameSmall;
         [SerializeField] private TMP_InputField _companySmall;
         [SerializeField] private TMP_InputField _commentsSmall;
